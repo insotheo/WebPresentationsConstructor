@@ -23,7 +23,7 @@
             <Button Grid.Column="1" Content="Искать"/>
         </Grid>
 
-        <ListBox Grid.Row="1"/>
+        <ListBox Grid.Row="1" x:Name="projectsListLB"/>
 
         <StackPanel HorizontalAlignment="Center" Grid.Row="2" Orientation="Horizontal">
             <Button Content="Создать"/>

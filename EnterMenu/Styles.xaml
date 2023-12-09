@@ -1,5 +1,102 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <SolidColorBrush x:Key="backWindow"
+                     Color="#7f7e90"/>
+
+    <PathGeometry x:Key="projectFolderSVG"
+                  Figures="M109,43.1V42c0-5.5-4.5-10-10-10H74c-3.3,0-6-3.2-6-6.5V26c0-5.5-4.5-10-10-10H21c-5.5,0-10,4.5-10,10v77  c0,5.5,4.5,10,10,10l0,0h87c5.5,0,10-4.5,10-10V53C118,47.8,114,43.6,109,43.1z M21,109c-3.3,0-6-2.7-6-6V26c0-3.3,2.7-6,6-6h37  c3.3,0,6,2.7,6,6c0,5.5,4.5,10,10,10h25c3.3,0,6,2.7,6,6v1H37c-5.5,0-10,4.5-10,10v50C27,106.3,24.3,109,21,109L21,109z M114,103  c0,3.3-2.7,6-6,6H29c1.3-1.7,2-3.8,2-6V53c0-3.3,2.7-6,6-6h71c3.3,0,6,2.7,6,6V103z"/>
+
+
+    <Style TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Margin" Value="0 3"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="1.5"
+                            CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="35"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Path Data="{StaticResource projectFolderSVG}"
+                                  Fill="{TemplateBinding Foreground}"
+                                  Stretch="Uniform"
+                                  Margin="3"/>
+                            <TextBlock Grid.Column="1" Text="{TemplateBinding Content}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Margin="7 0 0 0"
+                                       FontWeight="SemiBold"
+                                       FontFamily="Roboto"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#363636"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="LightBlue"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Margin" Value="2 3"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="Background" Value="LightGray"/>
+    </Style>
+
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="5" BorderBrush="{TemplateBinding Foreground}" BorderThickness="1" 
+                            Background="{TemplateBinding Background}">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Margin="5 0"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#363636"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
 </ResourceDictionary>

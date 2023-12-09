@@ -33,15 +33,47 @@ namespace ProjectsManager
 
             InitializeComponent();
 
-            foreach (string project in Directory.GetDirectories(Path.Combine(appDir, "projects")))
+            if (Directory.GetDirectories(Path.Combine(appDir, "projects")).Length > 0)
             {
-                if (Directory.GetDirectories(project).Length + Directory.GetFiles(project).Length >= 3)
+                foreach (string project in Directory.GetDirectories(Path.Combine(appDir, "projects")))
                 {
-                    projectsListLB.Items.Add(project.Split('\\').Last());
+                    if (Directory.GetDirectories(project).Length + Directory.GetFiles(project).Length >= 3)
+                    {
+                        projectsListLB.Items.Add(project.Split('\\').Last());
+                    }
                 }
+            }
+            for(int  i = 0; i < 100; i++)
+            {
+                projectsListLB.Items.Add(i.ToString());
             }
 
             GC.Collect();
+        }
+
+        private void refreshListBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void createNewProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void editSelectedProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void searchBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

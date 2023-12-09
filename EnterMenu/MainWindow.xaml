@@ -6,30 +6,32 @@
         xmlns:local="clr-namespace:ProjectsManager"
         mc:Ignorable="d"
         Title="WebPresentationsConstructor -> MainMenu"
-        Height="400" Width="700">
+        Height="400" Width="700"
+        MinHeight="200" MinWidth="400"
+        Background="{StaticResource backWindow}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="60"/>
             </Grid.ColumnDefinitions>
-            <TextBox/>
-            <Button Grid.Column="1" Content="Искать"/>
+            <TextBox x:Name="searchQueryTB"/>
+            <Button Grid.Column="1" Click="searchBtn_Click" Content="Искать"/>
         </Grid>
 
         <ListBox Grid.Row="1" x:Name="projectsListLB"/>
 
         <StackPanel HorizontalAlignment="Center" Grid.Row="2" Orientation="Horizontal">
-            <Button Content="Создать"/>
-            <Button Content="Редактировать"/>
-            <Button Content="Обновить список"/>
-            <Button Content="Удалить"/>
+            <Button Click="createNewProjectBtn_Click" Content="Создать"/>
+            <Button Click="editSelectedProjectBtn_Click" Content="Редактировать"/>
+            <Button Click="refreshListBtn_Click" Content="Обновить список"/>
+            <Button Click="deleteBtn_Click" Content="Удалить"/>
         </StackPanel>
         
     </Grid>

@@ -5,34 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectsManager"
         mc:Ignorable="d"
-        Title="WebPresentationsConstructor -> MainMenu"
+        Title="WebPresentationsConstructor[ver] -> MainMenu"
         Height="400" Width="700"
-        MinHeight="200" MinWidth="400"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="300" MinWidth="550"
         Background="{StaticResource backWindow}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="55"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="searchQueryTB"/>
+            <TextBox x:Name="searchQueryTB" ToolTip="Ключевые слова для поиска по списку проектов"/>
             <Button Grid.Column="1" Click="searchBtn_Click" Content="Искать"/>
         </Grid>
 
         <ListBox Grid.Row="1" x:Name="projectsListLB"/>
 
-        <StackPanel HorizontalAlignment="Center" Grid.Row="2" Orientation="Horizontal">
-            <Button Click="createNewProjectBtn_Click" Content="Создать"/>
-            <Button Click="editSelectedProjectBtn_Click" Content="Редактировать"/>
-            <Button Click="refreshListBtn_Click" Content="Обновить список"/>
-            <Button Click="deleteBtn_Click" Content="Удалить"/>
-        </StackPanel>
-        
+        <Border Grid.Row="2" Background="DarkGray" CornerRadius="5" Margin="0 3" HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="3" ShadowDepth="5" Opacity="0.5" Direction="-40"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal" Margin="7 4">
+                <Button Click="createNewProjectBtn_Click" Content="Создать"/>
+                <Button Click="editSelectedProjectBtn_Click" Content="Редактировать"/>
+                <Button Click="showInExplorerBtn_Click" Content="Показать в проводнике"/>
+                <Button Click="refreshListBtn_Click" Content="Обновить список"/>
+                <Button Click="deleteBtn_Click" Content="Удалить"/>
+            </StackPanel>
+        </Border>
+
     </Grid>
 </Window>

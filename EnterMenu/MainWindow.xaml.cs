@@ -1,8 +1,11 @@
-﻿using System.IO;
-using System.Windows;
+﻿using MessageBoxesWindows;
 using System;
-using MessageBoxesWindows;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Diagnostics;
 
 namespace ProjectsManager
 {
@@ -33,32 +36,46 @@ namespace ProjectsManager
 
             InitializeComponent();
 
-            if (Directory.GetDirectories(Path.Combine(appDir, "projects")).Length > 0)
-            {
-                foreach (string project in Directory.GetDirectories(Path.Combine(appDir, "projects")))
-                {
-                    if (Directory.GetDirectories(project).Length + Directory.GetFiles(project).Length >= 3)
-                    {
-                        projectsListLB.Items.Add(project.Split('\\').Last());
-                    }
-                }
-            }
-            for(int  i = 0; i < 100; i++)
-            {
-                projectsListLB.Items.Add(i.ToString());
-            }
+            this.Title = this.Title.Replace("ver", Assembly.GetExecutingAssembly().GetName().Version.ToString(4));
+
+            refreshListOfProjects();
 
             GC.Collect();
         }
 
+        private void refreshListOfProjects()
+        {
+            projectsListLB.Items.Clear();
+            if (Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "projects")).Length > 0)
+            {
+                foreach (string folderOfProject in Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "projects")))
+                {
+                   if(Directory.Exists(Path.Combine(folderOfProject, "Assets")) &&
+                        Directory.Exists(Path.Combine(folderOfProject, "cache")) &&
+                        File.Exists(Path.Combine(folderOfProject, "settings.config")))
+                    {
+                        projectsListLB.Items.Add(folderOfProject.Split('\\').Last().Trim());
+                    }
+                }
+
+                GC.Collect();
+            }
+        }
+
+        #region bottom buttons
         private void refreshListBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            refreshListOfProjects();
         }
 
         private void createNewProjectBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            NameOfNewProjectDialog creationDialog = new NameOfNewProjectDialog();
+            creationDialog.ShowDialog();
+            if(creationDialog.isCreated == true)
+            {
+                refreshListOfProjects();
+            }
         }
 
         private void editSelectedProjectBtn_Click(object sender, RoutedEventArgs e)
@@ -68,12 +85,68 @@ namespace ProjectsManager
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (projectsListLB.Items.Count > 0 && projectsListLB.SelectedItem != null)
+            {
+                var ans = MessBox.showQuestionWithTwoOptions("Желаете ли Вы удалить проект? Учтите, что потом Вы не сможете редактировать его или восстановить!");
+                try
+                {
+                    if (ans == MessageBoxResult.Yes)
+                    {
+                        Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(),
+                            "projects", projectsListLB.SelectedItem.ToString()), true);
+                        projectsListLB.Items.Remove(projectsListLB.SelectedItem);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessBox.showError(ex.Message);
+                }
+            }
         }
 
+        private void showInExplorerBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (projectsListLB.Items.Count > 0 && projectsListLB.SelectedItem != null)
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "explorer.exe",
+                    Arguments = Path.Combine(Directory.GetCurrentDirectory(), "projects", projectsListLB.SelectedItem.ToString())
+                });
+                GC.Collect();
+            }
+        }
+        #endregion
+
+        //Searching button
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (searchQueryTB.Text == String.Empty)
+            {
+                refreshListOfProjects();
+                return;
+            }
+            else
+            {
+                List<string> res = new List<string>();
+                foreach (var el in Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "projects")))
+                {
+                    if (el.Split('\\').Last().ToString().ToLower().Trim().Contains(searchQueryTB.Text.ToLower().Trim()))
+                    {
+                        res.Add(el.Split('\\').Last().ToString());
+                    }
+                }
+                projectsListLB.Items.Clear();
+                foreach (var el in res)
+                {
+                    projectsListLB.Items.Add(el.ToString());
+                }
+            }
         }
+
     }
 }

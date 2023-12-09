@@ -8,5 +8,20 @@ namespace MessageBoxesWindows
         {
             MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        public static MessageBoxResult showQuestionWithThreeOptions(string message)
+        {
+            return MessageBox.Show(message, "Вопрос", MessageBoxButton.YesNoCancel, MessageBoxImage.Question); ;
+        }
+
+        public static MessageBoxResult showQuestionWithTwoOptions(string message)
+        {
+            return MessageBox.Show(message, "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Question); ;
+        }
+
+        public static void showInfo(string message)
+        {
+            MessageBox.Show(message, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

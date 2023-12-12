@@ -80,7 +80,29 @@ namespace ProjectsManager
 
         private void editSelectedProjectBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if(projectsListLB.Items.Count > 0 && projectsListLB.SelectedItem != null)
+            {
+                try
+                {
+                    if(!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "WPC_Editor.exe")))
+                    {
+                        throw new Exception("Отсутствует файл редактора!");
+                    }
+                    FileStream idFile = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "bin.txt"));
+                    idFile.Close();
+                    File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "bin.txt"), projectsListLB.SelectedItem.ToString());
+                    Process.Start(Path.Combine(Directory.GetCurrentDirectory(), "WPC_Editor.exe"));
+                    Environment.Exit(0);
+                }
+                catch (Exception ex)
+                {
+                    MessBox.showError(ex.Message);
+                    if(File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "bin.txt")))
+                    {
+                        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "bin.txt"));
+                    }
+                }
+            }
         }
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
@@ -115,10 +137,11 @@ namespace ProjectsManager
                 Process.Start(new ProcessStartInfo()
                 {
                     FileName = "explorer.exe",
-                    Arguments = Path.Combine(Directory.GetCurrentDirectory(), "projects", projectsListLB.SelectedItem.ToString())
+                    Arguments = $"\"{Path.Combine(Directory.GetCurrentDirectory(), "projects", projectsListLB.SelectedItem.ToString())}\""
                 });
                 GC.Collect();
             }
+            projectsListLB.SelectedItem = null;
         }
         #endregion
 

@@ -50,7 +50,7 @@ namespace ProjectsManager
                 FileStream configFile = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "projects", nameTB.Text.Trim(), "settings.config"));
                 configFile.Close();
                 File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "projects", nameTB.Text.Trim(), "settings.config"),
-                    $"title: {nameTB.Text.Trim()}\ncreationDate: {DateTime.Now.ToString("g")}\ncreatorsUsername: {Environment.UserName}\ncreatorsMachineName: {Environment.MachineName}\ncreatorsOS: {Environment.OSVersion.VersionString}\nis64Bit: {Environment.Is64BitOperatingSystem.ToString()}\nusingStyles:\nusingScripts:\nappEditorVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
+                    $"title: {nameTB.Text.Trim()}\ncreatorsUsername: {Environment.UserName}\ncreatorsMachineName: {Environment.MachineName}\ncreatorsOS: {Environment.OSVersion.VersionString}\nis64Bit: {Environment.Is64BitOperatingSystem.ToString()}\nusingStyles:\nusingScripts:\nappEditorVersion: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}");
                 isCreated = true;
                 this.Close();
             }

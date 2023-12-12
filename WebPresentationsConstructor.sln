@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLLs", "DLLs", "{E5FD3925-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageBoxesWindows", "MessageBoxesWindows\MessageBoxesWindows.csproj", "{CDBD0BBA-7594-48F9-B3D5-C27F3E109CD2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor", "Editor", "{FCA52E38-9927-4633-AF63-D8B526C71A52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPC_Editor", "WPC_Editor\WPC_Editor.csproj", "{8E3D2923-8575-482C-8153-C109A6702B72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,10 @@ Global
 		{CDBD0BBA-7594-48F9-B3D5-C27F3E109CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDBD0BBA-7594-48F9-B3D5-C27F3E109CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDBD0BBA-7594-48F9-B3D5-C27F3E109CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E3D2923-8575-482C-8153-C109A6702B72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E3D2923-8575-482C-8153-C109A6702B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E3D2923-8575-482C-8153-C109A6702B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E3D2923-8575-482C-8153-C109A6702B72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D8C63806-DC43-428A-9F8C-3C18A19BAAD9} = {AFF5A959-0A15-4C2F-93F1-BE53B3024FCF}
 		{CDBD0BBA-7594-48F9-B3D5-C27F3E109CD2} = {E5FD3925-DA79-4D14-B627-1DA684C3E785}
+		{8E3D2923-8575-482C-8153-C109A6702B72} = {FCA52E38-9927-4633-AF63-D8B526C71A52}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FA99717-6FA0-4E51-BC8E-89D66671280A}

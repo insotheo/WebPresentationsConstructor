@@ -23,5 +23,10 @@ namespace MessageBoxesWindows
         {
             MessageBox.Show(message, "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        public static void showWarning(string message)
+        {
+            MessageBox.Show(message, "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 }

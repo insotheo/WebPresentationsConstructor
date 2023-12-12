@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyCompany("Insotheo")]
 [assembly: AssemblyProduct("WebPresentationsConstructor")]
 [assembly: AssemblyCopyright("Insotheo Copyright ©  2023")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Insotheo.WebPresentationsConstructor")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми

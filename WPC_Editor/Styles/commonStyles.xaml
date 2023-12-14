@@ -8,6 +8,11 @@
     <SolidColorBrush x:Key="defaultElementBack"
                      Color="#adadad"/>
 
+    <Style TargetType="{x:Type Window}">
+        <Setter Property="Background" Value="#939393"/>
+    </Style>
+    
+    
     <Style TargetType="{x:Type TabItem}">
         <Setter Property="FontFamily" Value="Roboto"/>
         <Setter Property="FontSize" Value="16"/>

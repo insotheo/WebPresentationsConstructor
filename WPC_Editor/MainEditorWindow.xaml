@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:WPC_Editor"
         mc:Ignorable="d"
         Title="WebPresentationsConstructor -> Editor[pname]"
-        Height="450" Width="600"
-        Background="#939393">
+        Height="450" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>

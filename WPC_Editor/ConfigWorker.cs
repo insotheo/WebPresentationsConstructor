@@ -9,6 +9,7 @@ namespace WPC_Editor
     class ConfigWorker
     {
         public string title;
+        public string language;
         private string creatorsUsername;
         private string creatorsMachineName;
         private string creatorsOS;
@@ -27,19 +28,20 @@ namespace WPC_Editor
             usingScripts = new List<string>();
             usingStyles = new List<string>();
             title = configData[0].Trim();
-            creatorsUsername = configData[1].Trim();
-            creatorsMachineName = configData[2].Trim();
-            creatorsOS = configData[3].Trim();
-            is64Bit = configData[4].Trim();
-            foreach(string style in configData[5].Trim().Split(';'))
+            language = configData[1].Trim();
+            creatorsUsername = configData[2].Trim();
+            creatorsMachineName = configData[3].Trim();
+            creatorsOS = configData[4].Trim();
+            is64Bit = configData[5].Trim();
+            foreach(string style in configData[6].Trim().Split(';'))
             {
                 usingStyles.Add(style);
             }
-            foreach(string script in configData[6].Trim().Split(';'))
+            foreach(string script in configData[7].Trim().Split(';'))
             {
                 usingScripts.Add(script);
             }
-            appEditorVersion = configData[7].Trim();
+            appEditorVersion = configData[8].Trim();
         }
 
         public bool isTheSamePC()

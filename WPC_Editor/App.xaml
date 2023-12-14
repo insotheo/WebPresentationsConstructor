@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:WPC_Editor"
              StartupUri="MainEditorWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\commonStyles.xaml"/>
+                <ResourceDictionary Source="Styles\vectorsDictionary.xaml"/>
+                <ResourceDictionary Source="Styles\buttonsStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

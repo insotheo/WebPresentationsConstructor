@@ -24,7 +24,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Сохранить" Tag="{StaticResource saveBtnVector}"/>
-                        <Button Content="Файлы" Tag="{StaticResource showFilesBtnVector}"/>
+                        <Button Content="Файлы" Tag="{StaticResource showFilesBtnVector}" Click="showProjectFilesBtn_Click"/>
                         <Button Content="Config" Tag="{StaticResource openConfigBtnVector}"/>
                         <Button Content="Браузер" Tag="{StaticResource openInOutWindowBtnVector}"/>
                         <Button Content="Собрать" Tag="{StaticResource packageBtnVector}"/>

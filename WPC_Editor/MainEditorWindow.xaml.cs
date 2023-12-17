@@ -13,7 +13,9 @@ namespace WPC_Editor
         private string projectFolder;
         private string assetsFolder;
         private string cacheFolder;
+
         private ConfigWorker config;
+        private FileViewerWindow fileViewer;
 
         public MainEditorWindow()
         {
@@ -37,12 +39,19 @@ namespace WPC_Editor
                 }
 
                 this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}: {config.title}");
+                
             }
             catch(Exception ex)
             {
                 MessBox.showError(ex.ToString());
                 Environment.Exit(-1);
             }
+        }
+
+        private void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            fileViewer = new FileViewerWindow(assetsFolder);
+            fileViewer.ShowDialog();
         }
     }
 }

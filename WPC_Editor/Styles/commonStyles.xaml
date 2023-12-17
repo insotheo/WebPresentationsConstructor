@@ -60,5 +60,15 @@
         <Setter Property="Height" Value="70"/>
         <Setter Property="Foreground" Value="WhiteSmoke"/>
     </Style>
-    
+
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Margin" Value="2 3"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="Background" Value="LightGray"/>
+    </Style>
+
 </ResourceDictionary>

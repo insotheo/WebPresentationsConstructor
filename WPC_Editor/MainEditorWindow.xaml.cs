@@ -16,6 +16,7 @@ namespace WPC_Editor
 
         private ConfigWorker config;
         private FileViewerWindow fileViewer;
+        private ConfigEditorWindow configEditorWindow; 
 
         public MainEditorWindow()
         {
@@ -38,20 +39,47 @@ namespace WPC_Editor
                     }
                 }
 
-                this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}: {config.title}");
+                this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}");
                 
+                foreach(string file in config.usingStyles)
+                {
+                    if(!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "styles", file.Trim())) &&
+                        !File.Exists(Path.Combine(assetsFolder, file.Trim())))
+                    {
+                        throw new Exception($"Файл \"{file.Trim()}\" не был найден!");
+                    }
+                }
+                foreach (string file in config.usingScripts)
+                {
+                    if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "scripts", file.Trim())) &&
+                        !File.Exists(Path.Combine(assetsFolder, file.Trim())))
+                    {
+                        throw new Exception($"Файл \"{file.Trim()}\" не был найден!");
+                    }
+                }
             }
             catch(Exception ex)
             {
-                MessBox.showError(ex.ToString());
+                MessBox.showError(ex.Message);
                 Environment.Exit(-1);
             }
         }
 
         private void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
         {
-            fileViewer = new FileViewerWindow(assetsFolder);
+            fileViewer = new FileViewerWindow(assetsFolder, ref config);
             fileViewer.ShowDialog();
+            config = fileViewer.configWorker;
+        }
+
+        private void editConfigBtn_Click(object sender, RoutedEventArgs e)
+        {
+            configEditorWindow = new ConfigEditorWindow(ref config, assetsFolder);
+            configEditorWindow.ShowDialog();
+            if (configEditorWindow.isApplied)
+            {
+                config = configEditorWindow.newConfig;
+            }
         }
     }
 }

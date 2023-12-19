@@ -66,8 +66,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigEditorWindow.xaml.cs">
+      <DependentUpon>ConfigEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConfigWorker.cs" />
     <Compile Include="FileListboxItemClass.cs" />
+    <Compile Include="FilesWorker.cs" />
     <Compile Include="FileViewerWindow.xaml.cs">
       <DependentUpon>FileViewerWindow.xaml</DependentUpon>
     </Compile>
@@ -100,6 +104,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ConfigEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

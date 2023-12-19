@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:WPC_Editor"
         mc:Ignorable="d"
         Title="WebPresentationsConstructor -> Editor[pname]"
-        Height="450" Width="600" 
+        Height="580" Width="800"
+        WindowStartupLocation="CenterScreen"
         Background="{StaticResource windowBackColor}">
     <Grid>
         <Grid.RowDefinitions>
@@ -26,7 +27,7 @@
                         <Button Content="Сохранить" Tag="{StaticResource saveBtnVector}"/>
                         <Button Content="Обновить" Tag="{StaticResource refreshBtnVector}"/>
                         <Button Content="Файлы" Tag="{StaticResource showFilesBtnVector}" Click="showProjectFilesBtn_Click"/>
-                        <Button Content="Config" Tag="{StaticResource openConfigBtnVector}"/>
+                        <Button Content="Config" Tag="{StaticResource openConfigBtnVector}" Click="editConfigBtn_Click"/>
                         <Button Content="Браузер" Tag="{StaticResource openInOutWindowBtnVector}"/>
                         <Button Content="Собрать" Tag="{StaticResource packageBtnVector}"/>
                     </StackPanel>

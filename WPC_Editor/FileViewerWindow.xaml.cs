@@ -19,12 +19,15 @@ namespace WPC_Editor
         private SaveFileDialog createFileDialog;
         private OpenFileDialog importFileDialog;
 
-        public FileViewerWindow(string assetsPath)
+        public ConfigWorker configWorker;
+
+        public FileViewerWindow(string assetsPath, ref ConfigWorker configWorker)
         {
             InitializeComponent();
             folder = assetsPath;
             files = new List<FileListboxItemClass>();
             refreshListBox();
+            this.configWorker = configWorker;
         }
 
         private void refreshListBox()
@@ -71,8 +74,27 @@ namespace WPC_Editor
                 {
                     if (MessBox.showQuestionWithTwoOptions($"Вы уверены, что хотите удалить файл \"{(filesLB.SelectedItem as FileListboxItemClass).fileName}\"?") == MessageBoxResult.Yes)
                     {
-                        string p = (filesLB.SelectedItem as FileListboxItemClass).path;
+                        string p = (filesLB.SelectedItem as FileListboxItemClass).path.Trim();
+                        if(Path.GetExtension(p) == ".js" || Path.GetExtension(p) == ".css")
+                        {
+                            switch (Path.GetExtension(p))
+                            {
+                                case ".js":
+                                    if(configWorker.usingScripts.IndexOf(Path.GetFileName(p)) != -1)
+                                    {
+                                        configWorker.usingScripts.RemoveAt(configWorker.usingScripts.IndexOf(Path.GetFileName(p).Trim()));
+                                    }
+                                    break;
+                                case ".css":
+                                    if (configWorker.usingStyles.IndexOf(Path.GetFileName(p)) != -1)
+                                    {
+                                        configWorker.usingStyles.RemoveAt(configWorker.usingStyles.IndexOf(Path.GetFileName(p).Trim()));
+                                    }
+                                    break;
+                            }
+                        }
                         File.Delete(p);
+                        configWorker.overwriteFile();
                         refreshListBox();
                     }
                 }

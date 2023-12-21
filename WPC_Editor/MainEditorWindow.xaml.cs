@@ -2,6 +2,9 @@
 using System.IO;
 using System;
 using MessageBoxesWindows;
+using WPC_Editor.Widgets;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace WPC_Editor
 {
@@ -13,6 +16,8 @@ namespace WPC_Editor
         private string projectFolder;
         private string assetsFolder;
         private string cacheFolder;
+
+        private List<WidgetsTreeItem> tree;
 
         private ConfigWorker config;
         private FileViewerWindow fileViewer;
@@ -29,6 +34,7 @@ namespace WPC_Editor
                 assetsFolder = Path.Combine(projectFolder, "Assets");
                 cacheFolder = Path.Combine(projectFolder, "cache");
 
+                tree = new List<WidgetsTreeItem>();
                 config = new ConfigWorker(Path.Combine(projectFolder, "settings.config"));
                 if (!config.isTheSamePC())
                 {
@@ -57,12 +63,38 @@ namespace WPC_Editor
                         throw new Exception($"Файл \"{file.Trim()}\" не был найден!");
                     }
                 }
+
+                if(!File.Exists(Path.Combine(cacheFolder, "INDEX.html")))
+                {
+                    FileStream indexHTML = File.Create(Path.Combine(cacheFolder, "INDEX.html"));
+                    indexHTML.Close();
+                }
+                else
+                {
+                    Directory.Delete(cacheFolder, true);
+                    Directory.CreateDirectory(cacheFolder);
+                    FileStream indexHTML = File.Create(Path.Combine(cacheFolder, "INDEX.html"));
+                    indexHTML.Close();
+                }
+                webCanvas.Source = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
+
+                tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
+                sceneTree.ItemsSource = tree;
+
+
+                GC.Collect();
             }
             catch(Exception ex)
             {
                 MessBox.showError(ex.Message);
                 Environment.Exit(-1);
             }
+        }
+
+        private void refreshTreeview()
+        {
+            sceneTree.ItemsSource = null;
+            sceneTree.ItemsSource = tree;
         }
 
         private void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
@@ -81,5 +113,55 @@ namespace WPC_Editor
                 config = configEditorWindow.newConfig;
             }
         }
+
+        private void createNewElementOnPageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var btn = sender as Button;
+
+                switch (btn.Content.ToString())
+                {
+                    case "Текст":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetText()));
+                        break;
+                }
+
+                refreshTreeview();
+            }
+            catch(Exception ex)
+            {
+                MessBox.showError(ex.ToString());
+            }
+        }
+
+        #region Properties
+        private void sceneTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            try
+            {
+                if (sceneTree.SelectedItem != null && sceneTree.Items.Count > 0)
+                {
+                    var el = sceneTree.SelectedItem as WidgetsTreeItem;
+                    ElTagTb.Text = el.widget.tag;
+                    ElNameTb.Text = el.widget.name;
+                    propertiesGrid.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    propertiesGrid.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessBox.showError(ex.ToString());
+            }
+        }
+
+        private void applyChangesForElBtn_Click(object sender, RoutedEventArgs e)
+        {
+            propertiesGrid.Visibility = Visibility.Collapsed;
+        }
+        #endregion
     }
 }

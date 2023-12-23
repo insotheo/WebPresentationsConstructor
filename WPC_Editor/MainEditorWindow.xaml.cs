@@ -173,6 +173,9 @@ namespace WPC_Editor
                                 textFontWeight.Text = widget.fontWeight;
                                 textFontColor.Text = widget.fontColorHEX;
                                 textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widget.fontColorHEX)));
+                                textBackgroundColor.Text = widget.backgroundColorHEX;
+                                textPreviewBackgroundColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widget.backgroundColorHEX)));
+                                textBackgroundRadius.Text = widget.backgroundRad;
                             }
                             else
                             {
@@ -232,6 +235,8 @@ namespace WPC_Editor
                             widget.fontWeight = textFontWeight.Text == String.Empty ? widget.fontWeight : textFontWeight.Text;
                             widget.fontColorHEX = textFontColor.Text == String.Empty ? widget.fontColorHEX : textFontColor.Text;
                             widget.fontSize = textFontSize.Text == String.Empty ? widget.fontSize : int.Parse(textFontSize.Text);
+                            widget.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? widget.backgroundColorHEX : textBackgroundColor.Text;
+                            widget.backgroundRad = textBackgroundRadius.Text == String.Empty ? widget.backgroundRad : textBackgroundRadius.Text;
                         }
                         else
                         {
@@ -242,6 +247,8 @@ namespace WPC_Editor
                             textFontWeight.Text = String.Empty;
                             textFontColor.Text = String.Empty;
                             textFontSize.Text = String.Empty;
+                            textBackgroundColor.Text = String.Empty;
+                            textBackgroundRadius.Text = String.Empty;
                         }
                         break;
 
@@ -269,6 +276,15 @@ namespace WPC_Editor
             try
             {
                 textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(textFontColor.Text)));
+            }
+            catch { }
+        }
+
+        private void textBackgroundColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                textPreviewBackgroundColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(textBackgroundColor.Text)));
             }
             catch { }
         }

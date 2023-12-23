@@ -112,7 +112,7 @@ namespace WPC_Editor
                     string s = String.Empty;
                     if (widget.useStyle == false)
                     {
-                        s = $"style=\"font-size: {text.fontSize.ToString()}pt; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()};\"";
+                        s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%;\"";
                     }
                     line = $"<{widget.HTML_TAG} id=\"{text.name}\" {s}>{(widget as WidgetText).content}</{widget.HTML_TAG}>";
                 }

@@ -7,6 +7,8 @@
         public string fontFamily;
         public string fontWeight;
         public string fontColorHEX;
+        public string backgroundColorHEX;
+        public string backgroundRad;
 
         public WidgetText()
         {
@@ -18,6 +20,8 @@
             fontFamily = "Arial";
             fontColorHEX = "#000000";
             fontWeight = "400";
+            backgroundColorHEX = "Transparent";
+            backgroundRad = "0";
         }
     }
 }

@@ -113,7 +113,7 @@
                         <TabItem/>
                         <TabItem Header="Text content">
                             <StackPanel>
-                                <TextBlock Text="Размер шрифта"/>
+                                <TextBlock Text="Размер шрифта px"/>
                                 <TextBox x:Name="textFontSize"/>
                                 <TextBlock Text="Вес шрифта"/>
                                 <TextBox x:Name="textFontWeight"/>
@@ -122,6 +122,11 @@
                                 <TextBlock Text="Цвет"/>
                                 <TextBox x:Name="textFontColor" TextChanged="textFontColor_TextChanged"/>
                                 <Rectangle Width="15" Height="15" x:Name="textPreviewColor"/>
+                                <TextBlock Text="Цвет заднего фона:"/>
+                                <TextBox x:Name="textBackgroundColor" TextChanged="textBackgroundColor_TextChanged"/>
+                                <Rectangle Width="15" Height="15" x:Name="textPreviewBackgroundColor"/>
+                                <TextBlock Text="Радиус скругления: %"/>
+                                <TextBox x:Name="textBackgroundRadius" TextChanged="textFontColor_TextChanged"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

@@ -47,13 +47,17 @@
 
     <Style TargetType="{x:Type TreeView}">
         <Setter Property="Background" Value="#868686"/>
-        <Setter Property="FontFamily" Value="Roboto"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
 
+    <Style TargetType="{x:Type TreeViewItem}">
+        <Setter Property="IsExpanded" Value="True"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
     <Style TargetType="{x:Type GridSplitter}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Width" Value="2"/>

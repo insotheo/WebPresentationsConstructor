@@ -5,6 +5,9 @@ using MessageBoxesWindows;
 using WPC_Editor.Widgets;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Diagnostics;
+using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace WPC_Editor
 {
@@ -21,7 +24,9 @@ namespace WPC_Editor
 
         private ConfigWorker config;
         private FileViewerWindow fileViewer;
-        private ConfigEditorWindow configEditorWindow; 
+        private ConfigEditorWindow configEditorWindow;
+        private BuilderClass builder;
+        private HoldOnWindow holdOnWindow;
 
         public MainEditorWindow()
         {
@@ -35,6 +40,7 @@ namespace WPC_Editor
                 cacheFolder = Path.Combine(projectFolder, "cache");
 
                 tree = new List<WidgetsTreeItem>();
+                builder = new BuilderClass(cacheFolder, assetsFolder);
                 config = new ConfigWorker(Path.Combine(projectFolder, "settings.config"));
                 if (!config.isTheSamePC())
                 {
@@ -46,41 +52,12 @@ namespace WPC_Editor
                 }
 
                 this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}");
-                
-                foreach(string file in config.usingStyles)
-                {
-                    if(!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "styles", file.Trim())) &&
-                        !File.Exists(Path.Combine(assetsFolder, file.Trim())))
-                    {
-                        throw new Exception($"Файл \"{file.Trim()}\" не был найден!");
-                    }
-                }
-                foreach (string file in config.usingScripts)
-                {
-                    if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "scripts", file.Trim())) &&
-                        !File.Exists(Path.Combine(assetsFolder, file.Trim())))
-                    {
-                        throw new Exception($"Файл \"{file.Trim()}\" не был найден!");
-                    }
-                }
 
-                if(!File.Exists(Path.Combine(cacheFolder, "INDEX.html")))
-                {
-                    FileStream indexHTML = File.Create(Path.Combine(cacheFolder, "INDEX.html"));
-                    indexHTML.Close();
-                }
-                else
-                {
-                    Directory.Delete(cacheFolder, true);
-                    Directory.CreateDirectory(cacheFolder);
-                    FileStream indexHTML = File.Create(Path.Combine(cacheFolder, "INDEX.html"));
-                    indexHTML.Close();
-                }
+                builder.Init(ref config);
                 webCanvas.Source = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
 
                 tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
                 sceneTree.ItemsSource = tree;
-
 
                 GC.Collect();
             }
@@ -96,6 +73,8 @@ namespace WPC_Editor
             sceneTree.ItemsSource = null;
             sceneTree.ItemsSource = tree;
         }
+
+        #region top buttons
 
         private void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -113,6 +92,36 @@ namespace WPC_Editor
                 config = configEditorWindow.newConfig;
             }
         }
+
+        private void showInWebBrowserBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if(!File.Exists(Path.Combine(cacheFolder, "INDEX.html")))
+                {
+                    throw new Exception("Ошибка файла!");
+                }
+                Process.Start($"\"{Path.Combine(cacheFolder, "INDEX.html")}\"");
+            }
+            catch(Exception ex)
+            {
+                MessBox.showError(ex.Message);
+            }
+        }
+
+        private async void refreshWebCanvas_Click(object sender, RoutedEventArgs e)
+        {
+            holdOnWindow = new HoldOnWindow("building");
+            this.IsEnabled = false;
+            holdOnWindow.Show();
+            await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config));
+            holdOnWindow.Close();
+            this.IsEnabled = true;
+            webCanvas.Reload();
+            GC.Collect();
+        }
+
+        #endregion
 
         private void createNewElementOnPageBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -145,10 +154,56 @@ namespace WPC_Editor
                     var el = sceneTree.SelectedItem as WidgetsTreeItem;
                     ElTagTb.Text = el.widget.tag;
                     ElNameTb.Text = el.widget.name;
+                    isElUseCSS.IsChecked = el.widget.useStyle;
                     propertiesGrid.Visibility = Visibility.Visible;
+                    switch(el.widget.tag)
+                    {
+                        case "Текст":
+                            var widget = el.widget as WidgetText;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.Visibility = Visibility.Visible;
+                            contentTabber.SelectedIndex = 1;
+                            textContent.Text = widget.content;
+                            if (!widget.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 1;
+                                textFontFamily.Text = widget.fontFamily;
+                                textFontSize.Text = widget.fontSize.ToString();
+                                textFontWeight.Text = widget.fontWeight;
+                                textFontColor.Text = widget.fontColorHEX;
+                                textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widget.fontColorHEX)));
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
+                        case "body":
+                            removeElementBtn.IsEnabled = false;
+                            propertiesTabber.SelectedIndex = 0;
+                            contentTabber.SelectedIndex = 0;
+                            propertiesTabber.Visibility = Visibility.Collapsed;
+                            contentTabber.Visibility = Visibility.Collapsed;
+                            break;
+
+                        default:
+                            removeElementBtn.IsEnabled = true;
+                            propertiesTabber.SelectedIndex = 0;
+                            contentTabber.SelectedIndex = 0;
+                            propertiesTabber.Visibility = Visibility.Collapsed;
+                            contentTabber.Visibility = Visibility.Collapsed;
+                            break;
+                    }
                 }
                 else
                 {
+                    propertiesTabber.SelectedIndex = 0;
+                    contentTabber.SelectedIndex = 0;
+                    propertiesTabber.Visibility = Visibility.Collapsed;
+                    contentTabber.Visibility = Visibility.Collapsed;
                     propertiesGrid.Visibility = Visibility.Collapsed;
                 }
             }
@@ -161,7 +216,61 @@ namespace WPC_Editor
         private void applyChangesForElBtn_Click(object sender, RoutedEventArgs e)
         {
             propertiesGrid.Visibility = Visibility.Collapsed;
+            try
+            {
+                var el = sceneTree.SelectedItem as WidgetsTreeItem;
+                el.widget.name = ElNameTb.Text;
+                switch (el.widget.tag)
+                {
+                    case "Текст":
+                        var widget = el.widget as WidgetText;
+                        if (isElUseCSS.IsChecked == false)
+                        {
+                            widget.useStyle = false;
+                            widget.content = textContent.Text == String.Empty ? widget.content : textContent.Text;
+                            widget.fontFamily = textFontFamily.Text == String.Empty ? widget.fontFamily : textFontFamily.Text;
+                            widget.fontWeight = textFontWeight.Text == String.Empty ? widget.fontWeight : textFontWeight.Text;
+                            widget.fontColorHEX = textFontColor.Text == String.Empty ? widget.fontColorHEX : textFontColor.Text;
+                            widget.fontSize = textFontSize.Text == String.Empty ? widget.fontSize : int.Parse(textFontSize.Text);
+                        }
+                        else
+                        {
+                            widget.useStyle = true;
+                            widget.content = textContent.Text;
+                            textContent.Text = String.Empty;
+                            textFontFamily.Text = String.Empty;
+                            textFontWeight.Text = String.Empty;
+                            textFontColor.Text = String.Empty;
+                            textFontSize.Text = String.Empty;
+                        }
+                        break;
+
+                    default: break;
+                }
+
+                refreshTreeview();
+            }
+            catch(Exception ex)
+            {
+                MessBox.showError(ex.Message);
+            }
+        }
+
+        private void removeElementBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var el = sceneTree.SelectedItem as WidgetsTreeItem;
+            tree[0].widgetsOfScene.Remove(el);
+            refreshTreeview();
         }
         #endregion
+
+        private void textFontColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(textFontColor.Text)));
+            }
+            catch { }
+        }
     }
 }

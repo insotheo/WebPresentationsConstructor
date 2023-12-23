@@ -25,10 +25,10 @@
                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Сохранить" Tag="{StaticResource saveBtnVector}"/>
-                        <Button Content="Обновить" Tag="{StaticResource refreshBtnVector}"/>
+                        <Button Content="Обновить" Tag="{StaticResource refreshBtnVector}" Click="refreshWebCanvas_Click"/>
                         <Button Content="Файлы" Tag="{StaticResource showFilesBtnVector}" Click="showProjectFilesBtn_Click"/>
                         <Button Content="Config" Tag="{StaticResource openConfigBtnVector}" Click="editConfigBtn_Click"/>
-                        <Button Content="Браузер" Tag="{StaticResource openInOutWindowBtnVector}"/>
+                        <Button Content="Браузер" Tag="{StaticResource openInOutWindowBtnVector}" Click="showInWebBrowserBtn_Click"/>
                         <Button Content="Собрать" Tag="{StaticResource packageBtnVector}"/>
                     </StackPanel>
                 </ScrollViewer>
@@ -66,33 +66,71 @@
                 <Wpf:WebView2 x:Name="webCanvas"/>
             </Border>
             <GridSplitter Grid.Column="1"/>
-            <Grid Grid.Column="2" x:Name="propertiesGrid" Visibility="Collapsed">
-                <!--propeties-->
-                <Grid.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="FontFamily" Value="Roboto"/>
-                        <Setter Property="FontSize" Value="18"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                        <Setter Property="Foreground" Value="White"/>
-                    </Style>
-                </Grid.Resources>
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                
-                <StackPanel>
-                    <TextBlock Text="Имя:"/>
-                    <TextBox x:Name="ElNameTb"/>
-                    <TextBlock Text="Тип:"/>
-                    <TextBox x:Name="ElTagTb" IsReadOnly="True"/>
-                </StackPanel>
+            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                <Grid x:Name="propertiesGrid" Visibility="Visible">
+                    <!--propeties-->
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Roboto"/>
+                            <Setter Property="FontSize" Value="18"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
 
-                <Button Grid.Row="2" Content="Применить" Click="applyChangesForElBtn_Click"/>
-            </Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Имя:"/>
+                        <TextBox x:Name="ElNameTb"/>
+                        <TextBlock Text="Тип:"/>
+                        <TextBox x:Name="ElTagTb" IsReadOnly="True"/>
+                        <CheckBox x:Name="isElUseCSS" Foreground="White" Content="Использовать стиль из файла"/>
+                    </StackPanel>
+                    <TabControl Grid.Row="1" x:Name="contentTabber">
+                        <TabItem/>
+                        <TabItem Header="Text content">
+                            <StackPanel>
+                                <TextBlock Text="Содержание"/>
+                                <TextBox x:Name="textContent" TextWrapping="WrapWithOverflow"/>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
+                    <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Collapsed">
+                        <TabItem/>
+                        <TabItem Header="Text content">
+                            <StackPanel>
+                                <TextBlock Text="Размер шрифта"/>
+                                <TextBox x:Name="textFontSize"/>
+                                <TextBlock Text="Вес шрифта"/>
+                                <TextBox x:Name="textFontWeight"/>
+                                <TextBlock Text="Шрифт"/>
+                                <TextBox x:Name="textFontFamily"/>
+                                <TextBlock Text="Цвет"/>
+                                <TextBox x:Name="textFontColor" TextChanged="textFontColor_TextChanged"/>
+                                <Rectangle Width="15" Height="15" x:Name="textPreviewColor"/>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
+                    <StackPanel Grid.Row="3" Margin="0 0 0 5">
+                        <Button Content="Применить" Click="applyChangesForElBtn_Click"/>
+                        <Button Content="Удалить этот элемент" x:Name="removeElementBtn" Click="removeElementBtn_Click"/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
         <!--#endregion-->
     </Grid>

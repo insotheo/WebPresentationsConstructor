@@ -75,6 +75,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuilderClass.cs" />
+    <Compile Include="HoldOnWindow.xaml.cs">
+      <DependentUpon>HoldOnWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetsTreeItem.cs" />
     <Compile Include="Widgets\WidgetText.cs" />
@@ -124,6 +128,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HoldOnWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

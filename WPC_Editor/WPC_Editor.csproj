@@ -80,6 +80,7 @@
       <DependentUpon>HoldOnWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetLink.cs" />
     <Compile Include="Widgets\WidgetsTreeItem.cs" />
     <Compile Include="Widgets\WidgetText.cs" />
   </ItemGroup>

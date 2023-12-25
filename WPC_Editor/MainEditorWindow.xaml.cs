@@ -74,6 +74,11 @@ namespace WPC_Editor
             sceneTree.ItemsSource = tree;
         }
 
+        private void goHomeOnWebcanvas()
+        {
+
+        }
+
         #region top buttons
 
         private void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
@@ -134,6 +139,9 @@ namespace WPC_Editor
                     case "Текст":
                         tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetText()));
                         break;
+                    case "Ссылка":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetLink()));
+                        break;
                 }
 
                 refreshTreeview();
@@ -176,6 +184,33 @@ namespace WPC_Editor
                                 textBackgroundColor.Text = widget.backgroundColorHEX;
                                 textPreviewBackgroundColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widget.backgroundColorHEX)));
                                 textBackgroundRadius.Text = widget.backgroundRad;
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
+                        case "Ссылка":
+                            var widgetLink = el.widget as WidgetLink;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.Visibility = Visibility.Visible;
+                            contentTabber.SelectedIndex = 2;
+                            linkText.Text = widgetLink.content;
+                            linkLinkAdress.Text = widgetLink.href;
+                            if (!widgetLink.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 1;
+                                textFontFamily.Text = widgetLink.fontFamily;
+                                textFontSize.Text = widgetLink.fontSize.ToString();
+                                textFontWeight.Text = widgetLink.fontWeight;
+                                textFontColor.Text = widgetLink.fontColorHEX;
+                                textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widgetLink.fontColorHEX)));
+                                textBackgroundColor.Text = widgetLink.backgroundColorHEX;
+                                textPreviewBackgroundColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widgetLink.backgroundColorHEX)));
+                                textBackgroundRadius.Text = widgetLink.backgroundRad;
                             }
                             else
                             {
@@ -242,6 +277,35 @@ namespace WPC_Editor
                         {
                             widget.useStyle = true;
                             widget.content = textContent.Text;
+                            textContent.Text = String.Empty;
+                            textFontFamily.Text = String.Empty;
+                            textFontWeight.Text = String.Empty;
+                            textFontColor.Text = String.Empty;
+                            textFontSize.Text = String.Empty;
+                            textBackgroundColor.Text = String.Empty;
+                            textBackgroundRadius.Text = String.Empty;
+                        }
+                        break;
+
+                    case "Ссылка":
+                        var widgetLink = el.widget as WidgetLink;
+                        if (isElUseCSS.IsChecked == false)
+                        {
+                            widgetLink.useStyle = false;
+                            widgetLink.content = linkText.Text == String.Empty ? widgetLink.content : linkText.Text;
+                            widgetLink.href = linkLinkAdress.Text == String.Empty ? widgetLink.href : linkLinkAdress.Text;
+                            widgetLink.fontFamily = textFontFamily.Text == String.Empty ? widgetLink.fontFamily : textFontFamily.Text;
+                            widgetLink.fontWeight = textFontWeight.Text == String.Empty ? widgetLink.fontWeight : textFontWeight.Text;
+                            widgetLink.fontColorHEX = textFontColor.Text == String.Empty ? widgetLink.fontColorHEX : textFontColor.Text;
+                            widgetLink.fontSize = textFontSize.Text == String.Empty ? widgetLink.fontSize : int.Parse(textFontSize.Text);
+                            widgetLink.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? widgetLink.backgroundColorHEX : textBackgroundColor.Text;
+                            widgetLink.backgroundRad = textBackgroundRadius.Text == String.Empty ? widgetLink.backgroundRad : textBackgroundRadius.Text;
+                        }
+                        else
+                        {
+                            widgetLink.useStyle = true;
+                            widgetLink.content = linkText.Text;
+                            widgetLink.href = linkLinkAdress.Text;
                             textContent.Text = String.Empty;
                             textFontFamily.Text = String.Empty;
                             textFontWeight.Text = String.Empty;

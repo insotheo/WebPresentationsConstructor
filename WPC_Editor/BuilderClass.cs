@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using WPC_Editor.Widgets;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WPC_Editor
 {
@@ -106,7 +107,7 @@ namespace WPC_Editor
                 string line = "";
 
                 var widget = el.widget;
-                if (widget.HTML_TAG == "p")
+                if (widget is WidgetText && !(widget is WidgetLink))
                 {
                     var text = widget as WidgetText;
                     string s = String.Empty;
@@ -116,7 +117,16 @@ namespace WPC_Editor
                     }
                     line = $"<{widget.HTML_TAG} id=\"{text.name}\" {s}>{(widget as WidgetText).content}</{widget.HTML_TAG}>";
                 }
-
+                else if(widget is WidgetLink)
+                {
+                    var link = widget as WidgetLink;
+                    string s = String.Empty;
+                    if(widget.useStyle == false)
+                    {
+                        s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%;\"";
+                    }
+                    line = $"<{link.HTML_TAG} id=\"{link.name}\" href=\"{link.href}\" {s}>{link.content}</{link.HTML_TAG}>";
+                }
                 finalText += "\n" + line;
             }
             finalText += "\n</body>\n</html>\n";

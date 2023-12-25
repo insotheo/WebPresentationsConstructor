@@ -40,6 +40,7 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Текст" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_TEXT_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Ссылка" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_LINK_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -108,8 +109,16 @@
                                 <TextBox x:Name="textContent" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </TabItem>
+                        <TabItem>
+                            <StackPanel>
+                                <TextBlock Text="Текст"/>
+                                <TextBox x:Name="linkText"/>
+                                <TextBlock Text="Конечная ссылка"/>
+                                <TextBox x:Name="linkLinkAdress"/>
+                            </StackPanel>
+                        </TabItem>
                     </TabControl>
-                    <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Collapsed">
+                    <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Visible">
                         <TabItem/>
                         <TabItem Header="Text content">
                             <StackPanel>

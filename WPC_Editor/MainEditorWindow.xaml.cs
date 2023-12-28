@@ -152,6 +152,9 @@ namespace WPC_Editor
                     case "Ссылка":
                         tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetLink()));
                         break;
+                    case "Кнопка":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetButton()));
+                        break;
                 }
 
                 refreshTreeview();

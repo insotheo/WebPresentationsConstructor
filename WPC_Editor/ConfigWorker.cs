@@ -37,13 +37,19 @@ namespace WPC_Editor
             creatorsMachineName = configData[3].Trim();
             creatorsOS = configData[4].Trim();
             is64Bit = configData[5].Trim();
-            foreach(string style in configData[6].Trim().Split(';'))
+            if (configData[6].Trim().Length > 0)
             {
-                usingStyles.Add(style.Trim());
+                foreach (string style in configData[6].Trim().Split(';'))
+                {
+                    usingStyles.Add(style.Trim());
+                }
             }
-            foreach(string script in configData[7].Trim().Split(';'))
+            if (configData[7].Trim().Length > 0)
             {
-                usingScripts.Add(script.Trim());
+                foreach (string script in configData[7].Trim().Split(';'))
+                {
+                    usingScripts.Add(script.Trim());
+                }
             }
             appEditorVersion = configData[8].Trim();
             charset = configData[9].Trim();

@@ -25,6 +25,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Сохранить" Tag="{StaticResource saveBtnVector}"/>
+                        <Button Content="Домой" Tag="{StaticResource homeBtnVector}" Click="openHomePageForWebCanvasBtn_Click"/>
                         <Button Content="Обновить" Tag="{StaticResource refreshBtnVector}" Click="refreshWebCanvas_Click"/>
                         <Button Content="Файлы" Tag="{StaticResource showFilesBtnVector}" Click="showProjectFilesBtn_Click"/>
                         <Button Content="Config" Tag="{StaticResource openConfigBtnVector}" Click="editConfigBtn_Click"/>

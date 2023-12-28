@@ -27,6 +27,7 @@ namespace WPC_Editor
         private ConfigEditorWindow configEditorWindow;
         private BuilderClass builder;
         private HoldOnWindow holdOnWindow;
+        private Uri homePage;
 
         public MainEditorWindow()
         {
@@ -54,7 +55,7 @@ namespace WPC_Editor
                 this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}");
 
                 builder.Init(ref config);
-                webCanvas.Source = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
+                webCanvas.Source = homePage = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
 
                 tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
                 sceneTree.ItemsSource = tree;
@@ -76,7 +77,10 @@ namespace WPC_Editor
 
         private void goHomeOnWebcanvas()
         {
-
+            if(webCanvas.Source != homePage)
+            {
+                webCanvas.Source = homePage;
+            }
         }
 
         #region top buttons
@@ -122,8 +126,14 @@ namespace WPC_Editor
             await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config));
             holdOnWindow.Close();
             this.IsEnabled = true;
+            goHomeOnWebcanvas();
             webCanvas.Reload();
             GC.Collect();
+        }
+
+        private void openHomePageForWebCanvasBtn_Click(object sender, RoutedEventArgs e)
+        {
+            goHomeOnWebcanvas();
         }
 
         #endregion

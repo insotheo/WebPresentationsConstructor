@@ -120,14 +120,21 @@ namespace WPC_Editor
 
         private async void refreshWebCanvas_Click(object sender, RoutedEventArgs e)
         {
-            holdOnWindow = new HoldOnWindow("building");
-            this.IsEnabled = false;
-            holdOnWindow.Show();
-            await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config));
-            holdOnWindow.Close();
-            this.IsEnabled = true;
-            goHomeOnWebcanvas();
-            webCanvas.Reload();
+            try
+            {
+                holdOnWindow = new HoldOnWindow("building");
+                this.IsEnabled = false;
+                holdOnWindow.Show();
+                await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config));
+                holdOnWindow.Close();
+                this.IsEnabled = true;
+                goHomeOnWebcanvas();
+                webCanvas.Reload();
+            }
+            catch(Exception ex)
+            {
+                MessBox.showError(ex.Message);
+            }
             GC.Collect();
         }
 
@@ -232,6 +239,45 @@ namespace WPC_Editor
                             }
                             break;
 
+                        case "Кнопка":
+                            var widgetButton = el.widget as WidgetButton;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.SelectedIndex = 3;
+                            contentTabber.Visibility = Visibility.Visible;
+                            ButtonOnclickEventsCB.Items.Clear();
+                            List<string> events = JavaScriptWorker.getAllEvents(ref config, assetsFolder);
+                            foreach (string eventName in events)
+                            {
+                                ButtonOnclickEventsCB.Items.Add(eventName);
+                            }
+                            buttonText.Text = widgetButton.content;
+                            if(events.Count > 0 && Array.IndexOf(events.ToArray(), widgetButton.onclick) == -1)
+                            {
+                                widgetButton.onclick = null;
+                                widgetButton.arguments = null;
+                            }
+                            ButtonOnclickEventsCB.Text = widgetButton.onclick;
+                            argumentsForButton.Text = widgetButton.arguments;
+                            if(!widgetButton.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 2;
+                                buttonFontSize.Text = widgetButton.fontSize.ToString();
+                                buttonFontFamily.Text = widgetButton.fontFamily;
+                                buttonFontWeight.Text = widgetButton.fontWeight;
+                                buttonFontColor.Text = widgetButton.fontColorHEX;
+                                buttonBackgroundColor.Text = widgetButton.backgroundColorHEX;
+                                buttonBorderColor.Text = widgetButton.borderColorHEX;
+                                buttonBorderRadius.Text = widgetButton.borderRadius;
+                                buttonCursor.Text = widgetButton.cursor;
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
                         case "body":
                             removeElementBtn.IsEnabled = false;
                             propertiesTabber.SelectedIndex = 0;
@@ -278,7 +324,7 @@ namespace WPC_Editor
                         if (isElUseCSS.IsChecked == false)
                         {
                             widget.useStyle = false;
-                            widget.content = textContent.Text == String.Empty ? widget.content : textContent.Text;
+                            widget.content = textContent.Text;
                             widget.fontFamily = textFontFamily.Text == String.Empty ? widget.fontFamily : textFontFamily.Text;
                             widget.fontWeight = textFontWeight.Text == String.Empty ? widget.fontWeight : textFontWeight.Text;
                             widget.fontColorHEX = textFontColor.Text == String.Empty ? widget.fontColorHEX : textFontColor.Text;
@@ -305,7 +351,7 @@ namespace WPC_Editor
                         if (isElUseCSS.IsChecked == false)
                         {
                             widgetLink.useStyle = false;
-                            widgetLink.content = linkText.Text == String.Empty ? widgetLink.content : linkText.Text;
+                            widgetLink.content = linkText.Text;
                             widgetLink.href = linkLinkAdress.Text == String.Empty ? widgetLink.href : linkLinkAdress.Text;
                             widgetLink.fontFamily = textFontFamily.Text == String.Empty ? widgetLink.fontFamily : textFontFamily.Text;
                             widgetLink.fontWeight = textFontWeight.Text == String.Empty ? widgetLink.fontWeight : textFontWeight.Text;
@@ -329,6 +375,43 @@ namespace WPC_Editor
                         }
                         break;
 
+                    case "Кнопка":
+                        var widgetButton = el.widget as WidgetButton;
+                        if(isElUseCSS.IsChecked == false)
+                        {
+                            widgetButton.useStyle = false;
+                            widgetButton.content = buttonText.Text;
+                            widgetButton.arguments = argumentsForButton.Text;
+                            widgetButton.onclick = ButtonOnclickEventsCB.SelectedItem.ToString();
+                            widgetButton.fontSize = buttonFontSize.Text == String.Empty ? widgetButton.fontSize : int.Parse(buttonFontSize.Text);
+                            widgetButton.fontFamily = buttonFontFamily.Text == String.Empty ? widgetButton.fontFamily : buttonFontFamily.Text;
+                            widgetButton.fontWeight = buttonFontWeight.Text == String.Empty ? widgetButton.fontWeight : buttonFontWeight.Text;
+                            widgetButton.fontColorHEX = buttonFontColor.Text == String.Empty ? widgetButton.fontColorHEX : buttonFontColor.Text;
+                            widgetButton.backgroundColorHEX = buttonBackgroundColor.Text == String.Empty ? widgetButton.backgroundColorHEX : buttonBackgroundColor.Text;
+                            widgetButton.borderColorHEX = buttonBorderColor.Text == String.Empty ? widgetButton.borderColorHEX : buttonBorderColor.Text;
+                            widgetButton.borderRadius = buttonBorderRadius.Text == String.Empty ? widgetButton.borderRadius : buttonBorderRadius.Text;
+                            widgetButton.cursor = buttonCursor.Text == String.Empty ? widgetButton.cursor : buttonCursor.Text;
+                        }
+                        else
+                        {
+                            widgetButton.useStyle = true;
+                            widgetButton.content = buttonText.Text;
+                            widgetButton.arguments = argumentsForButton.Text;
+                            widgetButton.onclick = ButtonOnclickEventsCB.SelectedItem.ToString();
+                            buttonText.Text = String.Empty;
+                            argumentsForButton.Text = String.Empty;
+                            ButtonOnclickEventsCB.Items.Clear();
+                            buttonFontSize.Text = String.Empty;
+                            buttonFontFamily.Text = String.Empty;
+                            buttonFontWeight.Text = String.Empty;
+                            buttonFontColor.Text = String.Empty;
+                            buttonBackgroundColor.Text = String.Empty;
+                            buttonBorderColor.Text = String.Empty;
+                            buttonBorderRadius.Text = String.Empty;
+                            buttonCursor.Text = String.Empty;
+                        }
+                        break;
+
                     default: break;
                 }
 
@@ -348,6 +431,7 @@ namespace WPC_Editor
         }
         #endregion
 
+        #region colors preview rectangles
         private void textFontColor_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -365,5 +449,33 @@ namespace WPC_Editor
             }
             catch { }
         }
+
+        private void buttonFontColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                buttonFontColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(buttonFontColor.Text)));
+            }
+            catch { }
+        }
+
+        private void buttonBackgroundColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                buttonBackgroundColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(buttonBackgroundColor.Text)));
+            }
+            catch { }
+        }
+
+        private void buttonBorderColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                buttonBorderColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(buttonBorderColor.Text)));
+            }
+            catch { }
+        }
+        #endregion
     }
 }

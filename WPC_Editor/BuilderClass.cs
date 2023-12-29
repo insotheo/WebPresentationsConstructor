@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using WPC_Editor.Widgets;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WPC_Editor
 {
@@ -89,9 +88,9 @@ namespace WPC_Editor
                     {
                         File.Copy(Path.Combine(assetsFolder, script), Path.Combine(cacheFolder, script));
                     }
-                    else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "styles", script)))
+                    else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "scripts", script)))
                     {
-                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "styles", script), Path.Combine(cacheFolder, script));
+                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "scripts", script), Path.Combine(cacheFolder, script));
                     }
                     else
                     {
@@ -126,6 +125,16 @@ namespace WPC_Editor
                         s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%;\"";
                     }
                     line = $"<{link.HTML_TAG} id=\"{link.name}\" href=\"{link.href}\" {s}>{link.content}</{link.HTML_TAG}>";
+                }
+                else if(widget is WidgetButton)
+                {
+                    var button = widget as WidgetButton;
+                    string s = String.Empty;
+                    if(button.useStyle == false)
+                    {
+                        s = $"style=\"font-size: {button.fontSize.ToString()}px; font-family: {button.fontFamily}; font-weight: {button.fontWeight}; color: {button.fontColorHEX}; background-color: {button.backgroundColorHEX}; border-color: {button.borderColorHEX}; border-radius: {button.borderRadius}%; cursor: {button.cursor};\"";
+                    }
+                    line = $"<{button.HTML_TAG} id=\"{button.name}\" onclick=\"{button.onclick}({button.arguments})\" {s}>{button.content}</{button.HTML_TAG}>";
                 }
                 finalText += "\n" + line;
             }

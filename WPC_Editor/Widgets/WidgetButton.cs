@@ -21,6 +21,18 @@
             tag = "Кнопка";
             name = $"Button_{rndInd.Next(1, 99999)}";
 
+            content = "Кнопка";
+            onclick = null;
+            arguments = null;
+
+            fontSize = 18;
+            fontFamily = "Arial";
+            fontWeight = "400";
+            fontColorHEX = "#ffffff";
+            backgroundColorHEX = "#373737";
+            borderColorHEX = "#000000";
+            borderRadius = "0";
+            cursor = "pointer";
         }
     }
 }

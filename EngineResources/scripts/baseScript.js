@@ -1,4 +1,5 @@
-//_EDITOR::FUNCTIONS::TYPES::EVENTS
+
+//_EDITOR::FUNCTIONS::TYPES::EVENT
 function say(message){
     console.log("WPC_Editor::User: " + message);
     alert(message);

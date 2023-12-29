@@ -79,6 +79,7 @@
     <Compile Include="HoldOnWindow.xaml.cs">
       <DependentUpon>HoldOnWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="JavaScriptWorker.cs" />
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetButton.cs" />
     <Compile Include="Widgets\WidgetLink.cs" />

@@ -162,6 +162,9 @@ namespace WPC_Editor
                     case "Кнопка":
                         tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetButton()));
                         break;
+                    case "Перенос":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetNextLine()));
+                        break;
                 }
 
                 refreshTreeview();
@@ -286,7 +289,7 @@ namespace WPC_Editor
                             contentTabber.Visibility = Visibility.Collapsed;
                             break;
 
-                        default:
+                        case "Перенос": default:
                             removeElementBtn.IsEnabled = true;
                             propertiesTabber.SelectedIndex = 0;
                             contentTabber.SelectedIndex = 0;

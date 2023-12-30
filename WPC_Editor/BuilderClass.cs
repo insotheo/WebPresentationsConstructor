@@ -136,6 +136,10 @@ namespace WPC_Editor
                     }
                     line = $"<{button.HTML_TAG} id=\"{button.name}\" onclick=\"{button.onclick}({button.arguments})\" {s}>{button.content}</{button.HTML_TAG}>";
                 }
+                else if(widget is WidgetNextLine)
+                {
+                    line = $"<{(widget as WidgetNextLine).HTML_TAG}>";
+                }
                 finalText += "\n" + line;
             }
             finalText += "\n</body>\n</html>\n";

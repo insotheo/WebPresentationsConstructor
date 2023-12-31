@@ -165,6 +165,9 @@ namespace WPC_Editor
                     case "Перенос":
                         tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetNextLine()));
                         break;
+                    case "Фото":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetImage()));
+                        break;
                 }
 
                 refreshTreeview();

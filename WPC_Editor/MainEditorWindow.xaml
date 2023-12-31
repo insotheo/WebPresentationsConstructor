@@ -44,6 +44,7 @@
                         <Button Content="Ссылка" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_LINK_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Кнопка" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_BUTTON_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Перенос" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_NEXT_LINE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Фото" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_IMAGE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

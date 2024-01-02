@@ -1,13 +1,14 @@
-﻿using System.Windows;
-using System.IO;
+﻿using MessageBoxesWindows;
 using System;
-using MessageBoxesWindows;
-using WPC_Editor.Widgets;
 using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Diagnostics;
-using System.Windows.Media;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using WPC_Editor.Widgets;
 
 namespace WPC_Editor
 {
@@ -46,7 +47,7 @@ namespace WPC_Editor
                 if (!config.isTheSamePC())
                 {
                     var ans = MessBox.showQuestionWithTwoOptions("Информация о создателе не схожа с информацией о Вас. Желаете ли Вы открыть данный проект?");
-                    if(ans == MessageBoxResult.No)
+                    if (ans == MessageBoxResult.No)
                     {
                         Environment.Exit(0);
                     }
@@ -62,7 +63,7 @@ namespace WPC_Editor
 
                 GC.Collect();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.Message);
                 Environment.Exit(-1);
@@ -77,7 +78,7 @@ namespace WPC_Editor
 
         private void goHomeOnWebcanvas()
         {
-            if(webCanvas.Source != homePage)
+            if (webCanvas.Source != homePage)
             {
                 webCanvas.Source = homePage;
             }
@@ -106,13 +107,13 @@ namespace WPC_Editor
         {
             try
             {
-                if(!File.Exists(Path.Combine(cacheFolder, "INDEX.html")))
+                if (!File.Exists(Path.Combine(cacheFolder, "INDEX.html")))
                 {
                     throw new Exception("Ошибка файла!");
                 }
                 Process.Start($"\"{Path.Combine(cacheFolder, "INDEX.html")}\"");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.Message);
             }
@@ -131,7 +132,7 @@ namespace WPC_Editor
                 goHomeOnWebcanvas();
                 webCanvas.Reload();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.Message);
             }
@@ -172,7 +173,7 @@ namespace WPC_Editor
 
                 refreshTreeview();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.ToString());
             }
@@ -190,7 +191,7 @@ namespace WPC_Editor
                     ElNameTb.Text = el.widget.name;
                     isElUseCSS.IsChecked = el.widget.useStyle;
                     propertiesGrid.Visibility = Visibility.Visible;
-                    switch(el.widget.tag)
+                    switch (el.widget.tag)
                     {
                         case "Текст":
                             var widget = el.widget as WidgetText;
@@ -257,14 +258,14 @@ namespace WPC_Editor
                                 ButtonOnclickEventsCB.Items.Add(eventName);
                             }
                             buttonText.Text = widgetButton.content;
-                            if(events.Count > 0 && Array.IndexOf(events.ToArray(), widgetButton.onclick) == -1)
+                            if (events.Count > 0 && Array.IndexOf(events.ToArray(), widgetButton.onclick) == -1)
                             {
                                 widgetButton.onclick = null;
                                 widgetButton.arguments = null;
                             }
                             ButtonOnclickEventsCB.Text = widgetButton.onclick;
                             argumentsForButton.Text = widgetButton.arguments;
-                            if(!widgetButton.useStyle)
+                            if (!widgetButton.useStyle)
                             {
                                 propertiesTabber.Visibility = Visibility.Visible;
                                 propertiesTabber.SelectedIndex = 2;
@@ -284,6 +285,41 @@ namespace WPC_Editor
                             }
                             break;
 
+                        case "Фото":
+                            var widgetImg = el.widget as WidgetImage;
+                            contentTabber.SelectedIndex = 4;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.Visibility = Visibility.Visible;
+                            List<string> files = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".bmp", ".png", ".jpeg", ".jpg" });
+                            foreach (string file in files)
+                            {
+                                imageFilesCB.Items.Add(file);
+                            }
+                            if (widgetImg.contentType == 'f' && widgetImg.href != String.Empty && Array.IndexOf(files.ToArray(), widgetImg.href) != -1)
+                            {
+                                imageFilesCB.Text = widgetImg.href;
+                            }
+                            else if (widgetImg.contentType == 'l' && widgetImg.href != String.Empty)
+                            {
+                                imageLinkToThePhoto.Text = widgetImg.href;
+                            }
+                            if (!widgetImg.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 3;
+                                imageWidth.Text = widgetImg.width;
+                                imageHeight.Text = widgetImg.height;
+                                imageRadius.Text = widgetImg.radius;
+                                imageRotAngle.Text = widgetImg.rotationAngle;
+                                ImageContentSelector.SelectedIndex = widgetImg.contentType == 'f' ? 0 : 1;
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
                         case "body":
                             removeElementBtn.IsEnabled = false;
                             propertiesTabber.SelectedIndex = 0;
@@ -292,7 +328,8 @@ namespace WPC_Editor
                             contentTabber.Visibility = Visibility.Collapsed;
                             break;
 
-                        case "Перенос": default:
+                        case "Перенос":
+                        default:
                             removeElementBtn.IsEnabled = true;
                             propertiesTabber.SelectedIndex = 0;
                             contentTabber.SelectedIndex = 0;
@@ -310,7 +347,7 @@ namespace WPC_Editor
                     propertiesGrid.Visibility = Visibility.Collapsed;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.ToString());
             }
@@ -342,14 +379,14 @@ namespace WPC_Editor
                         {
                             widget.useStyle = true;
                             widget.content = textContent.Text;
-                            textContent.Text = String.Empty;
-                            textFontFamily.Text = String.Empty;
-                            textFontWeight.Text = String.Empty;
-                            textFontColor.Text = String.Empty;
-                            textFontSize.Text = String.Empty;
-                            textBackgroundColor.Text = String.Empty;
-                            textBackgroundRadius.Text = String.Empty;
                         }
+                        textContent.Text = String.Empty;
+                        textFontFamily.Text = String.Empty;
+                        textFontWeight.Text = String.Empty;
+                        textFontColor.Text = String.Empty;
+                        textFontSize.Text = String.Empty;
+                        textBackgroundColor.Text = String.Empty;
+                        textBackgroundRadius.Text = String.Empty;
                         break;
 
                     case "Ссылка":
@@ -371,24 +408,24 @@ namespace WPC_Editor
                             widgetLink.useStyle = true;
                             widgetLink.content = linkText.Text;
                             widgetLink.href = linkLinkAdress.Text;
-                            textContent.Text = String.Empty;
-                            textFontFamily.Text = String.Empty;
-                            textFontWeight.Text = String.Empty;
-                            textFontColor.Text = String.Empty;
-                            textFontSize.Text = String.Empty;
-                            textBackgroundColor.Text = String.Empty;
-                            textBackgroundRadius.Text = String.Empty;
                         }
+                        textContent.Text = String.Empty;
+                        textFontFamily.Text = String.Empty;
+                        textFontWeight.Text = String.Empty;
+                        textFontColor.Text = String.Empty;
+                        textFontSize.Text = String.Empty;
+                        textBackgroundColor.Text = String.Empty;
+                        textBackgroundRadius.Text = String.Empty;
                         break;
 
                     case "Кнопка":
                         var widgetButton = el.widget as WidgetButton;
-                        if(isElUseCSS.IsChecked == false)
+                        if (isElUseCSS.IsChecked == false)
                         {
                             widgetButton.useStyle = false;
                             widgetButton.content = buttonText.Text;
                             widgetButton.arguments = argumentsForButton.Text;
-                            widgetButton.onclick = ButtonOnclickEventsCB.SelectedItem.ToString();
+                            widgetButton.onclick = ButtonOnclickEventsCB.SelectedItem == null ? "" : ButtonOnclickEventsCB.SelectedItem.ToString();
                             widgetButton.fontSize = buttonFontSize.Text == String.Empty ? widgetButton.fontSize : int.Parse(buttonFontSize.Text);
                             widgetButton.fontFamily = buttonFontFamily.Text == String.Empty ? widgetButton.fontFamily : buttonFontFamily.Text;
                             widgetButton.fontWeight = buttonFontWeight.Text == String.Empty ? widgetButton.fontWeight : buttonFontWeight.Text;
@@ -403,19 +440,61 @@ namespace WPC_Editor
                             widgetButton.useStyle = true;
                             widgetButton.content = buttonText.Text;
                             widgetButton.arguments = argumentsForButton.Text;
-                            widgetButton.onclick = ButtonOnclickEventsCB.SelectedItem.ToString();
-                            buttonText.Text = String.Empty;
-                            argumentsForButton.Text = String.Empty;
-                            ButtonOnclickEventsCB.Items.Clear();
-                            buttonFontSize.Text = String.Empty;
-                            buttonFontFamily.Text = String.Empty;
-                            buttonFontWeight.Text = String.Empty;
-                            buttonFontColor.Text = String.Empty;
-                            buttonBackgroundColor.Text = String.Empty;
-                            buttonBorderColor.Text = String.Empty;
-                            buttonBorderRadius.Text = String.Empty;
-                            buttonCursor.Text = String.Empty;
+                            widgetButton.onclick = ButtonOnclickEventsCB.SelectedItem == null ? "" : ButtonOnclickEventsCB.SelectedItem.ToString();
                         }
+                        buttonText.Text = String.Empty;
+                        argumentsForButton.Text = String.Empty;
+                        ButtonOnclickEventsCB.Items.Clear();
+                        buttonFontSize.Text = String.Empty;
+                        buttonFontFamily.Text = String.Empty;
+                        buttonFontWeight.Text = String.Empty;
+                        buttonFontColor.Text = String.Empty;
+                        buttonBackgroundColor.Text = String.Empty;
+                        buttonBorderColor.Text = String.Empty;
+                        buttonBorderRadius.Text = String.Empty;
+                        buttonCursor.Text = String.Empty;
+                        break;
+
+                    case "Фото":
+                        var widgetImg = el.widget as WidgetImage;
+                        if(isElUseCSS.IsChecked == false)
+                        {
+                            widgetImg.useStyle = false;
+                            if (ImageContentSelector.SelectedIndex == 0)
+                            {
+                                widgetImg.contentType = 'f';
+                                widgetImg.href = imageFilesCB.SelectedItem == null ? "" : imageFilesCB.SelectedItem.ToString();
+                            }
+                            else
+                            {
+                                widgetImg.contentType = 'l';
+                                widgetImg.href = imageLinkToThePhoto.Text;
+                            }
+                            widgetImg.radius = imageRadius.Text == String.Empty ? widgetImg.radius : imageRadius.Text;
+                            widgetImg.height = imageHeight.Text == String.Empty ? widgetImg.height : imageHeight.Text;
+                            widgetImg.width = imageWidth.Text == String.Empty ? widgetImg.width : imageWidth.Text;
+                            widgetImg.rotationAngle = imageRotAngle.Text == String.Empty ? widgetImg.rotationAngle : imageRotAngle.Text;
+                        }
+                        else
+                        {
+                            widgetImg.useStyle = true;
+                            if(ImageContentSelector.SelectedIndex == 0)
+                            {
+                                widgetImg.contentType = 'f';
+                                widgetImg.href = imageFilesCB.SelectedItem == null ? "" : imageFilesCB.SelectedItem.ToString();
+                            }
+                            else
+                            {
+                                widgetImg.contentType = 'l';
+                                widgetImg.href = imageLinkToThePhoto.Text;
+                            }
+                        }
+                        imageFilesCB.Items.Clear();
+                        imageLinkToThePhoto.Text = String.Empty;
+                        imageRadius.Text = String.Empty;
+                        imageHeight.Text = String.Empty;
+                        imageWidth.Text = String.Empty;
+                        imageRotAngle.Text = String.Empty;
                         break;
 
                     default: break;

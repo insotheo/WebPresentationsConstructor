@@ -54,9 +54,9 @@
         <!--#region main area-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MaxWidth="270" Width="200" MinWidth="30"/>
+                <ColumnDefinition MaxWidth="290" Width="210" MinWidth="40"/>
                 <ColumnDefinition MinWidth="60" Width="*"/>
-                <ColumnDefinition MinWidth="30" MaxWidth="270" Width="180"/>
+                <ColumnDefinition MinWidth="40" MaxWidth="290" Width="190"/>
             </Grid.ColumnDefinitions>
             <TreeView x:Name="sceneTree" VirtualizingPanel.IsVirtualizing="True"
                       VirtualizingPanel.VirtualizationMode="Recycling" SelectedItemChanged="sceneTree_SelectedItemChanged">
@@ -68,7 +68,7 @@
             </TreeView>
             <GridSplitter/>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="2" Margin="5" CornerRadius="2">
-                <Wpf:WebView2 x:Name="webCanvas"/>
+                <Wpf:WebView2 x:Name="webCanvas" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.IsVirtualizing="True"/>
             </Border>
             <GridSplitter Grid.Column="1"/>
             <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
@@ -131,6 +131,51 @@
                                 <TextBox x:Name="argumentsForButton"/>
                             </StackPanel>
                         </TabItem>
+                        <TabItem>
+                            <StackPanel>
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type TabItem}">
+                                        <Setter Property="FontFamily" Value="Roboto"/>
+                                        <Setter Property="FontSize" Value="16"/>
+                                        <Setter Property="Height" Value="25"/>
+                                        <Setter Property="Width" Value="70"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                                    <Border BorderBrush="{TemplateBinding Foreground}"
+                        BorderThickness="1" CornerRadius="5 5 0 0"
+                        Background="{TemplateBinding Background}">
+                                                        <TextBlock Text="{TemplateBinding Header}" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" Margin="5"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="{StaticResource backSelectedItem}"/>
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TabControl x:Name="ImageContentSelector">
+                                    <TabItem Header="Файл">
+                                        <StackPanel>
+                                            <TextBlock Text="Выберите файл:"/>
+                                            <ComboBox x:Name="imageFilesCB"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Ссылка">
+                                        <StackPanel>
+                                            <TextBlock Text="Вставьте ссылку на изображение:" TextWrapping="WrapWithOverflow"/>
+                                            <TextBox x:Name="imageLinkToThePhoto"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                </TabControl>
+                            </StackPanel>
+                        </TabItem>
                     </TabControl>
                     <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Visible">
                         <TabItem/>
@@ -173,6 +218,18 @@
                                 <TextBox x:Name="buttonBorderRadius"/>
                                 <TextBlock Text="Курсор"/>
                                 <TextBox x:Name="buttonCursor"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Image content">
+                            <StackPanel>
+                                <TextBlock Text="Высота %" ToolTip="Высота в процентном соотношении к исходному размеру"/>
+                                <TextBox x:Name="imageHeight"/>
+                                <TextBlock Text="Ширина %" ToolTip="Ширина в процентном соотношении к исходному размеру"/>
+                                <TextBox x:Name="imageWidth"/>
+                                <TextBlock Text="Радиус %"/>
+                                <TextBox x:Name="imageRadius"/>
+                                <TextBlock Text="Угол наклона °"/>
+                                <TextBox x:Name="imageRotAngle"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

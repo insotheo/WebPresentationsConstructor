@@ -140,6 +140,23 @@ namespace WPC_Editor
                 {
                     line = $"<{(widget as WidgetNextLine).HTML_TAG}>";
                 }
+                else if(widget is WidgetImage)
+                {
+                    var img = widget as WidgetImage;
+                    string s = String.Empty;
+                    if(img.useStyle == false)
+                    {
+                        s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%;\"";
+                    }
+                    if(img.contentType == 'f')
+                    {
+                        if(File.Exists(Path.Combine(assetsFolder, img.href)))
+                        {
+                            File.Copy(Path.Combine(assetsFolder, img.href), Path.Combine(cacheFolder, img.href));
+                        }
+                    }
+                    line = $"<{img.HTML_TAG} id=\"{img.name}\" src=\"{img.href}\" {s}>";
+                }
                 finalText += "\n" + line;
             }
             finalText += "\n</body>\n</html>\n";

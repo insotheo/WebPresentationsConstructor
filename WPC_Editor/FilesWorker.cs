@@ -57,5 +57,21 @@ namespace WPC_Editor
             }
             return files;
         }
+
+        public static List<string> getAllFilesByExt(string assetsFolderPath, string[] exts)
+        {
+            List<string> files = new List<string>();
+            foreach (string ext in exts)
+            {
+                foreach (string file in Directory.GetFiles(assetsFolderPath))
+                {
+                    if (Path.GetExtension(file) == ext.Trim())
+                    {
+                        files.Add(Path.GetFileName(file));
+                    }
+                }
+            }
+            return files;
+        }
     }
 }

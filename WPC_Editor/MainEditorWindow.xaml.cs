@@ -135,6 +135,7 @@ namespace WPC_Editor
             {
                 MessBox.showError(ex.Message);
                 holdOnWindow.Close();
+                this.IsEnabled = true;
             }
             GC.Collect();
         }

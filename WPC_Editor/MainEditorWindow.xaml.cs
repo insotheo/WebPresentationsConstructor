@@ -55,7 +55,8 @@ namespace WPC_Editor
                 this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}");
 
                 builder.Init(ref config);
-                webCanvas.Source = homePage = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
+                homePage = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
+                webCanvas.Source = homePage;
 
                 tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
                 sceneTree.ItemsSource = tree;
@@ -125,10 +126,13 @@ namespace WPC_Editor
                 holdOnWindow = new HoldOnWindow("building");
                 this.IsEnabled = false;
                 holdOnWindow.Show();
+                //webCanvas.Source = new Uri("about:blank");
                 await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config));
                 holdOnWindow.Close();
                 this.IsEnabled = true;
+                webCanvas.Source = homePage;
                 goHomeOnWebcanvas();
+                Task.Delay(10).Wait();
                 webCanvas.Reload();
             }
             catch(Exception ex)

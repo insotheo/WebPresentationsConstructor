@@ -183,7 +183,7 @@ namespace WPC_Editor
                             File.Copy(Path.Combine(assetsFolder, vid.src), Path.Combine(cacheFolder, vid.src));
                         }
                     }
-                    line = $"<{vid.HTML_TAG} src=\"{vid.src}\" {c} {ap} {l} {s}></{vid.HTML_TAG}>";
+                    line = $"<{vid.HTML_TAG} id=\"{vid.name}\" src=\"{vid.src}\" {c} {ap} {l} {s}></{vid.HTML_TAG}>";
                 }
 
                 finalText += "\n" + line;

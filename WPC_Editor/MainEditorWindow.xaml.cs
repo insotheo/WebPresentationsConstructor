@@ -134,6 +134,7 @@ namespace WPC_Editor
             catch(Exception ex)
             {
                 MessBox.showError(ex.Message);
+                holdOnWindow.Close();
             }
             GC.Collect();
         }

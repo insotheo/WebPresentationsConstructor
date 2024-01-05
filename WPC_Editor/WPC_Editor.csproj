@@ -87,6 +87,7 @@
     <Compile Include="Widgets\WidgetNextLine.cs" />
     <Compile Include="Widgets\WidgetsTreeItem.cs" />
     <Compile Include="Widgets\WidgetText.cs" />
+    <Compile Include="Widgets\WidgetVideo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigEditorWindow.xaml.cs">

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -132,7 +131,7 @@ namespace WPC_Editor
                 goHomeOnWebcanvas();
                 webCanvas.Reload();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessBox.showError(ex.Message);
             }
@@ -169,13 +168,16 @@ namespace WPC_Editor
                     case "Фото":
                         tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetImage()));
                         break;
+                    case "Видео":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetVideo()));
+                        break;
                 }
 
                 refreshTreeview();
             }
             catch (Exception ex)
             {
-                MessBox.showError(ex.ToString());
+                MessBox.showError(ex.Message);
             }
         }
 
@@ -288,6 +290,7 @@ namespace WPC_Editor
                         case "Фото":
                             var widgetImg = el.widget as WidgetImage;
                             contentTabber.SelectedIndex = 4;
+                            imageFilesCB.Items.Clear();
                             removeElementBtn.IsEnabled = true;
                             contentTabber.Visibility = Visibility.Visible;
                             List<string> files = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".bmp", ".png", ".jpeg", ".jpg" });
@@ -297,7 +300,7 @@ namespace WPC_Editor
                             }
                             if (widgetImg.contentType == 'f' && widgetImg.href != String.Empty && Array.IndexOf(files.ToArray(), widgetImg.href) != -1)
                             {
-                                imageFilesCB.Text = widgetImg.href;
+                                imageFilesCB.SelectedIndex = Array.IndexOf(files.ToArray(), widgetImg.href);
                             }
                             else if (widgetImg.contentType == 'l' && widgetImg.href != String.Empty)
                             {
@@ -312,6 +315,37 @@ namespace WPC_Editor
                                 imageRadius.Text = widgetImg.radius;
                                 imageRotAngle.Text = widgetImg.rotationAngle;
                                 ImageContentSelector.SelectedIndex = widgetImg.contentType == 'f' ? 0 : 1;
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
+                        case "Видео":
+                            var videoWidget = el.widget as WidgetVideo;
+                            contentTabber.SelectedIndex = 5;
+                            videoFileCB.Items.Clear();
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.Visibility = Visibility.Visible;
+                            List<string> mediaFiles = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".mp4", ".mov", ".mp3", ".wav", ".ogg" });
+                            foreach(string file in mediaFiles)
+                            {
+                                videoFileCB.Items.Add(file);
+                            }
+                            if(videoWidget.src != String.Empty && Array.IndexOf(mediaFiles.ToArray(), videoWidget.src) != -1)
+                            {
+                                videoFileCB.SelectedIndex = Array.IndexOf(mediaFiles.ToArray(), videoWidget.src);
+                            }
+                            videoLoop.IsChecked = videoWidget.isLoop;
+                            videoShowControlsCB.IsChecked = videoWidget.showControls;
+                            if (!videoWidget.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 4;
+                                videoHeight.Text = videoWidget.height;
+                                videoWidth.Text = videoWidget.width;
                             }
                             else
                             {
@@ -349,7 +383,7 @@ namespace WPC_Editor
             }
             catch (Exception ex)
             {
-                MessBox.showError(ex.ToString());
+                MessBox.showError(ex.Message);
             }
         }
 
@@ -495,6 +529,28 @@ namespace WPC_Editor
                         imageHeight.Text = String.Empty;
                         imageWidth.Text = String.Empty;
                         imageRotAngle.Text = String.Empty;
+                        break;
+
+                    case "Видео":
+                        var videoWidget = el.widget as WidgetVideo;
+                        videoWidget.src = videoFileCB.SelectedItem == null ? "" : videoFileCB.SelectedItem.ToString();
+                        videoWidget.isLoop = (bool)videoLoop.IsChecked;
+                        videoWidget.showControls = (bool)videoShowControlsCB.IsChecked;
+                        if (isElUseCSS.IsChecked == false)
+                        {
+                            videoWidget.useStyle = false;
+                            videoWidget.height = videoHeight.Text == String.Empty ? videoWidget.height : videoHeight.Text;
+                            videoWidget.width = videoWidth.Text == String.Empty ? videoWidget.width : videoWidth.Text;
+                        }
+                        else
+                        {
+                            videoWidget.useStyle = true;
+                            videoFileCB.Items.Clear();
+                        }
+                        videoHeight.Text = String.Empty;
+                        videoLoop.IsChecked = false;
+                        videoShowControlsCB.IsChecked = false;
+                        videoWidth.Text = String.Empty;
                         break;
 
                     default: break;

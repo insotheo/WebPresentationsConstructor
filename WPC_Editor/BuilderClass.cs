@@ -157,6 +157,35 @@ namespace WPC_Editor
                     }
                     line = $"<{img.HTML_TAG} id=\"{img.name}\" src=\"{img.href}\" {s}>";
                 }
+                else if(widget is WidgetVideo)
+                {
+                    var vid = widget as WidgetVideo;
+                    string s = String.Empty;
+                    string ap = String.Empty;
+                    string l = String.Empty;
+                    string c = String.Empty;
+                    if(vid.useStyle == false)
+                    {
+                        s = $"style=\"height: {vid.height}%; width: {vid.width}%;\"";
+                    }
+                    if (vid.showControls)
+                    {
+                        c = "controls=\"controls\"";
+                    }
+                    if (vid.isLoop)
+                    {
+                        l = "loop=\"loop\"";
+                    }
+                    if(vid.src != String.Empty)
+                    {
+                        if(File.Exists(Path.Combine(assetsFolder, vid.src)))
+                        {
+                            File.Copy(Path.Combine(assetsFolder, vid.src), Path.Combine(cacheFolder, vid.src));
+                        }
+                    }
+                    line = $"<{vid.HTML_TAG} src=\"{vid.src}\" {c} {ap} {l} {s}></{vid.HTML_TAG}>";
+                }
+
                 finalText += "\n" + line;
             }
             finalText += "\n</body>\n</html>\n";

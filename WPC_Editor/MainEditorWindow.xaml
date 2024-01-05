@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPC_Editor" xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="WebPresentationsConstructor -> Editor[pname]"
-        Height="580" Width="800"
+        Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource windowBackColor}">
     <Grid>
@@ -45,6 +45,7 @@
                         <Button Content="Кнопка" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_BUTTON_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Перенос" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_NEXT_LINE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Фото" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_IMAGE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Видео" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_VIDEO_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -176,6 +177,14 @@
                                 </TabControl>
                             </StackPanel>
                         </TabItem>
+                        <TabItem>
+                            <StackPanel>
+                                <TextBlock Text="Выберите файл"/>
+                                <ComboBox x:Name="videoFileCB"/>
+                                <CheckBox Content="Повторять" Foreground="White" x:Name="videoLoop"/>
+                                <CheckBox Content="Отображать элементы управ." Foreground="White" x:Name="videoShowControlsCB"/>
+                            </StackPanel>
+                        </TabItem>
                     </TabControl>
                     <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Visible">
                         <TabItem/>
@@ -230,6 +239,14 @@
                                 <TextBox x:Name="imageRadius"/>
                                 <TextBlock Text="Угол наклона °"/>
                                 <TextBox x:Name="imageRotAngle"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Video content">
+                            <StackPanel>
+                                <TextBlock Text="Высота %" ToolTip="Высота в процентном соотношении к исходному размеру"/>
+                                <TextBox x:Name="videoHeight"/>
+                                <TextBlock Text="Ширина %" ToolTip="Ширина в процентном соотношении к исходному размеру"/>
+                                <TextBox x:Name="videoWidth"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

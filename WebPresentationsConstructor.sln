@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EditorResources", "EditorRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorResources", "EngineResources\EditorResources.csproj", "{85726E5B-D5D6-403A-AA98-0A6F22C51250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPC_Encrypting", "WPC_Encrypting\WPC_Encrypting.csproj", "{B73934E2-D8E6-43CD-9C8D-27BF5A315992}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{85726E5B-D5D6-403A-AA98-0A6F22C51250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85726E5B-D5D6-403A-AA98-0A6F22C51250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85726E5B-D5D6-403A-AA98-0A6F22C51250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B73934E2-D8E6-43CD-9C8D-27BF5A315992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73934E2-D8E6-43CD-9C8D-27BF5A315992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73934E2-D8E6-43CD-9C8D-27BF5A315992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73934E2-D8E6-43CD-9C8D-27BF5A315992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{CDBD0BBA-7594-48F9-B3D5-C27F3E109CD2} = {E5FD3925-DA79-4D14-B627-1DA684C3E785}
 		{8E3D2923-8575-482C-8153-C109A6702B72} = {FCA52E38-9927-4633-AF63-D8B526C71A52}
 		{85726E5B-D5D6-403A-AA98-0A6F22C51250} = {265573E4-25AD-40F9-B0BE-8BC3ABB1B125}
+		{B73934E2-D8E6-43CD-9C8D-27BF5A315992} = {E5FD3925-DA79-4D14-B627-1DA684C3E785}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FA99717-6FA0-4E51-BC8E-89D66671280A}

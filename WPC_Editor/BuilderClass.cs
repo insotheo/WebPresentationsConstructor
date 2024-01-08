@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using WPC_Editor.Widgets;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WPC_Editor
 {
@@ -185,7 +186,22 @@ namespace WPC_Editor
                     }
                     line = $"<{vid.HTML_TAG} id=\"{vid.name}\" src=\"{vid.src}\" {c} {ap} {l} {s}></{vid.HTML_TAG}>";
                 }
-
+                else if(widget is WidgetInput)
+                {
+                    var inp = widget as WidgetInput;
+                    string s = String.Empty;
+                    string ro = String.Empty;
+                    string Type = WidgetInput.types[Array.IndexOf(WidgetInput.rus_types, inp.type)];
+                    if(inp.useStyle == false)
+                    {
+                        s = $"style=\"font-size: {inp.fontSize.ToString()}px; font-family: {inp.fontFamily}; font-weight: {inp.fontWeight}; color: {inp.fontColorHEX.ToLower()}; background-color: {inp.backgroundColorHEX}; border-radius: {inp.backgroundRad}%;\"";
+                    }
+                    if (inp.isReadonly)
+                    {
+                        ro = "readonly=\"readonly\"";
+                    }
+                    line = $"<{inp.HTML_TAG} id=\"{inp.name}\" placeholder=\"{inp.placeholder}\" value=\"{inp.content}\" type=\"{Type}\" {ro} {s}>";
+                }
                 finalText += "\n" + line;
             }
             finalText += "\n</body>\n</html>\n";

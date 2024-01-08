@@ -7,7 +7,7 @@
         public WidgetLink()
         {
             HTML_TAG = "a";
-            name = $"Link_{rndInd.Next(10000, 999999)}";
+            name = $"Link_{rndInd.Next(1, 99999)}";
             content = "Перейти";
             href = "https://github.com";
             tag = "Ссылка";

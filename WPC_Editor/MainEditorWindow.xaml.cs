@@ -61,6 +61,11 @@ namespace WPC_Editor
                 tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
                 sceneTree.ItemsSource = tree;
 
+                foreach(string type in WidgetInput.rus_types)
+                {
+                    inputTypeCB.Items.Add(type);
+                }
+
                 GC.Collect();
             }
             catch (Exception ex)
@@ -177,6 +182,9 @@ namespace WPC_Editor
                     case "Видео":
                         tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetVideo()));
                         break;
+                    case "Ввод":
+                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetInput()));
+                        break;
                 }
 
                 refreshTreeview();
@@ -215,9 +223,7 @@ namespace WPC_Editor
                                 textFontSize.Text = widget.fontSize.ToString();
                                 textFontWeight.Text = widget.fontWeight;
                                 textFontColor.Text = widget.fontColorHEX;
-                                textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widget.fontColorHEX)));
                                 textBackgroundColor.Text = widget.backgroundColorHEX;
-                                textPreviewBackgroundColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widget.backgroundColorHEX)));
                                 textBackgroundRadius.Text = widget.backgroundRad;
                             }
                             else
@@ -242,9 +248,7 @@ namespace WPC_Editor
                                 textFontSize.Text = widgetLink.fontSize.ToString();
                                 textFontWeight.Text = widgetLink.fontWeight;
                                 textFontColor.Text = widgetLink.fontColorHEX;
-                                textPreviewColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widgetLink.fontColorHEX)));
                                 textBackgroundColor.Text = widgetLink.backgroundColorHEX;
-                                textPreviewBackgroundColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(widgetLink.backgroundColorHEX)));
                                 textBackgroundRadius.Text = widgetLink.backgroundRad;
                             }
                             else
@@ -360,6 +364,32 @@ namespace WPC_Editor
                             }
                             break;
 
+                        case "Ввод":
+                            var inputWidget = el.widget as WidgetInput;
+                            contentTabber.SelectedIndex = 6;
+                            contentTabber.Visibility = Visibility.Visible;
+                            inputTypeCB.SelectedIndex = Array.IndexOf(WidgetInput.rus_types, inputWidget.type);
+                            inputPlaceholder.Text = inputWidget.placeholder;
+                            inputValue.Text = inputWidget.content;
+                            inputIsReadOnly.IsChecked = inputWidget.isReadonly;
+                            if (!inputWidget.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 1;
+                                textFontFamily.Text = inputWidget.fontFamily;
+                                textFontSize.Text = inputWidget.fontSize.ToString();
+                                textFontWeight.Text = inputWidget.fontWeight;
+                                textFontColor.Text = inputWidget.fontColorHEX;
+                                textBackgroundColor.Text = inputWidget.backgroundColorHEX;
+                                textBackgroundRadius.Text = inputWidget.backgroundRad;
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
                         case "body":
                             removeElementBtn.IsEnabled = false;
                             propertiesTabber.SelectedIndex = 0;
@@ -435,7 +465,7 @@ namespace WPC_Editor
                         {
                             widgetLink.useStyle = false;
                             widgetLink.content = linkText.Text;
-                            widgetLink.href = linkLinkAdress.Text == String.Empty ? widgetLink.href : linkLinkAdress.Text;
+                            widgetLink.href = linkLinkAdress.Text;
                             widgetLink.fontFamily = textFontFamily.Text == String.Empty ? widgetLink.fontFamily : textFontFamily.Text;
                             widgetLink.fontWeight = textFontWeight.Text == String.Empty ? widgetLink.fontWeight : textFontWeight.Text;
                             widgetLink.fontColorHEX = textFontColor.Text == String.Empty ? widgetLink.fontColorHEX : textFontColor.Text;
@@ -557,6 +587,35 @@ namespace WPC_Editor
                         videoLoop.IsChecked = false;
                         videoShowControlsCB.IsChecked = false;
                         videoWidth.Text = String.Empty;
+                        break;
+
+                    case "Ввод":
+                        var inputWidget = el.widget as WidgetInput;
+                        inputWidget.type = WidgetInput.rus_types[inputTypeCB.SelectedIndex];
+                        inputWidget.placeholder = inputPlaceholder.Text;
+                        inputWidget.content = inputValue.Text;
+                        inputWidget.isReadonly = (bool)inputIsReadOnly.IsChecked;
+                        if(isElUseCSS.IsChecked == false)
+                        {
+                            inputWidget.useStyle = false;
+                            inputWidget.fontFamily = textFontFamily.Text == String.Empty ? inputWidget.fontFamily : textFontFamily.Text;
+                            inputWidget.fontWeight = textFontWeight.Text == String.Empty ?  inputWidget.fontWeight : textFontWeight.Text;
+                            inputWidget.fontColorHEX = textFontColor.Text == String.Empty ? inputWidget.fontColorHEX : textFontColor.Text;
+                            inputWidget.fontSize = textFontSize.Text == String.Empty ? inputWidget.fontSize : int.Parse(textFontSize.Text);
+                            inputWidget.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? inputWidget.backgroundColorHEX : textBackgroundColor.Text;
+                            inputWidget.backgroundRad = textBackgroundRadius.Text == String.Empty ?  inputWidget.backgroundRad : textBackgroundRadius.Text;
+                        }
+                        else
+                        {
+                            inputWidget.useStyle = true;
+                        }
+                        textContent.Text = String.Empty;
+                        textFontFamily.Text = String.Empty;
+                        textFontWeight.Text = String.Empty;
+                        textFontColor.Text = String.Empty;
+                        textFontSize.Text = String.Empty;
+                        textBackgroundColor.Text = String.Empty;
+                        textBackgroundRadius.Text = String.Empty;
                         break;
 
                     default: break;

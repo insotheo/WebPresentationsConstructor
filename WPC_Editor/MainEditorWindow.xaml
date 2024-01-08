@@ -46,6 +46,7 @@
                         <Button Content="Перенос" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_NEXT_LINE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Фото" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_IMAGE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Видео" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_VIDEO_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Ввод" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_INPUT_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -183,6 +184,17 @@
                                 <ComboBox x:Name="videoFileCB"/>
                                 <CheckBox Content="Повторять" Foreground="White" x:Name="videoLoop"/>
                                 <CheckBox Content="Отображать элементы управ." Foreground="White" x:Name="videoShowControlsCB"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem>
+                            <StackPanel>
+                                <TextBlock Text="Тип данных"/>
+                                <ComboBox x:Name="inputTypeCB"/>
+                                <TextBlock Text="Подсказка"/>
+                                <TextBox x:Name="inputPlaceholder"/>
+                                <TextBlock Text="Значение"/>
+                                <TextBox x:Name="inputValue"/>
+                                <CheckBox Content="только для чтения" x:Name="inputIsReadOnly" Foreground="White"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

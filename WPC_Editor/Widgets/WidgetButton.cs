@@ -22,8 +22,8 @@
             name = $"Button_{rndInd.Next(1, 99999)}";
 
             content = "Кнопка";
-            onclick = null;
-            arguments = null;
+            onclick = "";
+            arguments = "";
 
             fontSize = 18;
             fontFamily = "Arial";

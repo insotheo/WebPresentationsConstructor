@@ -47,6 +47,7 @@
                         <Button Content="Фото" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_IMAGE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Видео" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_VIDEO_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Ввод" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_INPUT_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Группа" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_GROUP_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -259,6 +260,17 @@
                                 <TextBox x:Name="videoHeight"/>
                                 <TextBlock Text="Ширина %" ToolTip="Ширина в процентном соотношении к исходному размеру"/>
                                 <TextBox x:Name="videoWidth"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Group content">
+                            <StackPanel>
+                                <TextBlock Text="Цвет фона"/>
+                                <TextBox x:Name="groupBackgroundColor" TextChanged="groupBackgroundColor_TextChanged"/>
+                                <Rectangle Width="15" Height="15" x:Name="groupBackColorPreview"/>
+                                <TextBlock Text="Радиус %"/>
+                                <TextBox x:Name="groupRadius"/>
+                                <TextBlock Text="Выравнивание"/>
+                                <ComboBox x:Name="groupJustifyingCB"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

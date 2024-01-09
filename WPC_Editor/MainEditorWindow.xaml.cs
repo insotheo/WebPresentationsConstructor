@@ -61,9 +61,14 @@ namespace WPC_Editor
                 tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
                 sceneTree.ItemsSource = tree;
 
-                foreach(string type in WidgetInput.rus_types)
+                foreach (string type in WidgetInput.rus_types)
                 {
                     inputTypeCB.Items.Add(type);
+                }
+
+                foreach(string option in WidgetGroup.justifying_rus)
+                {
+                    groupJustifyingCB.Items.Add(option);
                 }
 
                 GC.Collect();
@@ -87,6 +92,31 @@ namespace WPC_Editor
             {
                 webCanvas.Source = homePage;
             }
+        }
+
+        private void kidsToWidgetOfScene(ref WidgetsTreeItem parent, List<Widget> list)
+        {
+            if (parent != null)
+            {
+                parent.widgetsOfScene.Clear();
+                foreach (Widget widget in list)
+                {
+                    parent.widgetsOfScene.Add(new WidgetsTreeItem(widget));
+                }
+            }
+        }
+
+        private WidgetsTreeItem FindParentItem(WidgetsTreeItem item, WidgetsTreeItem currentItem)
+        {
+            foreach (var childItem in currentItem.widgetsOfScene)
+            {
+                if (childItem == item)
+                    return currentItem;
+                var parentItem = FindParentItem(item, childItem);
+                if (parentItem != null)
+                    return parentItem;
+            }
+            return null;
         }
 
         #region top buttons
@@ -140,7 +170,7 @@ namespace WPC_Editor
                 Task.Delay(10).Wait();
                 webCanvas.Reload();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.Message);
                 holdOnWindow.Close();
@@ -162,32 +192,73 @@ namespace WPC_Editor
             {
                 var btn = sender as Button;
 
+                var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
+                if (selectedItem == null)
+                    selectedItem = tree[0];
+
+                WidgetsTreeItem newWidgetItem = null;
+
                 switch (btn.Content.ToString())
                 {
                     case "Текст":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetText()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetText());
                         break;
                     case "Ссылка":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetLink()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetLink());
                         break;
                     case "Кнопка":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetButton()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetButton());
                         break;
                     case "Перенос":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetNextLine()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetNextLine());
                         break;
                     case "Фото":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetImage()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetImage());
                         break;
                     case "Видео":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetVideo()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetVideo());
                         break;
                     case "Ввод":
-                        tree[0].widgetsOfScene.Add(new WidgetsTreeItem(new WidgetInput()));
+                        newWidgetItem = new WidgetsTreeItem(new WidgetInput());
+                        break;
+                    case "Группа":
+                        newWidgetItem = new WidgetsTreeItem(new WidgetGroup());
                         break;
                 }
 
-                refreshTreeview();
+                if (newWidgetItem != null)
+                {
+                    selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
+                    if (selectedItem == null)
+                        selectedItem = tree[0];
+
+                    if (selectedItem.widget is WidgetGroup)
+                    {
+                        var group = selectedItem.widget as WidgetGroup;
+                        group.addKid(newWidgetItem.widget);
+                        kidsToWidgetOfScene(ref selectedItem, group.kids);
+                        refreshTreeview();
+                    }
+                    else
+                    {
+                        var parentItem = FindParentItem(selectedItem, tree[0]);
+                        if (parentItem != null && parentItem.widget is WidgetGroup)
+                        {
+                            var group = parentItem.widget as WidgetGroup;
+                            group.addKid(newWidgetItem.widget);
+                            kidsToWidgetOfScene(ref parentItem, group.kids);
+                            refreshTreeview();
+                        }
+                        else
+                        {
+                            if (selectedItem.widget.tag == "body")
+                            {
+                                tree[0].widgetsOfScene.Add(newWidgetItem);
+                                refreshTreeview();
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -340,11 +411,11 @@ namespace WPC_Editor
                             removeElementBtn.IsEnabled = true;
                             contentTabber.Visibility = Visibility.Visible;
                             List<string> mediaFiles = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".mp4", ".mov", ".mp3", ".wav", ".ogg" });
-                            foreach(string file in mediaFiles)
+                            foreach (string file in mediaFiles)
                             {
                                 videoFileCB.Items.Add(file);
                             }
-                            if(videoWidget.src != String.Empty && Array.IndexOf(mediaFiles.ToArray(), videoWidget.src) != -1)
+                            if (videoWidget.src != String.Empty && Array.IndexOf(mediaFiles.ToArray(), videoWidget.src) != -1)
                             {
                                 videoFileCB.SelectedIndex = Array.IndexOf(mediaFiles.ToArray(), videoWidget.src);
                             }
@@ -382,6 +453,25 @@ namespace WPC_Editor
                                 textFontColor.Text = inputWidget.fontColorHEX;
                                 textBackgroundColor.Text = inputWidget.backgroundColorHEX;
                                 textBackgroundRadius.Text = inputWidget.backgroundRad;
+                            }
+                            else
+                            {
+                                propertiesTabber.Visibility = Visibility.Collapsed;
+                                propertiesTabber.SelectedIndex = 0;
+                            }
+                            break;
+
+                        case "Группа":
+                            var groupWidget = el.widget as WidgetGroup;
+                            contentTabber.Visibility = Visibility.Collapsed;
+                            contentTabber.SelectedIndex = 0;
+                            if (!groupWidget.useStyle)
+                            {
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                propertiesTabber.SelectedIndex = 5;
+                                groupJustifyingCB.SelectedIndex = Array.IndexOf(WidgetGroup.justifying_rus, groupWidget.justifyContent);
+                                groupBackgroundColor.Text = groupWidget.backgroundColorHEX;
+                                groupRadius.Text = groupWidget.radius;
                             }
                             else
                             {
@@ -527,7 +617,7 @@ namespace WPC_Editor
 
                     case "Фото":
                         var widgetImg = el.widget as WidgetImage;
-                        if(isElUseCSS.IsChecked == false)
+                        if (isElUseCSS.IsChecked == false)
                         {
                             widgetImg.useStyle = false;
                             if (ImageContentSelector.SelectedIndex == 0)
@@ -548,7 +638,7 @@ namespace WPC_Editor
                         else
                         {
                             widgetImg.useStyle = true;
-                            if(ImageContentSelector.SelectedIndex == 0)
+                            if (ImageContentSelector.SelectedIndex == 0)
                             {
                                 widgetImg.contentType = 'f';
                                 widgetImg.href = imageFilesCB.SelectedItem == null ? "" : imageFilesCB.SelectedItem.ToString();
@@ -595,15 +685,15 @@ namespace WPC_Editor
                         inputWidget.placeholder = inputPlaceholder.Text;
                         inputWidget.content = inputValue.Text;
                         inputWidget.isReadonly = (bool)inputIsReadOnly.IsChecked;
-                        if(isElUseCSS.IsChecked == false)
+                        if (isElUseCSS.IsChecked == false)
                         {
                             inputWidget.useStyle = false;
                             inputWidget.fontFamily = textFontFamily.Text == String.Empty ? inputWidget.fontFamily : textFontFamily.Text;
-                            inputWidget.fontWeight = textFontWeight.Text == String.Empty ?  inputWidget.fontWeight : textFontWeight.Text;
+                            inputWidget.fontWeight = textFontWeight.Text == String.Empty ? inputWidget.fontWeight : textFontWeight.Text;
                             inputWidget.fontColorHEX = textFontColor.Text == String.Empty ? inputWidget.fontColorHEX : textFontColor.Text;
                             inputWidget.fontSize = textFontSize.Text == String.Empty ? inputWidget.fontSize : int.Parse(textFontSize.Text);
                             inputWidget.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? inputWidget.backgroundColorHEX : textBackgroundColor.Text;
-                            inputWidget.backgroundRad = textBackgroundRadius.Text == String.Empty ?  inputWidget.backgroundRad : textBackgroundRadius.Text;
+                            inputWidget.backgroundRad = textBackgroundRadius.Text == String.Empty ? inputWidget.backgroundRad : textBackgroundRadius.Text;
                         }
                         else
                         {
@@ -618,12 +708,29 @@ namespace WPC_Editor
                         textBackgroundRadius.Text = String.Empty;
                         break;
 
+                    case "Группа":
+                        var groupWidget = el.widget as WidgetGroup;
+                        if (isElUseCSS.IsChecked == false)
+                        {
+                            groupWidget.useStyle = false;
+                            groupWidget.justifyContent = WidgetGroup.justifying_rus[groupJustifyingCB.SelectedIndex];
+                            groupWidget.backgroundColorHEX = groupBackgroundColor.Text == String.Empty ? "Transparent" : groupBackgroundColor.Text;
+                            groupWidget.radius = groupRadius.Text == String.Empty ? "0" : groupRadius.Text;
+                        }
+                        else
+                        {
+                            groupWidget.useStyle = true;
+                        }
+                        groupRadius.Text = String.Empty;
+                        groupBackgroundColor.Text = String.Empty;
+                        break;
+                        
                     default: break;
                 }
 
                 refreshTreeview();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.Message);
             }
@@ -631,9 +738,29 @@ namespace WPC_Editor
 
         private void removeElementBtn_Click(object sender, RoutedEventArgs e)
         {
-            var el = sceneTree.SelectedItem as WidgetsTreeItem;
-            tree[0].widgetsOfScene.Remove(el);
-            refreshTreeview();
+            try
+            {
+                var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
+                if (selectedItem != null)
+                {
+                    var parentItem = FindParentItem(selectedItem, tree[0]);
+                    if(parentItem.widget is WidgetGroup && parentItem != null)
+                    {
+                        var group = parentItem.widget as WidgetGroup;
+                        group.removeKid(selectedItem.widget);
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    else if (parentItem != null)
+                    {
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    refreshTreeview();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessBox.showError(ex.Message);
+            }
         }
         #endregion
 
@@ -682,6 +809,16 @@ namespace WPC_Editor
             }
             catch { }
         }
+
+        private void groupBackgroundColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                groupBackColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(groupBackgroundColor.Text)));
+            }
+            catch { }
+        }
+
         #endregion
     }
 }

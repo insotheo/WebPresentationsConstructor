@@ -85,6 +85,7 @@
     <Compile Include="JavaScriptWorker.cs" />
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetButton.cs" />
+    <Compile Include="Widgets\WidgetGroup.cs" />
     <Compile Include="Widgets\WidgetImage.cs" />
     <Compile Include="Widgets\WidgetInput.cs" />
     <Compile Include="Widgets\WidgetLink.cs" />

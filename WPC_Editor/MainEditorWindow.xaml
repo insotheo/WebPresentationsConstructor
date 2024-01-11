@@ -215,6 +215,8 @@
                                 <TextBlock Text="Цвет заднего фона"/>
                                 <TextBox x:Name="textBackgroundColor" TextChanged="textBackgroundColor_TextChanged"/>
                                 <Rectangle Width="15" Height="15" x:Name="textPreviewBackgroundColor"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="textMargin"/>
                                 <TextBlock Text="Радиус %"/>
                                 <TextBox x:Name="textBackgroundRadius" TextChanged="textFontColor_TextChanged"/>
                             </StackPanel>
@@ -236,6 +238,8 @@
                                 <TextBlock Text="Цвет обводки"/>
                                 <TextBox x:Name="buttonBorderColor" TextChanged="buttonBorderColor_TextChanged"/>
                                 <Rectangle x:Name="buttonBorderColorPreview" Width="15" Height="15"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="buttonMargin"/>
                                 <TextBlock Text="Радиус %"/>
                                 <TextBox x:Name="buttonBorderRadius"/>
                                 <TextBlock Text="Курсор"/>
@@ -252,6 +256,8 @@
                                 <TextBox x:Name="imageRadius"/>
                                 <TextBlock Text="Угол наклона °"/>
                                 <TextBox x:Name="imageRotAngle"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="imageMargin"/>
                             </StackPanel>
                         </TabItem>
                         <TabItem Header="Video content">
@@ -260,6 +266,8 @@
                                 <TextBox x:Name="videoHeight"/>
                                 <TextBlock Text="Ширина %" ToolTip="Ширина в процентном соотношении к исходному размеру"/>
                                 <TextBox x:Name="videoWidth"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="videoMargin"/>
                             </StackPanel>
                         </TabItem>
                         <TabItem Header="Group content">
@@ -271,6 +279,8 @@
                                 <TextBox x:Name="groupRadius"/>
                                 <TextBlock Text="Выравнивание"/>
                                 <ComboBox x:Name="groupJustifyingCB"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="groupMargin"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

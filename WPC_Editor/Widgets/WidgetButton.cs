@@ -12,6 +12,7 @@
         public string fontColorHEX;
         public string backgroundColorHEX;
         public string borderColorHEX;
+        public string margin;
         public string borderRadius;
         public string cursor;
 
@@ -28,6 +29,7 @@
             fontSize = 18;
             fontFamily = "Arial";
             fontWeight = "400";
+            margin = "0 0 0 0";
             fontColorHEX = "#ffffff";
             backgroundColorHEX = "#373737";
             borderColorHEX = "#000000";

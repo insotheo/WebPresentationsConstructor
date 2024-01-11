@@ -8,6 +8,7 @@
         public string fontWeight;
         public string fontColorHEX;
         public string backgroundColorHEX;
+        public string margin;
         public string backgroundRad;
 
         public WidgetText()
@@ -21,6 +22,7 @@
             fontColorHEX = "#000000";
             fontWeight = "400";
             backgroundColorHEX = "Transparent";
+            margin = "0 0 0 0";
             backgroundRad = "0";
         }
     }

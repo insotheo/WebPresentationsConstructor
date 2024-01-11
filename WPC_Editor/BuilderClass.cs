@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using WPC_Editor.Widgets;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WPC_Editor
 {
@@ -28,6 +29,17 @@ namespace WPC_Editor
             return text;
         }
 
+        private string getMarginString(string margin)
+        {
+            margin = margin.Trim();
+            string res = String.Empty;
+            foreach(string side in margin.Split(' '))
+            {
+                res += " " + side + "px";
+            }
+            return res.Trim();
+        }
+
         private string make(Widget widget)
         {
             string line = String.Empty;
@@ -38,7 +50,7 @@ namespace WPC_Editor
                 string s = String.Empty;
                 if (widget.useStyle == false)
                 {
-                    s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%;\"";
+                    s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%; margin:  {getMarginString(text.margin)};\"";
                 }
                 line = $"<{widget.HTML_TAG} id=\"{text.name}\" {s}>{(widget as WidgetText).content}</{widget.HTML_TAG}>";
             }
@@ -48,7 +60,7 @@ namespace WPC_Editor
                 string s = String.Empty;
                 if (widget.useStyle == false)
                 {
-                    s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%;\"";
+                    s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%; margin:  {getMarginString(link.margin)};\"";
                 }
                 line = $"<{link.HTML_TAG} id=\"{link.name}\" href=\"{link.href}\" {s}>{link.content}</{link.HTML_TAG}>";
             }
@@ -59,7 +71,7 @@ namespace WPC_Editor
                 string oc = String.Empty;
                 if (button.useStyle == false)
                 {
-                    s = $"style=\"font-size: {button.fontSize.ToString()}px; font-family: {button.fontFamily}; font-weight: {button.fontWeight}; color: {button.fontColorHEX}; background-color: {button.backgroundColorHEX}; border-color: {button.borderColorHEX}; border-radius: {button.borderRadius}%; cursor: {button.cursor};\"";
+                    s = $"style=\"font-size: {button.fontSize.ToString()}px; font-family: {button.fontFamily}; font-weight: {button.fontWeight}; color: {button.fontColorHEX}; background-color: {button.backgroundColorHEX}; border-color: {button.borderColorHEX}; border-radius: {button.borderRadius}%; cursor: {button.cursor}; margin:  {getMarginString(button.margin)};\"";
                 }
                 if(button.onclick.Trim() != String.Empty)
                 {
@@ -77,7 +89,7 @@ namespace WPC_Editor
                 string s = String.Empty;
                 if (img.useStyle == false)
                 {
-                    s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%;\"";
+                    s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%; margin:  {getMarginString(img.margin)};\"";
                 }
                 if (img.contentType == 'f')
                 {
@@ -97,7 +109,7 @@ namespace WPC_Editor
                 string c = String.Empty;
                 if (vid.useStyle == false)
                 {
-                    s = $"style=\"height: {vid.height}%; width: {vid.width}%;\"";
+                    s = $"style=\"height: {vid.height}%; width: {vid.width}%; margin:  {getMarginString(vid.margin)};\"";
                 }
                 if (vid.showControls)
                 {
@@ -124,7 +136,7 @@ namespace WPC_Editor
                 string Type = WidgetInput.types[Array.IndexOf(WidgetInput.rus_types, inp.type)];
                 if (inp.useStyle == false)
                 {
-                    s = $"style=\"font-size: {inp.fontSize.ToString()}px; font-family: {inp.fontFamily}; font-weight: {inp.fontWeight}; color: {inp.fontColorHEX.ToLower()}; background-color: {inp.backgroundColorHEX}; border-radius: {inp.backgroundRad}%;\"";
+                    s = $"style=\"font-size: {inp.fontSize.ToString()}px; font-family: {inp.fontFamily}; font-weight: {inp.fontWeight}; color: {inp.fontColorHEX.ToLower()}; background-color: {inp.backgroundColorHEX}; border-radius: {inp.backgroundRad}%; margin:  {getMarginString(inp.margin)};\"";
                 }
                 if (inp.isReadonly)
                 {
@@ -139,7 +151,7 @@ namespace WPC_Editor
                 string els = getElementsAsTextFromGroup(ref grp);
                 if (!grp.useStyle)
                 {
-                    s = $"style=\"display: flex; background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]};\"";
+                    s = $"style=\"display: flex; background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]}; margin:  {getMarginString(grp.margin)};\"";
                 }
                 line = $"<{grp.HTML_TAG} class=\"{grp.name}\" {s}>" +
                     $"{els}" +

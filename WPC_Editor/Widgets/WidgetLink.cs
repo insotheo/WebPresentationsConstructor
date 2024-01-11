@@ -12,6 +12,7 @@
             href = "https://github.com";
             tag = "Ссылка";
             fontSize = 16;
+            margin = "0 0 0 0";
             fontFamily = "Arial";
             fontColorHEX = "#0923a4";
             fontWeight = "300";

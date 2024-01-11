@@ -12,6 +12,7 @@
         
         public int fontSize;
         public string fontFamily;
+        public string margin;
         public string fontWeight;
         public string fontColorHEX;
         public string backgroundColorHEX;
@@ -30,6 +31,7 @@
             fontFamily = "Arial";
             fontColorHEX = "#000000";
             fontWeight = "400";
+            margin = "0 0 0 0";
             backgroundColorHEX = "Transparent";
             backgroundRad = "0";
         }

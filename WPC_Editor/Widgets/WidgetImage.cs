@@ -9,6 +9,7 @@
         public string width;
         public string radius;
         public string rotationAngle;
+        public string margin;
 
         public WidgetImage()
         {
@@ -21,6 +22,7 @@
             height = "100";
             radius = "0";
             rotationAngle = "0";
+            margin = "0 0 0 0";
         }
     }
 }

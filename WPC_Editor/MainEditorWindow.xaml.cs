@@ -296,6 +296,7 @@ namespace WPC_Editor
                                 textFontColor.Text = widget.fontColorHEX;
                                 textBackgroundColor.Text = widget.backgroundColorHEX;
                                 textBackgroundRadius.Text = widget.backgroundRad;
+                                textMargin.Text = widget.margin;
                             }
                             else
                             {
@@ -321,6 +322,7 @@ namespace WPC_Editor
                                 textFontColor.Text = widgetLink.fontColorHEX;
                                 textBackgroundColor.Text = widgetLink.backgroundColorHEX;
                                 textBackgroundRadius.Text = widgetLink.backgroundRad;
+                                textMargin.Text = widgetLink.margin;
                             }
                             else
                             {
@@ -358,6 +360,7 @@ namespace WPC_Editor
                                 buttonFontColor.Text = widgetButton.fontColorHEX;
                                 buttonBackgroundColor.Text = widgetButton.backgroundColorHEX;
                                 buttonBorderColor.Text = widgetButton.borderColorHEX;
+                                buttonMargin.Text = widgetButton.margin;
                                 buttonBorderRadius.Text = widgetButton.borderRadius;
                                 buttonCursor.Text = widgetButton.cursor;
                             }
@@ -396,6 +399,7 @@ namespace WPC_Editor
                                 imageRadius.Text = widgetImg.radius;
                                 imageRotAngle.Text = widgetImg.rotationAngle;
                                 ImageContentSelector.SelectedIndex = widgetImg.contentType == 'f' ? 0 : 1;
+                                imageMargin.Text = widgetImg.margin;
                             }
                             else
                             {
@@ -427,6 +431,7 @@ namespace WPC_Editor
                                 propertiesTabber.SelectedIndex = 4;
                                 videoHeight.Text = videoWidget.height;
                                 videoWidth.Text = videoWidget.width;
+                                videoMargin.Text = videoWidget.margin;
                             }
                             else
                             {
@@ -453,6 +458,7 @@ namespace WPC_Editor
                                 textFontColor.Text = inputWidget.fontColorHEX;
                                 textBackgroundColor.Text = inputWidget.backgroundColorHEX;
                                 textBackgroundRadius.Text = inputWidget.backgroundRad;
+                                textMargin.Text = inputWidget.margin;
                             }
                             else
                             {
@@ -472,6 +478,7 @@ namespace WPC_Editor
                                 groupJustifyingCB.SelectedIndex = Array.IndexOf(WidgetGroup.justifying_rus, groupWidget.justifyContent);
                                 groupBackgroundColor.Text = groupWidget.backgroundColorHEX;
                                 groupRadius.Text = groupWidget.radius;
+                                groupMargin.Text = groupWidget.margin;
                             }
                             else
                             {
@@ -534,6 +541,7 @@ namespace WPC_Editor
                             widget.fontSize = textFontSize.Text == String.Empty ? widget.fontSize : int.Parse(textFontSize.Text);
                             widget.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? widget.backgroundColorHEX : textBackgroundColor.Text;
                             widget.backgroundRad = textBackgroundRadius.Text == String.Empty ? widget.backgroundRad : textBackgroundRadius.Text;
+                            widget.margin = textMargin.Text == String.Empty ? "0 0 0 0" : textMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
                         {
@@ -547,6 +555,7 @@ namespace WPC_Editor
                         textFontSize.Text = String.Empty;
                         textBackgroundColor.Text = String.Empty;
                         textBackgroundRadius.Text = String.Empty;
+                        textMargin.Text = String.Empty;
                         break;
 
                     case "Ссылка":
@@ -562,6 +571,7 @@ namespace WPC_Editor
                             widgetLink.fontSize = textFontSize.Text == String.Empty ? widgetLink.fontSize : int.Parse(textFontSize.Text);
                             widgetLink.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? widgetLink.backgroundColorHEX : textBackgroundColor.Text;
                             widgetLink.backgroundRad = textBackgroundRadius.Text == String.Empty ? widgetLink.backgroundRad : textBackgroundRadius.Text;
+                            widgetLink.margin = textMargin.Text == String.Empty ? "0 0 0 0" : textMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
                         {
@@ -575,6 +585,7 @@ namespace WPC_Editor
                         textFontColor.Text = String.Empty;
                         textFontSize.Text = String.Empty;
                         textBackgroundColor.Text = String.Empty;
+                        textMargin.Text = String.Empty;
                         textBackgroundRadius.Text = String.Empty;
                         break;
 
@@ -592,6 +603,7 @@ namespace WPC_Editor
                             widgetButton.fontColorHEX = buttonFontColor.Text == String.Empty ? widgetButton.fontColorHEX : buttonFontColor.Text;
                             widgetButton.backgroundColorHEX = buttonBackgroundColor.Text == String.Empty ? widgetButton.backgroundColorHEX : buttonBackgroundColor.Text;
                             widgetButton.borderColorHEX = buttonBorderColor.Text == String.Empty ? widgetButton.borderColorHEX : buttonBorderColor.Text;
+                            widgetButton.margin = buttonMargin.Text == String.Empty ? "0 0 0 0" : buttonMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                             widgetButton.borderRadius = buttonBorderRadius.Text == String.Empty ? widgetButton.borderRadius : buttonBorderRadius.Text;
                             widgetButton.cursor = buttonCursor.Text == String.Empty ? widgetButton.cursor : buttonCursor.Text;
                         }
@@ -610,6 +622,7 @@ namespace WPC_Editor
                         buttonFontWeight.Text = String.Empty;
                         buttonFontColor.Text = String.Empty;
                         buttonBackgroundColor.Text = String.Empty;
+                        buttonMargin.Text = String.Empty;
                         buttonBorderColor.Text = String.Empty;
                         buttonBorderRadius.Text = String.Empty;
                         buttonCursor.Text = String.Empty;
@@ -634,6 +647,7 @@ namespace WPC_Editor
                             widgetImg.height = imageHeight.Text == String.Empty ? widgetImg.height : imageHeight.Text;
                             widgetImg.width = imageWidth.Text == String.Empty ? widgetImg.width : imageWidth.Text;
                             widgetImg.rotationAngle = imageRotAngle.Text == String.Empty ? widgetImg.rotationAngle : imageRotAngle.Text;
+                            widgetImg.margin = imageMargin.Text == String.Empty ? "0 0 0 0" : imageMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
                         {
@@ -653,6 +667,7 @@ namespace WPC_Editor
                         imageLinkToThePhoto.Text = String.Empty;
                         imageRadius.Text = String.Empty;
                         imageHeight.Text = String.Empty;
+                        imageMargin.Text = String.Empty;
                         imageWidth.Text = String.Empty;
                         imageRotAngle.Text = String.Empty;
                         break;
@@ -667,6 +682,7 @@ namespace WPC_Editor
                             videoWidget.useStyle = false;
                             videoWidget.height = videoHeight.Text == String.Empty ? videoWidget.height : videoHeight.Text;
                             videoWidget.width = videoWidth.Text == String.Empty ? videoWidget.width : videoWidth.Text;
+                            videoWidget.margin = videoMargin.Text == String.Empty ? "0 0 0 0" : videoMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
                         {
@@ -677,6 +693,7 @@ namespace WPC_Editor
                         videoLoop.IsChecked = false;
                         videoShowControlsCB.IsChecked = false;
                         videoWidth.Text = String.Empty;
+                        videoMargin.Text = String.Empty;
                         break;
 
                     case "Ввод":
@@ -694,6 +711,7 @@ namespace WPC_Editor
                             inputWidget.fontSize = textFontSize.Text == String.Empty ? inputWidget.fontSize : int.Parse(textFontSize.Text);
                             inputWidget.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? inputWidget.backgroundColorHEX : textBackgroundColor.Text;
                             inputWidget.backgroundRad = textBackgroundRadius.Text == String.Empty ? inputWidget.backgroundRad : textBackgroundRadius.Text;
+                            inputWidget.margin = textMargin.Text == String.Empty ? "0 0 0 0" : textMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
                         {
@@ -704,6 +722,7 @@ namespace WPC_Editor
                         textFontWeight.Text = String.Empty;
                         textFontColor.Text = String.Empty;
                         textFontSize.Text = String.Empty;
+                        textMargin.Text = String.Empty;
                         textBackgroundColor.Text = String.Empty;
                         textBackgroundRadius.Text = String.Empty;
                         break;
@@ -716,12 +735,14 @@ namespace WPC_Editor
                             groupWidget.justifyContent = WidgetGroup.justifying_rus[groupJustifyingCB.SelectedIndex];
                             groupWidget.backgroundColorHEX = groupBackgroundColor.Text == String.Empty ? "Transparent" : groupBackgroundColor.Text;
                             groupWidget.radius = groupRadius.Text == String.Empty ? "0" : groupRadius.Text;
+                            groupWidget.margin = groupMargin.Text == String.Empty ? "0 0 0 0" : groupMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
                         {
                             groupWidget.useStyle = true;
                         }
                         groupRadius.Text = String.Empty;
+                        groupMargin.Text = String.Empty;
                         groupBackgroundColor.Text = String.Empty;
                         break;
                         

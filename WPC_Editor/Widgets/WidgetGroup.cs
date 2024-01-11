@@ -13,6 +13,7 @@ namespace WPC_Editor.Widgets
         public string backgroundColorHEX;
         public string radius;
         public string justifyContent;
+        public string margin;
 
         public WidgetGroup()
         {
@@ -23,6 +24,7 @@ namespace WPC_Editor.Widgets
             useStyle = false;
             backgroundColorHEX = "Transparent";
             radius = "0";
+            margin = "0 0 0 0";
             justifyContent = justifying_rus[0];
         }
 

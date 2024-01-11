@@ -26,13 +26,24 @@ namespace WPC_Editor
                 case "JS":
                     extensionColor = Brushes.Yellow;
                     break;
+
                 case "CSS":
                     extensionColor = Brushes.LightPink;
                     extensionOfFile = "#";
                     break;
+
                 case "PNG": case "BMP": case "JPEG": case "JPG":
                     extensionColor = Brushes.LightBlue;
                     break;
+
+                case "MP4": case "MOV":
+                    extensionColor = Brushes.Orange;
+                    break;
+
+                case "MP3": case "WAV": case "OGG":
+                    extensionColor = Brushes.MediumPurple;
+                    break;
+
                 default:
                     extensionColor = Brushes.White;
                     break;

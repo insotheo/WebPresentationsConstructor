@@ -19,20 +19,20 @@ function askThenQuit(){
 
 //_EDITOR::FUNCTIONS::TYPES::EVENT
 function goPage(page_name){
-    if(page_name != null){
-        let str_page_name = toString(page_name);
+    if (page_name != null) {
+        let str_page_name = page_name.toString();
         let doesPageExist = false;
         if(!str_page_name.endsWith(".html")){
-        str_page_name += ".html";  
+            str_page_name += ".html";  
         } 
         let http = new XMLHttpRequest();
-        http.open("HEAD", str_page_name, false);
+        http.open("HEAD", str_page_name, true);
         http.send();
         if(http.status != 404){
             doesPageExist = true;
         }
-        if(doesPageExist){
-            window.open(str_page_name, "_blank");
+        if (doesPageExist) {
+            window.location.href = str_page_name
         }
         else{
             alert("Ошибка открытия страницы!");

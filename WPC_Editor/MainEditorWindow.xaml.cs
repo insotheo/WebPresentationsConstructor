@@ -172,7 +172,7 @@ namespace WPC_Editor
             }
             catch (Exception ex)
             {
-                MessBox.showError(ex.Message);
+                MessBox.showError(ex.ToString());
                 holdOnWindow.Close();
                 this.IsEnabled = true;
             }
@@ -224,6 +224,9 @@ namespace WPC_Editor
                     case "Группа":
                         newWidgetItem = new WidgetsTreeItem(new WidgetGroup());
                         break;
+                    case "Список":
+                        newWidgetItem = new WidgetsTreeItem(new WidgetList());
+                        break;
                 }
 
                 if (newWidgetItem != null)
@@ -239,6 +242,20 @@ namespace WPC_Editor
                         kidsToWidgetOfScene(ref selectedItem, group.kids);
                         refreshTreeview();
                     }
+                    else if(selectedItem.widget is WidgetList)
+                    {
+                        var list = selectedItem.widget as WidgetList;
+                        if (newWidgetItem.widget is WidgetText || newWidgetItem.widget is WidgetImage || newWidgetItem.widget is WidgetVideo || newWidgetItem.widget is WidgetList || newWidgetItem.widget is WidgetButton)
+                        {
+                            list.addContent(newWidgetItem.widget);
+                            kidsToWidgetOfScene(ref selectedItem, list.content);
+                            refreshTreeview();
+                        }
+                        else
+                        {
+                            MessBox.showInfo($"Элемент \"{newWidgetItem.widget.tag}\" не может являться элементом списка!");
+                        }
+                    }
                     else
                     {
                         var parentItem = FindParentItem(selectedItem, tree[0]);
@@ -248,6 +265,20 @@ namespace WPC_Editor
                             group.addKid(newWidgetItem.widget);
                             kidsToWidgetOfScene(ref parentItem, group.kids);
                             refreshTreeview();
+                        }
+                        else if (parentItem != null && parentItem.widget is WidgetList)
+                        {
+                            var list = parentItem.widget as WidgetList;
+                            if (newWidgetItem.widget is WidgetText || newWidgetItem.widget is WidgetImage || newWidgetItem.widget is WidgetVideo || newWidgetItem.widget is WidgetList || newWidgetItem.widget is WidgetButton)
+                            {
+                                list.addContent(newWidgetItem.widget);
+                                kidsToWidgetOfScene(ref selectedItem, list.content);
+                                refreshTreeview();
+                            }
+                            else
+                            {
+                                MessBox.showInfo($"Элемент \"{newWidgetItem.widget.tag}\" не может являться элементом списка!");
+                            }
                         }
                         else
                         {
@@ -769,6 +800,12 @@ namespace WPC_Editor
                     {
                         var group = parentItem.widget as WidgetGroup;
                         group.removeKid(selectedItem.widget);
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    else if (parentItem.widget is WidgetList && parentItem != null)
+                    {
+                        var list = parentItem.widget as WidgetList;
+                        list.removeContent(selectedItem.widget);
                         parentItem.widgetsOfScene.Remove(selectedItem);
                     }
                     else if (parentItem != null)

@@ -48,6 +48,7 @@
                         <Button Content="Видео" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_VIDEO_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Ввод" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_INPUT_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Группа" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_GROUP_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Список" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_LIST_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

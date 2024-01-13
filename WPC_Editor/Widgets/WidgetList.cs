@@ -8,6 +8,14 @@ namespace WPC_Editor.Widgets
 
         public bool isNumeric;
 
+        public string fontColor;
+        public string fontFamily;
+        public string fontWeight;
+        public int fontSize;
+        public string backgroundColor;
+        public string borderRadius;
+        public string margin;
+
         public List<Widget> content; //allow only { text, hyperlink, image, video, list, button }
 
         public WidgetList()
@@ -16,7 +24,13 @@ namespace WPC_Editor.Widgets
             name = $"List_{rndInd.Next(1, 99999)}";
             isNumeric = false;
             content = new List<Widget>();
-
+            fontColor = "#000000";
+            fontFamily = "Arial";
+            fontWeight = "400";
+            fontSize = 18;
+            backgroundColor = "Transparent";
+            borderRadius = "0";
+            margin = "0 0 0 0";
         }
 
         public string getHTML_TAG()

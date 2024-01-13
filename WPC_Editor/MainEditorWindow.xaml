@@ -199,6 +199,11 @@
                                 <CheckBox Content="только для чтения" x:Name="inputIsReadOnly" Foreground="White"/>
                             </StackPanel>
                         </TabItem>
+                        <TabItem>
+                            <StackPanel>
+                                <CheckBox x:Name="listNumCB" Foreground="White" Content="Нумеровать"/>
+                            </StackPanel>
+                        </TabItem>
                     </TabControl>
                     <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Visible">
                         <TabItem/>
@@ -210,7 +215,7 @@
                                 <TextBox x:Name="textFontWeight"/>
                                 <TextBlock Text="Шрифт"/>
                                 <TextBox x:Name="textFontFamily"/>
-                                <TextBlock Text="Цвет"/>
+                                <TextBlock Text="Цвет текста"/>
                                 <TextBox x:Name="textFontColor" TextChanged="textFontColor_TextChanged"/>
                                 <Rectangle Width="15" Height="15" x:Name="textPreviewColor"/>
                                 <TextBlock Text="Цвет заднего фона"/>

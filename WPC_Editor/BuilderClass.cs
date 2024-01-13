@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using WPC_Editor.Widgets;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WPC_Editor
 {
@@ -21,10 +20,27 @@ namespace WPC_Editor
         private string getElementsAsTextFromGroup(ref WidgetGroup group)
         {
             string text = String.Empty;
-            List<Widget> kids = group.kids;
-            foreach(Widget kid in kids)
+            if (group.kids != null)
             {
-                text += "\n" + make(kid);
+                List<Widget> kids = group.kids;
+                foreach (Widget kid in kids)
+                {
+                    text += "\n" + make(kid);
+                }
+            }
+            return text;
+        }
+
+        private string getListContent(ref WidgetList list)
+        {
+            string text = String.Empty;
+            if (list.content != null)
+            {
+                List<Widget> content = list.content;
+                foreach (Widget el in content)
+                {
+                    text += "<li>\n" + make(el) + "\n</li>\n";
+                }
             }
             return text;
         }
@@ -50,9 +66,9 @@ namespace WPC_Editor
                 {
                     var text = widget as WidgetText;
                     string s = String.Empty;
-                    if (widget.useStyle == false)
+                    if (!widget.useStyle)
                     {
-                        s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%; margin:  {getMarginString(text.margin)};\"";
+                        s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%; margin: {getMarginString(text.margin)};\"";
                     }
                     line = $"<{widget.HTML_TAG} id=\"{text.name}\" {s}>{(widget as WidgetText).content}</{widget.HTML_TAG}>";
                 }
@@ -60,9 +76,9 @@ namespace WPC_Editor
                 {
                     var link = widget as WidgetLink;
                     string s = String.Empty;
-                    if (widget.useStyle == false)
+                    if (!widget.useStyle)
                     {
-                        s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%; margin:  {getMarginString(link.margin)};\"";
+                        s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%; margin: {getMarginString(link.margin)};\"";
                     }
                     line = $"<{link.HTML_TAG} id=\"{link.name}\" href=\"{link.href}\" {s}>{link.content}</{link.HTML_TAG}>";
                 }
@@ -71,9 +87,9 @@ namespace WPC_Editor
                     var button = widget as WidgetButton;
                     string s = String.Empty;
                     string oc = String.Empty;
-                    if (button.useStyle == false)
+                    if (!button.useStyle)
                     {
-                        s = $"style=\"font-size: {button.fontSize.ToString()}px; font-family: {button.fontFamily}; font-weight: {button.fontWeight}; color: {button.fontColorHEX}; background-color: {button.backgroundColorHEX}; border-color: {button.borderColorHEX}; border-radius: {button.borderRadius}%; cursor: {button.cursor}; margin:  {getMarginString(button.margin)};\"";
+                        s = $"style=\"font-size: {button.fontSize.ToString()}px; font-family: {button.fontFamily}; font-weight: {button.fontWeight}; color: {button.fontColorHEX}; background-color: {button.backgroundColorHEX}; border-color: {button.borderColorHEX}; border-radius: {button.borderRadius}%; cursor: {button.cursor}; margin: {getMarginString(button.margin)};\"";
                     }
                     if (button.onclick != null)
                     {
@@ -89,9 +105,9 @@ namespace WPC_Editor
                 {
                     var img = widget as WidgetImage;
                     string s = String.Empty;
-                    if (img.useStyle == false)
+                    if (!img.useStyle)
                     {
-                        s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%; margin:  {getMarginString(img.margin)};\"";
+                        s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%; margin: {getMarginString(img.margin)};\"";
                     }
                     if (img.contentType == 'f')
                     {
@@ -109,9 +125,9 @@ namespace WPC_Editor
                     string ap = String.Empty;
                     string l = String.Empty;
                     string c = String.Empty;
-                    if (vid.useStyle == false)
+                    if (!vid.useStyle)
                     {
-                        s = $"style=\"height: {vid.height}%; width: {vid.width}%; margin:  {getMarginString(vid.margin)};\"";
+                        s = $"style=\"height: {vid.height}%; width: {vid.width}%; margin: {getMarginString(vid.margin)};\"";
                     }
                     if (vid.showControls)
                     {
@@ -136,9 +152,9 @@ namespace WPC_Editor
                     string s = String.Empty;
                     string ro = String.Empty;
                     string Type = WidgetInput.types[Array.IndexOf(WidgetInput.rus_types, inp.type)];
-                    if (inp.useStyle == false)
+                    if (!inp.useStyle)
                     {
-                        s = $"style=\"font-size: {inp.fontSize.ToString()}px; font-family: {inp.fontFamily}; font-weight: {inp.fontWeight}; color: {inp.fontColorHEX.ToLower()}; background-color: {inp.backgroundColorHEX}; border-radius: {inp.backgroundRad}%; margin:  {getMarginString(inp.margin)};\"";
+                        s = $"style=\"font-size: {inp.fontSize.ToString()}px; font-family: {inp.fontFamily}; font-weight: {inp.fontWeight}; color: {inp.fontColorHEX.ToLower()}; background-color: {inp.backgroundColorHEX}; border-radius: {inp.backgroundRad}%; margin: {getMarginString(inp.margin)};\"";
                     }
                     if (inp.isReadonly)
                     {
@@ -153,11 +169,24 @@ namespace WPC_Editor
                     string els = getElementsAsTextFromGroup(ref grp);
                     if (!grp.useStyle)
                     {
-                        s = $"style=\"display: flex; background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]}; margin:  {getMarginString(grp.margin)};\"";
+                        s = $"style=\"display: flex; background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]}; margin: {getMarginString(grp.margin)};\"";
                     }
                     line = $"<{grp.HTML_TAG} class=\"{grp.name}\" {s}>" +
                         $"{els}" +
                         $"\n</{grp.HTML_TAG}>";
+                }
+                else if(widget is WidgetList)
+                {
+                    var list = widget as WidgetList;
+                    string s = String.Empty;
+                    string content = getListContent(ref list);
+                    if (!list.useStyle)
+                    {
+                        s = $"style=\"font-size: {list.fontSize.ToString()}px; font-family: {list.fontFamily}; font-weight: {list.fontWeight}; color: {list.fontColor.ToLower()}; background-color: {list.backgroundColor}; border-radius: {list.borderRadius}%; margin: {getMarginString(list.margin)};\"";
+                    }
+                    line = $"<{list.getHTML_TAG()} {s}>\n" +
+                        $"{content}" +
+                        $"</{list.getHTML_TAG()}>";
                 }
             }
             return line;

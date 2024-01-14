@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MessageBoxesWindows;
+using System.Collections.Generic;
 
 namespace WPC_Editor.Widgets
 {
@@ -48,12 +49,22 @@ namespace WPC_Editor.Widgets
 
         public void addContent(Widget widget)
         {
-            content.Add(widget);
+            if (widget is WidgetText || widget is WidgetImage || widget is WidgetVideo || widget is WidgetList || widget is WidgetButton)
+                content.Add(widget);
+            else
+            {
+                MessBox.showInfo($"Элемент \"{widget.tag}\" не может являться элементом списка!");
+            }
         }
 
         public void removeContent(Widget widget)
         {
             content.Remove(widget);
+        }
+
+        public bool doesContentExist(Widget widget)
+        {
+            return content.Contains(widget);
         }
 
     }

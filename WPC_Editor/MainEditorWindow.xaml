@@ -62,14 +62,28 @@
                 <ColumnDefinition MinWidth="60" Width="*"/>
                 <ColumnDefinition MinWidth="40" MaxWidth="290" Width="190"/>
             </Grid.ColumnDefinitions>
-            <TreeView x:Name="sceneTree" VirtualizingPanel.IsVirtualizing="True"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+                <TreeView x:Name="sceneTree" VirtualizingPanel.IsVirtualizing="True"
                       VirtualizingPanel.VirtualizationMode="Recycling" SelectedItemChanged="sceneTree_SelectedItemChanged">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding widgetsOfScene}">
-                        <TextBlock Text="{Binding listText}"/>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding widgetsOfScene}">
+                            <TextBlock Text="{Binding listText}"/>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <Border Grid.Row="1" Background="DarkGray" CornerRadius="5" Margin="0 3" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10 0">
+                        <Button Content="↑" Click="treeElementUpBtn_Click" FontSize="18" ToolTip="Переместить выбранный элемент вверх"/>
+                        <Button Content="↓" Click="treeElementDownBtn_Click" FontSize="18" ToolTip="Переместить выбранный элемент вниз"/>
+                        <Button Content="↳" Click="makeKidToElementBtn_Click" FontSize="18" ToolTip="Переместить выбранный элемент в список/группу, находящуюся ниже"/>
+                        <Button Content="↤" Click="leaveParentElementBtn_Click" FontSize="18" ToolTip="Переместить выбранный элемент в конец списка дочерних элементов родителя родителя выбранного элемента"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
             <GridSplitter/>
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="2" Margin="5" CornerRadius="2">
                 <Wpf:WebView2 x:Name="webCanvas" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.IsVirtualizing="True"/>

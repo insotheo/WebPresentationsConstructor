@@ -66,7 +66,7 @@ namespace WPC_Editor
                     inputTypeCB.Items.Add(type);
                 }
 
-                foreach(string option in WidgetGroup.justifying_rus)
+                foreach (string option in WidgetGroup.justifying_rus)
                 {
                     groupJustifyingCB.Items.Add(option);
                 }
@@ -104,11 +104,11 @@ namespace WPC_Editor
                 {
                     kid = new WidgetsTreeItem(widget);
                     parent.widgetsOfScene.Add(kid);
-                    if(widget is WidgetGroup)
+                    if (widget is WidgetGroup)
                     {
                         kidsToWidgetOfScene(ref kid, (widget as WidgetGroup).kids);
                     }
-                    else if(widget is WidgetList)
+                    else if (widget is WidgetList)
                     {
                         kidsToWidgetOfScene(ref kid, (widget as WidgetList).content);
                     }
@@ -128,6 +128,7 @@ namespace WPC_Editor
             }
             return null;
         }
+
 
         #region top buttons
 
@@ -252,7 +253,7 @@ namespace WPC_Editor
                         kidsToWidgetOfScene(ref selectedItem, group.kids);
                         refreshTreeview();
                     }
-                    else if(selectedItem.widget is WidgetList)
+                    else if (selectedItem.widget is WidgetList)
                     {
                         var list = selectedItem.widget as WidgetList;
                         if (newWidgetItem.widget is WidgetText || newWidgetItem.widget is WidgetImage || newWidgetItem.widget is WidgetVideo || newWidgetItem.widget is WidgetList || newWidgetItem.widget is WidgetButton)
@@ -279,16 +280,9 @@ namespace WPC_Editor
                         else if (parentItem != null && parentItem.widget is WidgetList)
                         {
                             var list = parentItem.widget as WidgetList;
-                            if (newWidgetItem.widget is WidgetText || newWidgetItem.widget is WidgetImage || newWidgetItem.widget is WidgetVideo || newWidgetItem.widget is WidgetList || newWidgetItem.widget is WidgetButton)
-                            {
-                                list.addContent(newWidgetItem.widget);
-                                kidsToWidgetOfScene(ref parentItem, list.content);
-                                refreshTreeview();
-                            }
-                            else
-                            {
-                                MessBox.showInfo($"Элемент \"{newWidgetItem.widget.tag}\" не может являться элементом списка!");
-                            }
+                            list.addContent(newWidgetItem.widget);
+                            kidsToWidgetOfScene(ref parentItem, list.content);
+                            refreshTreeview();
                         }
                         else
                         {
@@ -605,7 +599,7 @@ namespace WPC_Editor
                             widget.content = textContent.Text;
                             widget.fontFamily = textFontFamily.Text == String.Empty ? "Arial" : textFontFamily.Text;
                             widget.fontWeight = textFontWeight.Text == String.Empty ? "400" : textFontWeight.Text;
-                            widget.fontColorHEX = textFontColor.Text == String.Empty ? "#000000": textFontColor.Text;
+                            widget.fontColorHEX = textFontColor.Text == String.Empty ? "#000000" : textFontColor.Text;
                             widget.fontSize = textFontSize.Text == String.Empty ? 18 : int.Parse(textFontSize.Text);
                             widget.backgroundColorHEX = textBackgroundColor.Text == String.Empty ? "Transparent" : textBackgroundColor.Text;
                             widget.backgroundRad = textBackgroundRadius.Text == String.Empty ? "0" : textBackgroundRadius.Text;
@@ -860,7 +854,7 @@ namespace WPC_Editor
                 if (selectedItem != null)
                 {
                     var parentItem = FindParentItem(selectedItem, tree[0]);
-                    if(parentItem.widget is WidgetGroup && parentItem != null)
+                    if (parentItem.widget is WidgetGroup && parentItem != null)
                     {
                         var group = parentItem.widget as WidgetGroup;
                         group.removeKid(selectedItem.widget);
@@ -939,6 +933,198 @@ namespace WPC_Editor
                 groupBackColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(groupBackgroundColor.Text)));
             }
             catch { }
+        }
+
+        #endregion
+
+
+        #region under tree buttons
+        private void treeElementUpBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
+            if (selectedItem != null)
+            {
+                var parentItem = FindParentItem(selectedItem, tree[0]);
+                if (parentItem != null)
+                {
+                    var index = parentItem.widgetsOfScene.IndexOf(selectedItem);
+                    if (index > 0)
+                    {
+                        if (parentItem == tree[0])
+                        {
+                            tree[0].widgetsOfScene.RemoveAt(index);
+                            tree[0].widgetsOfScene.Insert(index - 1, selectedItem);
+                        }
+                        else
+                        {
+                            parentItem.widgetsOfScene.RemoveAt(index);
+                            parentItem.widgetsOfScene.Insert(index - 1, selectedItem);
+                            if (parentItem.widget is WidgetList)
+                            {
+                                var list = parentItem.widget as WidgetList;
+                                list.content.RemoveAt(index);
+                                list.content.Insert(index - 1, selectedItem.widget);
+                            }
+                            else if (parentItem.widget is WidgetGroup)
+                            {
+                                var group = parentItem.widget as WidgetGroup;
+                                group.kids.RemoveAt(index);
+                                group.kids.Insert(index - 1, selectedItem.widget);
+                            }
+                        }
+
+                        refreshTreeview();
+                    }
+                    else
+                    {
+                        MessBox.showInfo("Невозможно переместить этот элемент.");
+                    }
+                }
+            }
+        }
+
+        private void treeElementDownBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
+            if (selectedItem != null)
+            {
+                var parentItem = FindParentItem(selectedItem, tree[0]);
+                if (parentItem != null)
+                {
+                    var index = parentItem.widgetsOfScene.IndexOf(selectedItem);
+                    if (index < parentItem.widgetsOfScene.Count - 1)
+                    {
+                        if (parentItem == tree[0])
+                        {
+                            tree[0].widgetsOfScene.RemoveAt(index);
+                            tree[0].widgetsOfScene.Insert(index + 1, selectedItem);
+                        }
+                        else
+                        {
+                            parentItem.widgetsOfScene.RemoveAt(index);
+                            parentItem.widgetsOfScene.Insert(index + 1, selectedItem);
+                            if (parentItem.widget is WidgetList)
+                            {
+                                var list = parentItem.widget as WidgetList;
+                                list.content.RemoveAt(index);
+                                list.content.Insert(index + 1, selectedItem.widget);
+                            }
+                            else if (parentItem.widget is WidgetGroup)
+                            {
+                                var group = parentItem.widget as WidgetGroup;
+                                group.kids.RemoveAt(index);
+                                group.kids.Insert(index + 1, selectedItem.widget);
+                            }
+                        }
+
+                        refreshTreeview();
+
+                    }
+                    else
+                    {
+                        MessBox.showInfo("Невозможно переместить этот элемент.");
+                    }
+                }
+            }
+        }
+
+        private void makeKidToElementBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedTreeItem = sceneTree.SelectedItem as WidgetsTreeItem;
+            if (selectedTreeItem != null)
+            {
+                var parentTreeItem = FindParentItem(selectedTreeItem, tree[0]);
+                if (parentTreeItem != null)
+                {
+                    int index = Array.IndexOf(parentTreeItem.widgetsOfScene.ToArray(), selectedTreeItem) + 1;
+                    if (index != -1 && index < parentTreeItem.widgetsOfScene.Count)
+                    {
+                        var nextEl = parentTreeItem.widgetsOfScene[index];
+                        if (nextEl != null)
+                        {
+                            bool operationDone = false;
+                            if (nextEl.widget is WidgetGroup)
+                            {
+                                var group = nextEl.widget as WidgetGroup;
+                                group.addKid(selectedTreeItem.widget);
+                                operationDone = true;
+                            }
+                            else if (nextEl.widget is WidgetList)
+                            {
+                                var list = nextEl.widget as WidgetList;
+                                list.addContent(selectedTreeItem.widget);
+                                operationDone = list.doesContentExist(selectedTreeItem.widget);
+                            }
+
+                            if (operationDone)
+                            {
+                                parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
+                                if (nextEl.widget is WidgetGroup)
+                                {
+                                    var group = nextEl.widget as WidgetGroup;
+                                    kidsToWidgetOfScene(ref nextEl, group.kids);
+                                }
+                                else if (nextEl.widget is WidgetList)
+                                {
+                                    var list = nextEl.widget as WidgetList;
+                                    kidsToWidgetOfScene(ref nextEl, list.content);
+                                }
+                                refreshTreeview();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void leaveParentElementBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedTreeItem = sceneTree.SelectedItem as WidgetsTreeItem;
+            var parentTreeItem = FindParentItem(selectedTreeItem, tree[0]);
+
+            if (parentTreeItem != null)
+            {
+
+                var par = FindParentItem(parentTreeItem, tree[0]);
+                if (par != null)
+                {
+                    if (parentTreeItem.widget.tag == "body")
+                    {
+                        return;
+                    }
+
+                    else
+                    {
+                        if (parentTreeItem.widget is WidgetGroup)
+                        {
+                            (parentTreeItem.widget as WidgetGroup).removeKid(selectedTreeItem.widget);
+                            parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
+                        }
+                        else if (parentTreeItem.widget is WidgetList)
+                        {
+                            (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
+                            parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
+                        }
+                        par.widgetsOfScene.Add(selectedTreeItem);
+                        if (par != null && par.widget is WidgetGroup)
+                        {
+                            var group = par.widget as WidgetGroup;
+                            group.addKid(selectedTreeItem.widget);
+                            kidsToWidgetOfScene(ref par, group.kids);
+                            refreshTreeview();
+                        }
+                        else if (par != null && par.widget is WidgetList)
+                        {
+                            var list = par.widget as WidgetList;
+                            list.addContent(selectedTreeItem.widget);
+                            kidsToWidgetOfScene(ref par, list.content);
+                            refreshTreeview();
+                        }
+                    }
+
+                    refreshTreeview();
+                }
+            }
         }
 
         #endregion

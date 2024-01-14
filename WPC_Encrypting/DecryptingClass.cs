@@ -23,7 +23,7 @@ namespace WPC_Encrypting
             }
         }
 
-        public static string[] encryptString(string[] text)
+        public static string[] decryptString(string[] text)
         {
             if(text.Length != 0)
             {

@@ -54,7 +54,7 @@ namespace WPC_Editor
             createFileDialog = new SaveFileDialog()
             {
                 InitialDirectory = folder,
-                Filter = "Script(*.js)| *.js|Style(*.css)| *.css|Text(*.txt)| *.txt",
+                Filter = "Script(*.js)| *.js|Style(*.css)| *.css|Text(*.txt)| *.txt|HTML(*.html)| *.html",
                 AddExtension = true
             };
             createFileDialog.ShowDialog();
@@ -111,7 +111,7 @@ namespace WPC_Editor
             {
                 AddExtension = true,
                 Multiselect = false,
-                Filter = "Script(*.js)| *.js|Style(*.css)| *.css|Image(*.bmp, *.png, *.jpeg, *.jpg)| *.bmp; *.png; *.jpg; *.jpeg|Video(*.mp4, *.mov)| *.mp4; *.mov|Audio(*.mp3, *.wav, *.ogg)| *.mp3; *.wav; *.ogg|Text(*.txt)| *.txt|All(*.*)| *.*",
+                Filter = "Script(*.js)| *.js|Style(*.css)| *.css|Image(*.bmp, *.png, *.jpeg, *.jpg)| *.bmp; *.png; *.jpg; *.jpeg|Video(*.mp4, *.mov)| *.mp4; *.mov|Audio(*.mp3, *.wav, *.ogg)| *.mp3; *.wav; *.ogg|Text(*.txt)| *.txt|HTML(*.html)| *.html|All(*.*)| *.*",
                 InitialDirectory = Path.Combine("C:\\Users", Environment.UserName, "Documents")
             };
             importFileDialog.ShowDialog();

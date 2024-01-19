@@ -238,6 +238,9 @@ namespace WPC_Editor
                     case "Список":
                         newWidgetItem = new WidgetsTreeItem(new WidgetList());
                         break;
+                    case "HTML":
+                        newWidgetItem = new WidgetsTreeItem(new WidgetHtmlSource());
+                        break;
                 }
 
                 if (newWidgetItem != null)
@@ -549,6 +552,42 @@ namespace WPC_Editor
                             }
                             break;
 
+                        case "HTML Source":
+                            var htmlSrc = el.widget as WidgetHtmlSource;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.Visibility = Visibility.Visible;
+                            contentTabber.SelectedIndex = 8;
+                            propertiesTabber.Visibility = Visibility.Collapsed;
+                            propertiesTabber.SelectedIndex = 0;
+                            List<string> names = FilesWorker.getAllFilesByExt(assetsFolder, ".html");
+                            htmlFileCB.Items.Clear();
+                            foreach (string name in names)
+                            {
+                                htmlFileCB.Items.Add(name);
+                            }
+                            if (htmlSrc.type == WidgetHtmlSource.ContentTypeOfHtmlSource.text)
+                            {
+                                htmlSourceTextBox.Text = htmlSrc.content;
+                                htmlContentTabber.SelectedIndex = 0;
+                            }
+                            else
+                            {
+                                htmlContentTabber.SelectedIndex = 1;
+                                if(htmlSrc != null)
+                                {
+                                    int index = Array.IndexOf(names.ToArray(), htmlSrc.content);
+                                    if (htmlSrc.content != null && index == -1)
+                                    {
+                                        htmlSrc.content = String.Empty;
+                                    }
+                                    else
+                                    {
+                                        htmlFileCB.SelectedIndex = index;
+                                    }
+                                }
+                            }
+                            break;
+
                         case "body":
                             removeElementBtn.IsEnabled = false;
                             propertiesTabber.SelectedIndex = 0;
@@ -806,6 +845,22 @@ namespace WPC_Editor
                         groupRadius.Text = String.Empty;
                         groupMargin.Text = String.Empty;
                         groupBackgroundColor.Text = String.Empty;
+                        break;
+
+                    case "HTML Source":
+                        var htmlSrc = el.widget as WidgetHtmlSource;
+                        if(htmlContentTabber.SelectedIndex == 0)
+                        {
+                            htmlSrc.content = htmlSourceTextBox.Text;
+                            htmlSrc.type = WidgetHtmlSource.ContentTypeOfHtmlSource.text;
+                        }
+                        else
+                        {
+                            htmlSrc.type = WidgetHtmlSource.ContentTypeOfHtmlSource.file;
+                            htmlSrc.content = htmlFileCB.SelectedItem == null ? "" : htmlFileCB.SelectedItem.ToString();
+                        }
+                        htmlSourceTextBox.Text = String.Empty;
+                        htmlFileCB.Items.Clear();
                         break;
 
                     case "Список":

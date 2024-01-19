@@ -188,6 +188,24 @@ namespace WPC_Editor
                         $"{content}" +
                         $"</{list.getHTML_TAG()}>";
                 }
+                else if(widget is WidgetHtmlSource)
+                {
+                    var html = widget as WidgetHtmlSource;
+                    if(html.type == WidgetHtmlSource.ContentTypeOfHtmlSource.text)
+                    {
+                        line = html.content;
+                    }
+                    else
+                    {
+                        if(html.content != null)
+                        {
+                            if (File.Exists(Path.Combine(assetsFolder, html.content)))
+                            {
+                                line = File.ReadAllText(Path.Combine(assetsFolder, html.content));
+                            }
+                        }
+                    }
+                }
             }
             return line;
         }

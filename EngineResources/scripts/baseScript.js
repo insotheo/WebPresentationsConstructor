@@ -1,3 +1,4 @@
+//THIS SCRIPT MADE BY WebPresentationsBuilder Insotheo(c) 2024
 
 //_EDITOR::FUNCTIONS::TYPES::EVENT
 function say(message){

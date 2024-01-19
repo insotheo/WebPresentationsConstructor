@@ -249,7 +249,7 @@ namespace WPC_Editor
             FileStream indexHTML = File.Create(Path.Combine(cacheFolder, "INDEX.html"));
             indexHTML.Close();
 
-            string finalText = "<!DOCTYPE html>" +
+            string finalText = $"<!DOCTYPE html>\n<!-- Made with WebPresentationsConstructor {DateTime.Now.Year} -->\n<!-- https://github.com/insotheo/WebPresentationsConstructor -->" +
                 $"\n<html lang=\"{config.language}\">" +
                 "\n<head>" +
                 $"\n<title>{config.title}</title>" +

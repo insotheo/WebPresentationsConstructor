@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="JavaScriptWorker.cs" />
     <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetBody.cs" />
     <Compile Include="Widgets\WidgetButton.cs" />
     <Compile Include="Widgets\WidgetGroup.cs" />
     <Compile Include="Widgets\WidgetHtmlSource.cs" />

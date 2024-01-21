@@ -58,7 +58,7 @@ namespace WPC_Editor
                 homePage = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
                 webCanvas.Source = homePage;
 
-                tree.Add(new WidgetsTreeItem(new Widget() { name = "CanvasBody", tag = "body", HTML_TAG = "body" }));
+                tree.Add(new WidgetsTreeItem(new WidgetBody()));
                 sceneTree.ItemsSource = tree;
 
                 foreach (string type in WidgetInput.rus_types)

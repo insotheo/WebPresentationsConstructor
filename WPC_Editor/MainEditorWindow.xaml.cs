@@ -71,6 +71,16 @@ namespace WPC_Editor
                     groupJustifyingCB.Items.Add(option);
                 }
 
+                foreach(string option in WidgetBody.imageSize_rus)
+                {
+                    bodyImageSizeCB.Items.Add(option);
+                }
+
+                foreach (string option in WidgetBody.imageRepeat_rus)
+                {
+                    bodyImageRepeatCB.Items.Add(option);
+                }
+
                 GC.Collect();
             }
             catch (Exception ex)
@@ -173,7 +183,7 @@ namespace WPC_Editor
                 this.IsEnabled = false;
                 holdOnWindow.Show();
                 //webCanvas.Source = new Uri("about:blank");
-                await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config));
+                await Task.Run(() => builder.fastBuild(tree[0].widgetsOfScene, ref config, tree[0].widget as WidgetBody));
                 holdOnWindow.Close();
                 this.IsEnabled = true;
                 webCanvas.Source = homePage;
@@ -589,11 +599,51 @@ namespace WPC_Editor
                             break;
 
                         case "body":
+                            var body = el.widget as WidgetBody;
                             removeElementBtn.IsEnabled = false;
-                            propertiesTabber.SelectedIndex = 0;
                             contentTabber.SelectedIndex = 0;
-                            propertiesTabber.Visibility = Visibility.Collapsed;
                             contentTabber.Visibility = Visibility.Collapsed;
+                            if (!body.useStyle)
+                            {
+                                backPhotoFilesCB.Items.Clear();
+                                List<string> files2 = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".bmp", ".png", ".jpeg", ".jpg" });
+                                foreach (string file in files2)
+                                {
+                                    backPhotoFilesCB.Items.Add(file);
+                                }
+                                propertiesTabber.SelectedIndex = 6;
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                if(body.type == WidgetBody.CommonType.color)
+                                {
+                                    bodyFillTypeTabber.SelectedIndex = 0;
+                                    pageBackgroudColorTB.Text = body.color;
+                                }
+                                else
+                                {
+                                    bodyFillTypeTabber.SelectedIndex = 1;
+                                    if(body.photoType == WidgetBody.PhotoType.link)
+                                    {
+                                        bodyImageTypeTabber.SelectedIndex = 0;
+                                        backPhotoLinkTB.Text = body.imageHref;
+                                    }
+                                    else
+                                    {
+                                        bodyImageTypeTabber.SelectedIndex = 1;
+                                        int index = Array.IndexOf(files2.ToArray(), body.imageHref);
+                                        if (body.imageHref != null && index != -1)
+                                        {
+                                            backPhotoFilesCB.SelectedIndex = index;
+                                        }
+                                        else
+                                        {
+                                            body.imageHref = null;
+                                        }
+                                    }
+                                    bodyBackImageBlurTB.Text = body.blurRadius;
+                                    bodyImageSizeCB.SelectedIndex = body.imageSize != null ? Array.IndexOf(WidgetBody.imageSize_rus, body.imageSize) : 0;
+                                    bodyImageRepeatCB.SelectedIndex = body.imageRepeat != null ? Array.IndexOf(WidgetBody.imageRepeat_rus, body.imageRepeat) : 0;
+                                }
+                            }
                             break;
 
                         case "Перенос":
@@ -890,6 +940,43 @@ namespace WPC_Editor
                         textMargin.Text = String.Empty;
                         break;
 
+                    case "body":
+                        var body = el.widget as WidgetBody;
+                        if (isElUseCSS.IsChecked == false)
+                        {
+                            body.useStyle = false;
+                            if (bodyFillTypeTabber.SelectedIndex == 0)
+                            {
+                                body.color = pageBackgroudColorTB.Text == String.Empty ? "#ffffff" : pageBackgroudColorTB.Text;
+                                body.type = WidgetBody.CommonType.color;
+                            }
+                            else
+                            {
+                                body.type = WidgetBody.CommonType.photo;
+                                if (bodyImageTypeTabber.SelectedIndex == 0)
+                                {
+                                    body.photoType = WidgetBody.PhotoType.link;
+                                    body.imageHref = backPhotoLinkTB.Text;
+                                }
+                                else
+                                {
+                                    body.photoType = WidgetBody.PhotoType.image;
+                                    body.imageHref = backPhotoFilesCB.SelectedItem == null ? "" : backPhotoFilesCB.SelectedItem.ToString();
+                                }
+                                body.blurRadius = bodyBackImageBlurTB.Text == String.Empty ? "0" : bodyBackImageBlurTB.Text;
+                                body.imageSize = WidgetBody.imageSize_rus[bodyImageSizeCB.SelectedIndex < 0 ? 0 : bodyImageSizeCB.SelectedIndex];
+                                body.imageRepeat = WidgetBody.imageRepeat_rus[bodyImageRepeatCB.SelectedIndex < 0 ? 0 : bodyImageRepeatCB.SelectedIndex];
+                            }
+                        }
+                        else
+                        {
+                            body.useStyle = true;
+                        }
+                        pageBackgroudColorTB.Text = String.Empty;
+                        backPhotoLinkTB.Text = String.Empty;
+                        bodyBackImageBlurTB.Text = String.Empty;
+                        break;
+
                     default: break;
                 }
 
@@ -986,6 +1073,15 @@ namespace WPC_Editor
             try
             {
                 groupBackColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(groupBackgroundColor.Text)));
+            }
+            catch { }
+        }
+
+        private void pageBackgroudColorTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                pageBackColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(pageBackgroudColorTB.Text)));
             }
             catch { }
         }

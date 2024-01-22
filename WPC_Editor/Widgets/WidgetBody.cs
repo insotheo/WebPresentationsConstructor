@@ -39,6 +39,7 @@
             HTML_TAG = "body";
             type = CommonType.color;
             photoType = PhotoType.link;
+            useStyle = false;
 
             color = "#ffffff";
 

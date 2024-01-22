@@ -378,7 +378,39 @@
                                         </Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                
+                                <TabControl x:Name="bodyFillTypeTabber">
+                                    <TabItem Header="Цвет">
+                                        <StackPanel>
+                                            <TextBlock Text="Цвет фона"/>
+                                            <TextBox x:Name="pageBackgroudColorTB" TextChanged="pageBackgroudColorTB_TextChanged"/>
+                                            <Rectangle x:Name="pageBackColor" Width="15" Height="15"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Фото">
+                                        <StackPanel>
+                                            <TabControl x:Name="bodyImageTypeTabber">
+                                                <TabItem Header="Ссылка">
+                                                    <StackPanel>
+                                                        <TextBlock Text="Ссылка на фото"/>
+                                                        <TextBox x:Name="backPhotoLinkTB"/>
+                                                    </StackPanel>
+                                                </TabItem>
+                                                <TabItem Header="Файл">
+                                                    <StackPanel>
+                                                        <TextBlock Text="Файл"/>
+                                                        <ComboBox x:Name="backPhotoFilesCB"/>
+                                                    </StackPanel>
+                                                </TabItem>
+                                            </TabControl>
+                                            <TextBlock Text="Размытие px"/>
+                                            <TextBox x:Name="bodyBackImageBlurTB"/>
+                                            <TextBlock Text="Размер"/>
+                                            <ComboBox x:Name="bodyImageSizeCB"/>
+                                            <TextBlock Text="Повтор"/>
+                                            <ComboBox x:Name="bodyImageRepeatCB"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                </TabControl>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

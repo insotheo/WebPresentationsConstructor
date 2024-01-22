@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using WPC_Editor.Widgets;
 
 namespace WPC_Editor
@@ -113,7 +114,7 @@ namespace WPC_Editor
                     {
                         if (File.Exists(Path.Combine(assetsFolder, img.href)))
                         {
-                            File.Copy(Path.Combine(assetsFolder, img.href), Path.Combine(cacheFolder, img.href));
+                            File.Copy(Path.Combine(assetsFolder, img.href), Path.Combine(cacheFolder, img.href), true);
                         }
                     }
                     line = $"<{img.HTML_TAG} id=\"{img.name}\" src=\"{img.href}\" {s}>";
@@ -242,7 +243,7 @@ namespace WPC_Editor
             }
         }
 
-        public void fastBuild(List<WidgetsTreeItem> list, ref ConfigWorker config)
+        public void fastBuild(List<WidgetsTreeItem> list, ref ConfigWorker config, WidgetBody body)
         {
             Directory.Delete(cacheFolder, true);
             Directory.CreateDirectory(cacheFolder);
@@ -254,6 +255,36 @@ namespace WPC_Editor
                 "\n<head>" +
                 $"\n<title>{config.title}</title>" +
                 $"\n<meta charset=\"{config.charset.ToLower()}\">";
+
+            if(body.type == WidgetBody.CommonType.photo && body.photoType == WidgetBody.PhotoType.image)
+            {
+                if (File.Exists(Path.Combine(assetsFolder, body.imageHref)))
+                {
+                    File.Copy(Path.Combine(assetsFolder, body.imageHref), Path.Combine(cacheFolder, body.imageHref));
+                }
+            }
+
+            string bodyString = String.Empty;
+
+            if (body.useStyle)
+            {
+                bodyString = "<body>";
+            }
+            else
+            {
+                string s = String.Empty;
+
+                if(body.type == WidgetBody.CommonType.color)
+                {
+                    s = $"style=\"background-color: {body.color}\"";
+                }
+                else
+                {
+                    s = $"style=\"background-image: url('{body.imageHref}'); backdrop-filter: blur({body.blurRadius}px); background-size: {WidgetBody.imageSize_eng[Array.IndexOf(WidgetBody.imageSize_rus, body.imageSize)]}; background-repeat: {WidgetBody.imageRepeat_eng[Array.IndexOf(WidgetBody.imageRepeat_rus, body.imageRepeat)]};\"";
+                }
+
+                bodyString = $"<body {s}>";
+            }
 
             if (config.usingStyles.Count > 0)
             {
@@ -294,7 +325,7 @@ namespace WPC_Editor
                 }
             }
 
-            finalText += "\n</head>\n<body>";
+            finalText += $"\n</head>\n{bodyString}";
             foreach (WidgetsTreeItem el in list)
             {
                 string line = "";

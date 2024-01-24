@@ -71,7 +71,12 @@ namespace WPC_Editor
                     groupJustifyingCB.Items.Add(option);
                 }
 
-                foreach(string option in WidgetBody.imageSize_rus)
+                foreach (string option in WidgetGroup.flexDir_rus)
+                {
+                    groupElementFlexDirectionCB.Items.Add(option);
+                }
+
+                foreach (string option in WidgetBody.imageSize_rus)
                 {
                     bodyImageSizeCB.Items.Add(option);
                 }
@@ -425,7 +430,7 @@ namespace WPC_Editor
                             imageFilesCB.Items.Clear();
                             removeElementBtn.IsEnabled = true;
                             contentTabber.Visibility = Visibility.Visible;
-                            List<string> files = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".bmp", ".png", ".jpeg", ".jpg" });
+                            List<string> files = FilesWorker.getAllFilesByExt(assetsFolder, FilesWorker.imgExtensions);
                             foreach (string file in files)
                             {
                                 imageFilesCB.Items.Add(file);
@@ -444,6 +449,7 @@ namespace WPC_Editor
                                 propertiesTabber.SelectedIndex = 3;
                                 imageWidth.Text = widgetImg.width;
                                 imageHeight.Text = widgetImg.height;
+                                imageBlurRadius.Text = widgetImg.blur;
                                 imageRadius.Text = widgetImg.radius;
                                 imageRotAngle.Text = widgetImg.rotationAngle;
                                 ImageContentSelector.SelectedIndex = widgetImg.contentType == 'f' ? 0 : 1;
@@ -526,9 +532,11 @@ namespace WPC_Editor
                                 propertiesTabber.Visibility = Visibility.Visible;
                                 propertiesTabber.SelectedIndex = 5;
                                 groupJustifyingCB.SelectedIndex = Array.IndexOf(WidgetGroup.justifying_rus, groupWidget.justifyContent);
+                                groupElementFlexDirectionCB.SelectedIndex = Array.IndexOf(WidgetGroup.flexDir_rus, groupWidget.flexDirection);
                                 groupBackgroundColor.Text = groupWidget.backgroundColorHEX;
                                 groupRadius.Text = groupWidget.radius;
                                 groupMargin.Text = groupWidget.margin;
+                                isGroupFlexCB.IsChecked = groupWidget.isFlex;
                             }
                             else
                             {
@@ -606,7 +614,7 @@ namespace WPC_Editor
                             if (!body.useStyle)
                             {
                                 backPhotoFilesCB.Items.Clear();
-                                List<string> files2 = FilesWorker.getAllFilesByExt(assetsFolder, new string[] { ".bmp", ".png", ".jpeg", ".jpg" });
+                                List<string> files2 = FilesWorker.getAllFilesByExt(assetsFolder, FilesWorker.imgExtensions);
                                 foreach (string file in files2)
                                 {
                                     backPhotoFilesCB.Items.Add(file);
@@ -797,6 +805,7 @@ namespace WPC_Editor
                             widgetImg.radius = imageRadius.Text == String.Empty ? "0" : imageRadius.Text;
                             widgetImg.height = imageHeight.Text == String.Empty ? "100" : imageHeight.Text;
                             widgetImg.width = imageWidth.Text == String.Empty ? "100" : imageWidth.Text;
+                            widgetImg.blur = imageBlurRadius.Text == String.Empty ? "0" : imageBlurRadius.Text;
                             widgetImg.rotationAngle = imageRotAngle.Text == String.Empty ? "0" : imageRotAngle.Text;
                             widgetImg.margin = imageMargin.Text == String.Empty ? "0 0 0 0" : imageMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
@@ -819,6 +828,7 @@ namespace WPC_Editor
                         imageRadius.Text = String.Empty;
                         imageHeight.Text = String.Empty;
                         imageMargin.Text = String.Empty;
+                        imageBlurRadius.Text = String.Empty;
                         imageWidth.Text = String.Empty;
                         imageRotAngle.Text = String.Empty;
                         break;
@@ -883,7 +893,9 @@ namespace WPC_Editor
                         if (isElUseCSS.IsChecked == false)
                         {
                             groupWidget.useStyle = false;
+                            groupWidget.isFlex = (bool)isGroupFlexCB.IsChecked;
                             groupWidget.justifyContent = WidgetGroup.justifying_rus[groupJustifyingCB.SelectedIndex];
+                            groupWidget.flexDirection = WidgetGroup.flexDir_rus[groupElementFlexDirectionCB.SelectedIndex];
                             groupWidget.backgroundColorHEX = groupBackgroundColor.Text == String.Empty ? "Transparent" : groupBackgroundColor.Text;
                             groupWidget.radius = groupRadius.Text == String.Empty ? "0" : groupRadius.Text;
                             groupWidget.margin = groupMargin.Text == String.Empty ? "0 0 0 0" : groupMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);

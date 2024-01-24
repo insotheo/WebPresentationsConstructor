@@ -5,6 +5,8 @@ namespace WPC_Editor
 {
     static class FilesWorker
     {
+        public static readonly string[] imgExtensions = new string[] { ".bmp", ".png", ".jpeg", ".jpg" };
+
         public static List<string> getAllScripts(string assetsFolderPath)
         {
             List<string> scriptsNames = new List<string>();

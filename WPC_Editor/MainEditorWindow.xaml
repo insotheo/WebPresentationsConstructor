@@ -322,6 +322,8 @@
                                 <TextBox x:Name="imageRadius"/>
                                 <TextBlock Text="Угол наклона °"/>
                                 <TextBox x:Name="imageRotAngle"/>
+                                <TextBlock Text="Размытие px"/>
+                                <TextBox x:Name="imageBlurRadius"/>
                                 <TextBlock Text="Отступы px [T R B L]"/>
                                 <TextBox x:Name="imageMargin"/>
                             </StackPanel>
@@ -343,10 +345,14 @@
                                 <Rectangle Width="15" Height="15" x:Name="groupBackColorPreview"/>
                                 <TextBlock Text="Радиус %"/>
                                 <TextBox x:Name="groupRadius"/>
-                                <TextBlock Text="Выравнивание"/>
-                                <ComboBox x:Name="groupJustifyingCB"/>
                                 <TextBlock Text="Отступы px [T R B L]"/>
                                 <TextBox x:Name="groupMargin"/>
+                                <CheckBox Content="flex" Foreground="White" x:Name="isGroupFlexCB" ToolTip="Если здесь не будет стоять галочка, то flex-свойства не будут использоваться"/>
+                                <TextBlock Text="~Flex-свойства" FontSize="22" FontWeight="Bold"/>
+                                <TextBlock Text="Выравнивание"/>
+                                <ComboBox x:Name="groupJustifyingCB"/>
+                                <TextBlock Text="Направление элементов"/>
+                                <ComboBox x:Name="groupElementFlexDirectionCB"/>
                             </StackPanel>
                         </TabItem>
                         <TabItem Header="Body content">
@@ -402,7 +408,7 @@
                                                     </StackPanel>
                                                 </TabItem>
                                             </TabControl>
-                                            <TextBlock Text="Размытие px"/>
+                                            <TextBlock Text="Размытие за виджетами px"/>
                                             <TextBox x:Name="bodyBackImageBlurTB"/>
                                             <TextBlock Text="Размер"/>
                                             <ComboBox x:Name="bodyImageSizeCB"/>

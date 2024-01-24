@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using WPC_Editor.Widgets;
 
 namespace WPC_Editor
@@ -69,7 +68,7 @@ namespace WPC_Editor
                     string s = String.Empty;
                     if (!widget.useStyle)
                     {
-                        s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: {text.fontFamily}; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%; margin: {getMarginString(text.margin)};\"";
+                        s = $"style=\"font-size: {text.fontSize.ToString()}px; font-family: '{text.fontFamily}'; font-weight: {text.fontWeight}; color: {text.fontColorHEX.ToLower()}; background-color: {text.backgroundColorHEX}; border-radius: {text.backgroundRad}%; margin: {getMarginString(text.margin)};\"";
                     }
                     line = $"<{widget.HTML_TAG} id=\"{text.name}\" {s}>{(widget as WidgetText).content}</{widget.HTML_TAG}>";
                 }
@@ -79,7 +78,7 @@ namespace WPC_Editor
                     string s = String.Empty;
                     if (!widget.useStyle)
                     {
-                        s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: {link.fontFamily}; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%; margin: {getMarginString(link.margin)};\"";
+                        s = $"style=\"font-size: {link.fontSize.ToString()}px; font-family: '{link.fontFamily}'; font-weight: {link.fontWeight}; color: {link.fontColorHEX.ToLower()}; background-color: {link.backgroundColorHEX}; border-radius: {link.backgroundRad}%; margin: {getMarginString(link.margin)};\"";
                     }
                     line = $"<{link.HTML_TAG} id=\"{link.name}\" href=\"{link.href}\" {s}>{link.content}</{link.HTML_TAG}>";
                 }
@@ -94,7 +93,10 @@ namespace WPC_Editor
                     }
                     if (button.onclick != null)
                     {
-                        oc = $"onclick=\"{button.onclick.Trim()}({button.arguments})\"";
+                        if (button.onclick != String.Empty)
+                        {
+                            oc = $"onclick=\"{button.onclick.Trim()}({button.arguments})\"";
+                        }
                     }
                     line = $"<{button.HTML_TAG} id=\"{button.name}\" {oc} {s}>{button.content}</{button.HTML_TAG}>";
                 }
@@ -108,7 +110,7 @@ namespace WPC_Editor
                     string s = String.Empty;
                     if (!img.useStyle)
                     {
-                        s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%; margin: {getMarginString(img.margin)};\"";
+                        s = $"style=\"height: {img.height}%; width: {img.width}%; rotate: {img.rotationAngle}deg; border-radius: {img.radius}%; margin: {getMarginString(img.margin)}; filter: blur({img.blur}px);\"";
                     }
                     if (img.contentType == 'f')
                     {
@@ -170,7 +172,12 @@ namespace WPC_Editor
                     string els = getElementsAsTextFromGroup(ref grp);
                     if (!grp.useStyle)
                     {
-                        s = $"style=\"display: flex; background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]}; margin: {getMarginString(grp.margin)};\"";
+                        string flex = String.Empty;
+                        if (grp.isFlex)
+                        {
+                            flex = $"display: flex; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]}; flex-direction: {WidgetGroup.flexDir[Array.IndexOf(WidgetGroup.flexDir_rus, grp.flexDirection)]};";
+                        }
+                        s = $"style=\"{flex} background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; margin: {getMarginString(grp.margin)};\"";
                     }
                     line = $"<{grp.HTML_TAG} class=\"{grp.name}\" {s}>" +
                         $"{els}" +

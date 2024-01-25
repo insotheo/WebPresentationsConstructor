@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="WebPresentationsConstructor -> Editor[pname]"
         Height="700" Width="1000"
+        Icon="./WPC_logo.ico"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource windowBackColor}">
     <Grid>

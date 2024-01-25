@@ -9,6 +9,7 @@
         Height="400" Width="700"
         WindowStartupLocation="CenterScreen"
         MinHeight="300" MinWidth="550"
+        Icon="./WPC_logo.ico"
         Background="{StaticResource backWindow}">
     <Grid>
         <Grid.RowDefinitions>

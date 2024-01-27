@@ -265,6 +265,12 @@
                                 </TabControl>
                             </StackPanel>
                         </TabItem>
+                        <TabItem>
+                            <StackPanel>
+                                <TextBlock Text="Повторить"/>
+                                <TextBox x:Name="nextLineRepeatTB"/>
+                            </StackPanel>
+                        </TabItem>
                     </TabControl>
                     <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Visible">
                         <TabItem/>

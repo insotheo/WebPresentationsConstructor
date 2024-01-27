@@ -655,6 +655,14 @@ namespace WPC_Editor
                             break;
 
                         case "Перенос":
+                            var nlWidget = el.widget as WidgetNextLine;
+                            propertiesTabber.SelectedIndex = 0;
+                            propertiesTabber.Visibility = Visibility.Collapsed;
+                            contentTabber.Visibility = Visibility.Visible;
+                            contentTabber.SelectedIndex = 9;
+                            nextLineRepeatTB.Text = nlWidget.repeatTime.ToString();
+                            break;
+
                         default:
                             removeElementBtn.IsEnabled = true;
                             propertiesTabber.SelectedIndex = 0;
@@ -950,6 +958,17 @@ namespace WPC_Editor
                         textBackgroundColor.Text = String.Empty;
                         textBackgroundRadius.Text = String.Empty;
                         textMargin.Text = String.Empty;
+                        break;
+
+                    case "Перенос":
+                        var nlWidget = el.widget as WidgetNextLine;
+                        int repeatTime = int.Parse(nextLineRepeatTB.Text);
+                        if(repeatTime < 0)
+                        {
+                            repeatTime = 1;
+                        }
+                        nlWidget.repeatTime = repeatTime;
+                        nextLineRepeatTB.Text = String.Empty;
                         break;
 
                     case "body":

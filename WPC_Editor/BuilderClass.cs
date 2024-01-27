@@ -102,7 +102,19 @@ namespace WPC_Editor
                 }
                 else if (widget is WidgetNextLine)
                 {
-                    line = $"<{(widget as WidgetNextLine).HTML_TAG}>";
+                    var nextLine = widget as WidgetNextLine;
+                    for (int i = 0; i < nextLine.repeatTime; i++)
+                    {
+                        if (i + 1 == nextLine.repeatTime)
+                        {
+                            line += $"<{(widget as WidgetNextLine).HTML_TAG}>";
+                        }
+                        else
+                        {
+                            line += $"<{(widget as WidgetNextLine).HTML_TAG}>\n";
+                        }
+                    }
+
                 }
                 else if (widget is WidgetImage)
                 {

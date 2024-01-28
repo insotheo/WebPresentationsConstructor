@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using WPC_Editor.Widgets;
+using WPC_Editor.DataWorkerClasses;
 
 namespace WPC_Editor
 {
@@ -28,6 +29,7 @@ namespace WPC_Editor
         private BuilderClass builder;
         private HoldOnWindow holdOnWindow;
         private Uri homePage;
+        private DataWorker dataWorker;
 
         public MainEditorWindow()
         {
@@ -53,6 +55,8 @@ namespace WPC_Editor
                 }
 
                 this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}");
+
+                dataWorker = new DataWorker(assetsFolder);
 
                 builder.Init(ref config);
                 homePage = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
@@ -208,6 +212,11 @@ namespace WPC_Editor
         private void openHomePageForWebCanvasBtn_Click(object sender, RoutedEventArgs e)
         {
             goHomeOnWebcanvas();
+        }
+
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            dataWorker.save(tree);
         }
 
         #endregion

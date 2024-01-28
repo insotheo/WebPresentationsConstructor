@@ -44,6 +44,11 @@ namespace WPC_Editor
                     extensionColor = Brushes.MediumPurple;
                     break;
 
+                case "WPCSAVE":
+                    extensionColor = Brushes.Aqua;
+                    extensionOfFile = "СТР.";
+                    break;
+
                 default:
                     extensionColor = Brushes.White;
                     break;

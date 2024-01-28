@@ -300,7 +300,7 @@ namespace WPC_Editor
                 }
                 else
                 {
-                    s = $"style=\"background-image: url('{body.imageHref}'); backdrop-filter: blur({body.blurRadius}px); background-size: {WidgetBody.imageSize_eng[Array.IndexOf(WidgetBody.imageSize_rus, body.imageSize)]}; background-repeat: {WidgetBody.imageRepeat_eng[Array.IndexOf(WidgetBody.imageRepeat_rus, body.imageRepeat)]};\"";
+                    s = $"style=\"background-image: url('{body.imageHref}'); backdrop-filter: blur({body.blurRadius}px) invert({body.invertRadius}); background-size: {WidgetBody.imageSize_eng[Array.IndexOf(WidgetBody.imageSize_rus, body.imageSize)]}; background-repeat: {WidgetBody.imageRepeat_eng[Array.IndexOf(WidgetBody.imageRepeat_rus, body.imageRepeat)]};\"";
                 }
 
                 bodyString = $"<body {s}>";

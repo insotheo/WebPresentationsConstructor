@@ -417,6 +417,8 @@
                                             </TabControl>
                                             <TextBlock Text="Размытие за виджетами px"/>
                                             <TextBox x:Name="bodyBackImageBlurTB"/>
+                                            <TextBlock Text="Инверсия за виджетами px"/>
+                                            <TextBox x:Name="bodyBackInvertTB"/>
                                             <TextBlock Text="Размер"/>
                                             <ComboBox x:Name="bodyImageSizeCB"/>
                                             <TextBlock Text="Повтор"/>

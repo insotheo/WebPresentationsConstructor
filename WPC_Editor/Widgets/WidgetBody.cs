@@ -29,6 +29,7 @@
         //image properties
         public string imageHref;
         public string blurRadius;
+        public string invertRadius;
         public string imageSize;
         public string imageRepeat;
 
@@ -45,6 +46,7 @@
 
             imageHref = "";
             blurRadius = "0";
+            invertRadius = "0";
             imageSize = imageSize_rus[1];
             imageRepeat = imageRepeat_rus[2];
         }

@@ -648,6 +648,7 @@ namespace WPC_Editor
                                         }
                                     }
                                     bodyBackImageBlurTB.Text = body.blurRadius;
+                                    bodyBackInvertTB.Text = body.invertRadius;
                                     bodyImageSizeCB.SelectedIndex = body.imageSize != null ? Array.IndexOf(WidgetBody.imageSize_rus, body.imageSize) : 0;
                                     bodyImageRepeatCB.SelectedIndex = body.imageRepeat != null ? Array.IndexOf(WidgetBody.imageRepeat_rus, body.imageRepeat) : 0;
                                 }
@@ -995,6 +996,7 @@ namespace WPC_Editor
                                     body.imageHref = backPhotoFilesCB.SelectedItem == null ? "" : backPhotoFilesCB.SelectedItem.ToString();
                                 }
                                 body.blurRadius = bodyBackImageBlurTB.Text == String.Empty ? "0" : bodyBackImageBlurTB.Text;
+                                body.invertRadius = bodyBackInvertTB.Text == String.Empty ? "0" : bodyBackInvertTB.Text;
                                 body.imageSize = WidgetBody.imageSize_rus[bodyImageSizeCB.SelectedIndex < 0 ? 0 : bodyImageSizeCB.SelectedIndex];
                                 body.imageRepeat = WidgetBody.imageRepeat_rus[bodyImageRepeatCB.SelectedIndex < 0 ? 0 : bodyImageRepeatCB.SelectedIndex];
                             }

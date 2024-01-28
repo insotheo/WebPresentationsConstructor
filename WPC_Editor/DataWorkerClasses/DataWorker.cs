@@ -69,5 +69,24 @@ namespace WPC_Editor.DataWorkerClasses
             }
             saver.save(tree[0].widget as WidgetBody, tree[0].widgetsOfScene, Path.Combine(assetsFolder, currentPage));
         }
+
+        public List<WidgetsTreeItem> load(string pageName)
+        {
+            string path = Path.Combine(assetsFolder, pageName);
+            if(!File.Exists(path))
+            {
+                throw new Exception("Файл не существует!");
+            }
+            WidgetBodySaveData wpsd = loader.load(path);
+            List<WidgetsTreeItem> loadedTree = new List<WidgetsTreeItem>();
+            loadedTree.Add(new WidgetsTreeItem(wpsd.body));
+            List<WidgetsTreeItem> loadedWidgets = new List<WidgetsTreeItem>();
+            foreach(WidgetSaveData data in wpsd.widgets)
+            {
+                loadedWidgets.Add(new WidgetsTreeItem(data.getByName()));
+            }
+            loadedTree[0].widgetsOfScene = loadedWidgets;
+            return loadedTree;
+        }
     }
 }

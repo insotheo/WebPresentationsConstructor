@@ -54,6 +54,9 @@
     <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.2210.55, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2210.55\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -96,6 +99,7 @@
     <Compile Include="JavaScriptWorker.cs" />
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetBody.cs" />
+    <Compile Include="Widgets\WidgetBodySaveData.cs" />
     <Compile Include="Widgets\WidgetButton.cs" />
     <Compile Include="Widgets\WidgetGroup.cs" />
     <Compile Include="Widgets\WidgetHtmlSource.cs" />
@@ -104,6 +108,7 @@
     <Compile Include="Widgets\WidgetLink.cs" />
     <Compile Include="Widgets\WidgetList.cs" />
     <Compile Include="Widgets\WidgetNextLine.cs" />
+    <Compile Include="Widgets\WidgetSaveData.cs" />
     <Compile Include="Widgets\WidgetsTreeItem.cs" />
     <Compile Include="Widgets\WidgetText.cs" />
     <Compile Include="Widgets\WidgetVideo.cs" />

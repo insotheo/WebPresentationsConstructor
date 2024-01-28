@@ -95,6 +95,7 @@
             <ListBox Grid.Column="1" x:Name="filesLB"
                      Background="Transparent"
                      BorderThickness="0"
+                     MouseDoubleClick="filesLB_MouseDoubleClick"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>

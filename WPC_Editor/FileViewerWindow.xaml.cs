@@ -13,6 +13,12 @@ namespace WPC_Editor
     /// </summary>
     public partial class FileViewerWindow : Window
     {
+        public enum AfterFileViewerActions
+        {
+            load,
+            none
+        }
+
         private List<FileListboxItemClass> files;
         private string folder;
 
@@ -20,6 +26,8 @@ namespace WPC_Editor
         private OpenFileDialog importFileDialog;
 
         public ConfigWorker configWorker;
+        public AfterFileViewerActions action;
+        public string pageForLoad;
 
         public FileViewerWindow(string assetsPath, ref ConfigWorker configWorker)
         {
@@ -27,6 +35,8 @@ namespace WPC_Editor
             folder = assetsPath;
             files = new List<FileListboxItemClass>();
             refreshListBox();
+            action = AfterFileViewerActions.none;
+            pageForLoad = "";
             this.configWorker = configWorker;
         }
 
@@ -185,6 +195,20 @@ namespace WPC_Editor
             }
             else
                 refreshListBox();
+        }
+
+        private void filesLB_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var selItem = filesLB.SelectedItem as FileListboxItemClass;
+            if (selItem != null)
+            {
+                if(Path.GetExtension(selItem.fileName) == ".wpcsave")
+                {
+                    action = AfterFileViewerActions.load;
+                    pageForLoad = selItem.fileName;
+                    this.Close();
+                }
+            }
         }
     }
 }

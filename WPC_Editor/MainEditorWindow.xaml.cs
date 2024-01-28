@@ -151,11 +151,36 @@ namespace WPC_Editor
 
         #region top buttons
 
-        private void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
+        private async void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
         {
             fileViewer = new FileViewerWindow(assetsFolder, ref config);
             fileViewer.ShowDialog();
             config = fileViewer.configWorker;
+            if(fileViewer.action == FileViewerWindow.AfterFileViewerActions.load)
+            {
+                fileViewer.action = FileViewerWindow.AfterFileViewerActions.none;
+                string path = fileViewer.pageForLoad;
+                fileViewer.pageForLoad = "";
+                try
+                {
+                    holdOnWindow = new HoldOnWindow("loading");
+                    this.IsEnabled = false;
+                    tree.Clear();
+                    await Task.Run(() => tree = dataWorker.load(path));
+                    Task.Delay(10).Wait();
+                    dataWorker.setPage(path);
+                    holdOnWindow.Close();
+                    this.IsEnabled = true;
+                    refreshTreeview();
+                    GC.Collect();
+                }
+                catch(Exception ex)
+                {
+                    MessBox.showError(ex.ToString());
+                    holdOnWindow.Close();
+                    this.IsEnabled = true;
+                }
+            }
         }
 
         private void editConfigBtn_Click(object sender, RoutedEventArgs e)
@@ -216,7 +241,14 @@ namespace WPC_Editor
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
-            dataWorker.save(tree);
+            try
+            {
+                dataWorker.save(tree);
+            }
+            catch(Exception ex)
+            {
+                MessBox.showError(ex.Message);
+            }
         }
 
         #endregion

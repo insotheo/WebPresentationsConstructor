@@ -18,6 +18,24 @@ namespace WPC_Editor.Widgets
         {
             this.widget = widget;
             widgetsOfScene = new List<WidgetsTreeItem>();
+            if(widget is WidgetGroup)
+            {
+                widgetsOfScene = setKids((widget as WidgetGroup).kids);
+            }
+            if(widget is WidgetList)
+            {
+                widgetsOfScene = setKids((widget as WidgetList).content);
+            }
+        }
+
+        private List<WidgetsTreeItem> setKids(List<Widget> kids)
+        {
+            List<WidgetsTreeItem> newKids = new List<WidgetsTreeItem>();
+            foreach (var item in kids)
+            {
+                newKids.Add(new WidgetsTreeItem(item));
+            }
+            return newKids;
         }
 
     }

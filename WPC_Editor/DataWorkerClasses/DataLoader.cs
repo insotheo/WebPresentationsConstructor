@@ -15,15 +15,14 @@ namespace WPC_Editor.DataWorkerClasses
             {
                 throw new Exception("Файл не существует");
             }
+            //string str = File.ReadAllText(loadPath);
             string[] content = File.ReadAllLines(loadPath);
             string str = "";
             for (int i = 0; i < content.Length; i++)
             {
                 str += DecryptingClass.decryptString(content[i]);
             }
-            WidgetBodySaveData wbsd = null;
-            wbsd = JsonConvert.DeserializeObject<WidgetBodySaveData>(str);
-            //123
+            WidgetBodySaveData wbsd = JsonConvert.DeserializeObject<WidgetBodySaveData>(str);
             Task.Delay(10).Wait();
             return wbsd;
         }

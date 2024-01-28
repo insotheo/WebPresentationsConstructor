@@ -54,9 +54,9 @@ namespace WPC_Editor
                     }
                 }
 
-                this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}");
-
                 dataWorker = new DataWorker(assetsFolder);
+
+                this.Title = this.Title.Replace("pname", $"{Path.GetFileName(projectFolder)}").Replace("edpage", dataWorker.currentPage);
 
                 builder.Init(ref config);
                 homePage = new Uri(Path.Combine(cacheFolder, "INDEX.html"));
@@ -168,6 +168,14 @@ namespace WPC_Editor
                     tree.Clear();
                     await Task.Run(() => tree = dataWorker.load(path));
                     Task.Delay(10).Wait();
+                    if(dataWorker.currentPage == String.Empty)
+                    {
+                        this.Title = this.Title.Replace("()", $"({path})");
+                    }
+                    else
+                    {
+                        this.Title = this.Title.Replace(dataWorker.currentPage, path);
+                    }
                     dataWorker.setPage(path);
                     holdOnWindow.Close();
                     this.IsEnabled = true;

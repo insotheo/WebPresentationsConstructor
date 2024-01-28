@@ -66,6 +66,7 @@ namespace WPC_Editor.DataWorkerClasses
                     }
                     catch { }
                 }
+                else { return; }
             }
             saver.save(tree[0].widget as WidgetBody, tree[0].widgetsOfScene, Path.Combine(assetsFolder, currentPage));
         }
@@ -83,7 +84,20 @@ namespace WPC_Editor.DataWorkerClasses
             List<WidgetsTreeItem> loadedWidgets = new List<WidgetsTreeItem>();
             foreach(WidgetSaveData data in wpsd.widgets)
             {
-                loadedWidgets.Add(new WidgetsTreeItem(data.getByName()));
+                var wid = data.getByName();
+                if(wid is WidgetGroup)
+                {
+                    var groupWid = wid as WidgetGroup;
+                    groupWid.kids = data.getKids();
+                    wid = groupWid;
+                }
+                else if(wid is WidgetList)
+                {
+                    var listWid = wid as WidgetList;
+                    listWid.content = data.getKids();
+                    wid = listWid;
+                }
+                loadedWidgets.Add(new WidgetsTreeItem(wid));
             }
             loadedTree[0].widgetsOfScene = loadedWidgets;
             return loadedTree;

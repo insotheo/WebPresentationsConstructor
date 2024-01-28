@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPC_Editor" xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        Title="WebPresentationsConstructor -> Editor[pname]"
+        Title="WebPresentationsConstructor -> Editor[pname] (edpage)"
         Height="700" Width="1000"
         Icon="./WPC_logo.ico"
         WindowStartupLocation="CenterScreen"

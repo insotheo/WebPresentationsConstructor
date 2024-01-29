@@ -79,28 +79,39 @@ namespace WPC_Editor.DataWorkerClasses
                 throw new Exception("Файл не существует!");
             }
             WidgetBodySaveData wpsd = loader.load(path);
-            List<WidgetsTreeItem> loadedTree = new List<WidgetsTreeItem>();
-            loadedTree.Add(new WidgetsTreeItem(wpsd.body));
-            List<WidgetsTreeItem> loadedWidgets = new List<WidgetsTreeItem>();
-            foreach(WidgetSaveData data in wpsd.widgets)
+            if (wpsd != null)
             {
-                var wid = data.getByName();
-                if(wid is WidgetGroup)
+                List<WidgetsTreeItem> loadedTree = new List<WidgetsTreeItem>();
+                loadedTree.Add(new WidgetsTreeItem(wpsd.body));
+                List<WidgetsTreeItem> loadedWidgets = new List<WidgetsTreeItem>();
+                foreach (WidgetSaveData data in wpsd.widgets)
                 {
-                    var groupWid = wid as WidgetGroup;
-                    groupWid.kids = data.getKids();
-                    wid = groupWid;
+                    var wid = data.getByName();
+                    if (wid is WidgetGroup)
+                    {
+                        var groupWid = wid as WidgetGroup;
+                        groupWid.kids = data.getKids();
+                        wid = groupWid;
+                    }
+                    else if (wid is WidgetList)
+                    {
+                        var listWid = wid as WidgetList;
+                        listWid.content = data.getKids();
+                        wid = listWid;
+                    }
+                    loadedWidgets.Add(new WidgetsTreeItem(wid));
                 }
-                else if(wid is WidgetList)
-                {
-                    var listWid = wid as WidgetList;
-                    listWid.content = data.getKids();
-                    wid = listWid;
-                }
-                loadedWidgets.Add(new WidgetsTreeItem(wid));
+                loadedTree[0].widgetsOfScene = loadedWidgets;
+                return loadedTree;
             }
-            loadedTree[0].widgetsOfScene = loadedWidgets;
-            return loadedTree;
+            else
+            {
+                List<WidgetsTreeItem> newTree = new List<WidgetsTreeItem>
+                {
+                    new WidgetsTreeItem(new WidgetBody())
+                };
+                return newTree;
+            }
         }
     }
 }

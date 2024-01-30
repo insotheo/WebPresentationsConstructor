@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using WPC_Editor.Widgets;
 
 
@@ -357,6 +358,25 @@ namespace WPC_Editor
                 finalText += "\n" + line;
             }
             finalText += "\n</body>\n</html>\n";
+
+            if(config.additionalFilesForBuilding.Count > 0)
+            {
+                foreach (var file in config.additionalFilesForBuilding)
+                {
+                    if (File.Exists(Path.Combine(assetsFolder, file)))
+                    {
+                        File.Copy(Path.Combine(assetsFolder, file), Path.Combine(cacheFolder, file), true);
+                    }
+                    else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "styles", file)))
+                    {
+                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "styles", file), Path.Combine(cacheFolder, file), true);
+                    }
+                    else
+                    {
+                        throw new Exception("Ошибка сборки! Файл не найден!");
+                    }
+                }
+            }
 
             File.WriteAllText(Path.Combine(cacheFolder, "INDEX.html"), finalText);
         }

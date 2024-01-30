@@ -85,6 +85,7 @@ namespace WPC_Editor
                     if (MessBox.showQuestionWithTwoOptions($"Вы уверены, что хотите удалить файл \"{(filesLB.SelectedItem as FileListboxItemClass).fileName}\"?") == MessageBoxResult.Yes)
                     {
                         string p = (filesLB.SelectedItem as FileListboxItemClass).path.Trim();
+                        string fn = Path.GetFileName(p);
                         if(Path.GetExtension(p) == ".js" || Path.GetExtension(p) == ".css")
                         {
                             switch (Path.GetExtension(p))
@@ -102,6 +103,11 @@ namespace WPC_Editor
                                     }
                                     break;
                             }
+                        }
+                        int fileIndex = Array.IndexOf(configWorker.additionalFilesForBuilding.ToArray(), fn.Trim());
+                        if(fileIndex != -1)
+                        {
+                            configWorker.additionalFilesForBuilding.RemoveAt(fileIndex);
                         }
                         File.Delete(p);
                         configWorker.overwriteFile();

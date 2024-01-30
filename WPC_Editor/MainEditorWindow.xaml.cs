@@ -164,6 +164,7 @@ namespace WPC_Editor
                 try
                 {
                     holdOnWindow = new HoldOnWindow("loading");
+                    holdOnWindow.Show();
                     this.IsEnabled = false;
                     tree.Clear();
                     await Task.Run(() => tree = dataWorker.load(path));

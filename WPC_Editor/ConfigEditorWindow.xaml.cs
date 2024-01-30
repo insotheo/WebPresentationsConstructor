@@ -3,6 +3,7 @@ using System;
 using MessageBoxesWindows;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace WPC_Editor
@@ -39,6 +40,13 @@ namespace WPC_Editor
                         scriptsLB.Items.Add(script.Trim());
                     }
                 }
+                foreach(string file in config.additionalFilesForBuilding)
+                {
+                    if (file != String.Empty)
+                    {
+                        additionalFilesLB.Items.Add(file.Trim());
+                    }
+                }
                 foreach(string style in FilesWorker.getAllStyles(assetsFolder))
                 {
                     if (style != String.Empty)
@@ -51,6 +59,13 @@ namespace WPC_Editor
                     if (script != String.Empty)
                     {
                         scriptsCB.Items.Add(script.Trim());
+                    }
+                }
+                foreach(string file in Directory.GetFiles(assetsFolder))
+                {
+                    if(file != String.Empty)
+                    {
+                        filesCB.Items.Add(Path.GetFileName(file.Trim()));
                     }
                 }
             }
@@ -173,19 +188,26 @@ namespace WPC_Editor
 
                 newConfig.usingScripts.Clear();
                 newConfig.usingStyles.Clear();
+                newConfig.additionalFilesForBuilding.Clear();
 
                 List<string> list = new List<string>();
                 foreach(var script in scriptsLB.Items)
                 {
                     list.Add(script.ToString());
                 }
-                newConfig.usingScripts = list.GroupBy(x => x).Where(x => x.Count() == 1).Select(x => x.Key).ToList();
+                newConfig.usingScripts = list.GroupBy(x => x).Select(x => x.First()).ToList();
                 list.Clear();
                 foreach (var style in stylesLB.Items)
                 {
                     list.Add(style.ToString());
                 }
-                newConfig.usingStyles = list.GroupBy(x => x).Where(x => x.Count() == 1).Select(x => x.Key).ToList();
+                newConfig.usingStyles = list.GroupBy(x => x).Select(x => x.First()).ToList();
+                list.Clear();
+                foreach(var file in additionalFilesLB.Items)
+                {
+                    list.Add(file.ToString());
+                }
+                newConfig.additionalFilesForBuilding = list.GroupBy(x => x).Select(x => x.First()).ToList();
                 list.Clear();
 
                 isApplied = true;
@@ -199,5 +221,25 @@ namespace WPC_Editor
                 MessBox.showError(ex.Message);
             }
         }
+
+        #region Files buttons
+        private void addFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if(filesCB.SelectedItem != null)
+            {
+                additionalFilesLB.Items.Add(filesCB.SelectedItem.ToString());
+                additionalFilesLB.SelectedItem = null;
+            }
+        }
+
+        private void removeFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (additionalFilesLB.SelectedItem != null)
+            {
+                additionalFilesLB.Items.Remove(filesCB.SelectedItem.ToString());
+                additionalFilesLB.SelectedItem = null;
+            }
+        }
+        #endregion
     }
 }

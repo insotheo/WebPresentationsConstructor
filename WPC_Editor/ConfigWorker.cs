@@ -13,6 +13,7 @@ namespace WPC_Editor
         public List<string> usingScripts;
         public readonly string appEditorVersion;
         public string charset;
+        public List<string> additionalFilesForBuilding;
 
         private string creatorsUsername;
         private string creatorsMachineName;
@@ -31,6 +32,7 @@ namespace WPC_Editor
             }
             usingScripts = new List<string>();
             usingStyles = new List<string>();
+            additionalFilesForBuilding = new List<string>();
             title = configData[0].Trim();
             language = configData[1].Trim();
             creatorsUsername = configData[2].Trim();
@@ -53,6 +55,13 @@ namespace WPC_Editor
             }
             appEditorVersion = configData[8].Trim();
             charset = configData[9].Trim();
+            if (configData[10].Trim().Length > 0)
+            {
+                foreach(string file in configData[10].Trim().Split(';'))
+                {
+                    additionalFilesForBuilding.Add(file.Trim());
+                }
+            }
         }
 
         public bool isTheSamePC()
@@ -88,7 +97,7 @@ namespace WPC_Editor
 
         public void overwriteFile()
         {
-            string scriptsLine = String.Empty, stylesLine = String.Empty;
+            string scriptsLine = String.Empty, stylesLine = String.Empty, filesLine = String.Empty;
             if (usingScripts.Count > 0)
             {
                 for (int i = 0; i < usingScripts.Count; i++)
@@ -117,6 +126,20 @@ namespace WPC_Editor
                     }
                 }
             }
+            if(additionalFilesForBuilding.Count > 0)
+            {
+                for(int i = 0; i < additionalFilesForBuilding.Count; i++)
+                {
+                    if(i + 1 == additionalFilesForBuilding.Count)
+                    {
+                        filesLine += additionalFilesForBuilding[i];
+                    }
+                    else
+                    {
+                        filesLine += additionalFilesForBuilding[i] + " ; ";
+                    }
+                }
+            }
             string ans = $"title: {title}" +
                 $"\nlanguage: {language}" +
                 $"\ncreatorsUsername: {creatorsUsername}" +
@@ -126,7 +149,8 @@ namespace WPC_Editor
                 $"\nusingStyles: {stylesLine}" +
                 $"\nusingScripts: {scriptsLine}" +
                 $"\nappEditorVersion: {appEditorVersion}" +
-                $"\ncharset: {charset}";
+                $"\ncharset: {charset}" +
+                $"\nadditionalFilesForBuilding: {filesLine}";
 
             File.WriteAllText(path, ans);
         }

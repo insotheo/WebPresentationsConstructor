@@ -80,6 +80,16 @@ namespace WPC_Editor
                     groupElementFlexDirectionCB.Items.Add(option);
                 }
 
+                foreach(string option in WidgetGroup.position_rus)
+                {
+                    groupPositionCB.Items.Add(option);
+                }
+
+                foreach(string option in WidgetGroup.positionVector_rus)
+                {
+                    groupPositionVectorCB.Items.Add(option);
+                }
+
                 foreach (string option in WidgetBody.imageSize_rus)
                 {
                     bodyImageSizeCB.Items.Add(option);
@@ -583,10 +593,13 @@ namespace WPC_Editor
                                 propertiesTabber.SelectedIndex = 5;
                                 groupJustifyingCB.SelectedIndex = Array.IndexOf(WidgetGroup.justifying_rus, groupWidget.justifyContent);
                                 groupElementFlexDirectionCB.SelectedIndex = Array.IndexOf(WidgetGroup.flexDir_rus, groupWidget.flexDirection);
+                                groupPositionCB.SelectedIndex = Array.IndexOf(WidgetGroup.position_rus, groupWidget.pos);
+                                groupPositionVectorCB.SelectedIndex = Array.IndexOf(WidgetGroup.positionVector_rus, groupWidget.posVector);
                                 groupBackgroundColor.Text = groupWidget.backgroundColorHEX;
                                 groupRadius.Text = groupWidget.radius;
                                 groupMargin.Text = groupWidget.margin;
                                 isGroupFlexCB.IsChecked = groupWidget.isFlex;
+                                groupPositionVectorPxTB.Text = groupWidget.posVectorPx;
                             }
                             else
                             {
@@ -955,8 +968,11 @@ namespace WPC_Editor
                             groupWidget.isFlex = (bool)isGroupFlexCB.IsChecked;
                             groupWidget.justifyContent = WidgetGroup.justifying_rus[groupJustifyingCB.SelectedIndex];
                             groupWidget.flexDirection = WidgetGroup.flexDir_rus[groupElementFlexDirectionCB.SelectedIndex];
+                            groupWidget.pos = WidgetGroup.position_rus[groupPositionCB.SelectedIndex];
+                            groupWidget.posVector = WidgetGroup.positionVector_rus[groupPositionVectorCB.SelectedIndex];
                             groupWidget.backgroundColorHEX = groupBackgroundColor.Text == String.Empty ? "Transparent" : groupBackgroundColor.Text;
                             groupWidget.radius = groupRadius.Text == String.Empty ? "0" : groupRadius.Text;
+                            groupWidget.posVectorPx = groupPositionVectorPxTB.Text == String.Empty ? "0" : groupPositionVectorPxTB.Text;
                             groupWidget.margin = groupMargin.Text == String.Empty ? "0 0 0 0" : groupMargin.Text.Trim().Replace(",", null).Replace(";", null).Replace("/", null);
                         }
                         else
@@ -966,6 +982,7 @@ namespace WPC_Editor
                         groupRadius.Text = String.Empty;
                         groupMargin.Text = String.Empty;
                         groupBackgroundColor.Text = String.Empty;
+                        groupPositionVectorPxTB.Text = String.Empty;
                         break;
 
                     case "HTML Source":
@@ -1292,16 +1309,22 @@ namespace WPC_Editor
 
                             if (operationDone)
                             {
-                                parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
-                                if (nextEl.widget is WidgetGroup)
+                                try
                                 {
-                                    var group = nextEl.widget as WidgetGroup;
-                                    kidsToWidgetOfScene(ref nextEl, group.kids);
-                                }
-                                else if (nextEl.widget is WidgetList)
+                                    parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
+                                    if (nextEl.widget is WidgetGroup)
+                                    {
+                                        var group = nextEl.widget as WidgetGroup;
+                                        kidsToWidgetOfScene(ref nextEl, group.kids);
+                                    }
+                                    else if (nextEl.widget is WidgetList)
+                                    {
+                                        var list = nextEl.widget as WidgetList;
+                                        kidsToWidgetOfScene(ref nextEl, list.content);
+                                    }
+                                }catch(Exception ex)
                                 {
-                                    var list = nextEl.widget as WidgetList;
-                                    kidsToWidgetOfScene(ref nextEl, list.content);
+                                    MessBox.showError(ex.ToString());
                                 }
                                 refreshTreeview();
                             }

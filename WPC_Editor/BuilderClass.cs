@@ -191,7 +191,7 @@ namespace WPC_Editor
                         {
                             flex = $"display: flex; justify-content: {WidgetGroup.justifying[Array.IndexOf(WidgetGroup.justifying_rus, grp.justifyContent)]}; flex-direction: {WidgetGroup.flexDir[Array.IndexOf(WidgetGroup.flexDir_rus, grp.flexDirection)]};";
                         }
-                        s = $"style=\"{flex} background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; margin: {getMarginString(grp.margin)};\"";
+                        s = $"style=\"{flex} background-color: {grp.backgroundColorHEX}; border-radius: {grp.radius}%; margin: {getMarginString(grp.margin)}; position: {WidgetGroup.position[Array.IndexOf(WidgetGroup.position_rus, grp.pos)]}; {WidgetGroup.positionVector[Array.IndexOf(WidgetGroup.positionVector_rus, grp.posVector)]}: {grp.posVectorPx}px;\"";
                     }
                     line = $"<{grp.HTML_TAG} class=\"{grp.name}\" {s}>" +
                         $"{els}" +

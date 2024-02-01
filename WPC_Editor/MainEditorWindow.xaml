@@ -354,6 +354,12 @@
                                 <TextBox x:Name="groupRadius"/>
                                 <TextBlock Text="Отступы px [T R B L]"/>
                                 <TextBox x:Name="groupMargin"/>
+                                <TextBlock Text="Способ позиционирования"/>
+                                <ComboBox x:Name="groupPositionCB"/>
+                                <TextBlock Text="Вектор позиционирования"/>
+                                <ComboBox x:Name="groupPositionVectorCB"/>
+                                <TextBlock Text="Вектор позиционирования px"/>
+                                <TextBox x:Name="groupPositionVectorPxTB"/>
                                 <CheckBox Content="flex" Foreground="White" x:Name="isGroupFlexCB" ToolTip="Если здесь не будет стоять галочка, то flex-свойства не будут использоваться"/>
                                 <TextBlock Text="~Flex-свойства" FontSize="22" FontWeight="Bold"/>
                                 <TextBlock Text="Выравнивание"/>

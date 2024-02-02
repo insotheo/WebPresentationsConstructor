@@ -1284,7 +1284,8 @@ namespace WPC_Editor
             var selectedTreeItem = sceneTree.SelectedItem as WidgetsTreeItem;
             if (selectedTreeItem != null)
             {
-                var parentTreeItem = FindParentItem(selectedTreeItem, tree[0]);
+                WidgetsTreeItem copyParent;
+                var parentTreeItem = copyParent = FindParentItem(selectedTreeItem, tree[0]);
                 if (parentTreeItem != null)
                 {
                     int index = Array.IndexOf(parentTreeItem.widgetsOfScene.ToArray(), selectedTreeItem) + 1;

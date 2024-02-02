@@ -65,11 +65,13 @@ namespace WPC_Editor
                 tree.Add(new WidgetsTreeItem(new WidgetBody()));
                 sceneTree.ItemsSource = tree;
 
+                //Input
                 foreach (string type in WidgetInput.rus_types)
                 {
                     inputTypeCB.Items.Add(type);
                 }
 
+                //Group
                 foreach (string option in WidgetGroup.justifying_rus)
                 {
                     groupJustifyingCB.Items.Add(option);
@@ -90,6 +92,7 @@ namespace WPC_Editor
                     groupPositionVectorCB.Items.Add(option);
                 }
 
+                //Image for background
                 foreach (string option in WidgetBody.imageSize_rus)
                 {
                     bodyImageSizeCB.Items.Add(option);
@@ -98,6 +101,17 @@ namespace WPC_Editor
                 foreach (string option in WidgetBody.imageRepeat_rus)
                 {
                     bodyImageRepeatCB.Items.Add(option);
+                }
+
+                //Marquee
+                foreach(string option in WidgetMarquee.behaviorOptions_rus)
+                {
+                    marqueeBehaviorCB.Items.Add(option);
+                }
+
+                foreach(string option in WidgetMarquee.direction_rus)
+                {
+                    marqueeDirectionCB.Items.Add(option);
                 }
 
                 GC.Collect();
@@ -263,6 +277,7 @@ namespace WPC_Editor
             try
             {
                 dataWorker.save(tree);
+                MessBox.showInfo($"Сохранено в файл \"{dataWorker.currentPage}\"!");
             }
             catch(Exception ex)
             {
@@ -316,6 +331,9 @@ namespace WPC_Editor
                     case "HTML":
                         newWidgetItem = new WidgetsTreeItem(new WidgetHtmlSource());
                         break;
+                    case "Прокрутка":
+                        newWidgetItem = new WidgetsTreeItem(new WidgetMarquee());
+                        break;
                 }
 
                 if (newWidgetItem != null)
@@ -334,16 +352,16 @@ namespace WPC_Editor
                     else if (selectedItem.widget is WidgetList)
                     {
                         var list = selectedItem.widget as WidgetList;
-                        if (newWidgetItem.widget is WidgetText || newWidgetItem.widget is WidgetImage || newWidgetItem.widget is WidgetVideo || newWidgetItem.widget is WidgetList || newWidgetItem.widget is WidgetButton)
-                        {
-                            list.addContent(newWidgetItem.widget);
-                            kidsToWidgetOfScene(ref selectedItem, list.content);
-                            refreshTreeview();
-                        }
-                        else
-                        {
-                            MessBox.showInfo($"Элемент \"{newWidgetItem.widget.tag}\" не может являться элементом списка!");
-                        }
+                        list.addContent(newWidgetItem.widget);
+                        kidsToWidgetOfScene(ref selectedItem, list.content);
+                        refreshTreeview();
+                    }
+                    else if (selectedItem != null && selectedItem.widget is WidgetMarquee)
+                    {
+                        var marq = selectedItem.widget as WidgetMarquee;
+                        marq.addElement(newWidgetItem.widget);
+                        kidsToWidgetOfScene(ref selectedItem, marq.elements);
+                        refreshTreeview();
                     }
                     else
                     {
@@ -360,6 +378,13 @@ namespace WPC_Editor
                             var list = parentItem.widget as WidgetList;
                             list.addContent(newWidgetItem.widget);
                             kidsToWidgetOfScene(ref parentItem, list.content);
+                            refreshTreeview();
+                        }
+                        else if (parentItem != null && parentItem.widget is WidgetMarquee)
+                        {
+                            var marq = parentItem.widget as WidgetMarquee;
+                            marq.addElement(newWidgetItem.widget);
+                            kidsToWidgetOfScene(ref parentItem, marq.elements);
                             refreshTreeview();
                         }
                         else
@@ -727,6 +752,23 @@ namespace WPC_Editor
                             nextLineRepeatTB.Text = nlWidget.repeatTime.ToString();
                             break;
 
+                        case "Прокрутка":
+                            var marq = el.widget as WidgetMarquee;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.SelectedIndex = 0;
+                            contentTabber.Visibility = Visibility.Collapsed;
+                            if (!marq.useStyle)
+                            {
+                                propertiesTabber.SelectedIndex = 7;
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                marqueeBackColotTB.Text = marq.backgroundColor;
+                                marqueeBehaviorCB.SelectedIndex = Array.IndexOf(WidgetMarquee.behaviorOptions_rus, marq.behavior);
+                                marqueeDirectionCB.SelectedIndex = Array.IndexOf(WidgetMarquee.direction_rus, marq.dir);
+                                marqueeLoop.Text = marq.loop;
+                                marqueeScrollAmount.Text = marq.scrollAmount;
+                            }
+                            break;
+
                         default:
                             removeElementBtn.IsEnabled = true;
                             propertiesTabber.SelectedIndex = 0;
@@ -1077,6 +1119,26 @@ namespace WPC_Editor
                         bodyBackImageBlurTB.Text = String.Empty;
                         break;
 
+                    case "Прокрутка":
+                        var marq = el.widget as WidgetMarquee;
+                        if(isElUseCSS.IsChecked == false)
+                        {
+                            marq.useStyle = false;
+                            marq.behavior = marqueeBehaviorCB.SelectedItem != null ? WidgetMarquee.behaviorOptions_rus[marqueeBehaviorCB.SelectedIndex] : WidgetMarquee.behaviorOptions_rus[0];
+                            marq.dir = marqueeDirectionCB.SelectedItem != null ? WidgetMarquee.direction_rus[marqueeDirectionCB.SelectedIndex] : WidgetMarquee.direction_rus[0];
+                            marq.backgroundColor = marqueeBackColotTB.Text == String.Empty ? "Transparent" : marqueeBackColotTB.Text;
+                            marq.loop = marqueeLoop.Text == String.Empty ? "-1" : marqueeLoop.Text;
+                            marq.scrollAmount = marqueeScrollAmount.Text == String.Empty ? "6" : marqueeScrollAmount.Text;
+                        }
+                        else
+                        {
+                            marq.useStyle = true;
+                        }
+                        marqueeBackColotTB.Text = String.Empty;
+                        marqueeLoop.Text = String.Empty;
+                        marqueeScrollAmount.Text = String.Empty;
+                        break;
+
                     default: break;
                 }
 
@@ -1106,6 +1168,12 @@ namespace WPC_Editor
                     {
                         var list = parentItem.widget as WidgetList;
                         list.removeContent(selectedItem.widget);
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    else if(parentItem.widget is WidgetMarquee && parentItem != null)
+                    {
+                        var marq = parentItem.widget as WidgetMarquee;
+                        marq.removeElement(selectedItem.widget);
                         parentItem.widgetsOfScene.Remove(selectedItem);
                     }
                     else if (parentItem != null)
@@ -1182,6 +1250,15 @@ namespace WPC_Editor
             try
             {
                 pageBackColor.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(pageBackgroudColorTB.Text)));
+            }
+            catch { }
+        }
+
+        private void marqueeBackColotTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                marqueeBackColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(marqueeBackColotTB.Text)));
             }
             catch { }
         }
@@ -1306,24 +1383,42 @@ namespace WPC_Editor
                                 list.addContent(selectedTreeItem.widget);
                                 operationDone = list.doesContentExist(selectedTreeItem.widget);
                             }
+                            else if(nextEl.widget is WidgetMarquee)
+                            {
+                                var marq = nextEl.widget as WidgetMarquee;
+                                marq.addElement(selectedTreeItem.widget);
+                                operationDone = marq.doesElementExist(selectedTreeItem.widget);
+                            }
 
                             if (operationDone)
                             {
                                 try
                                 {
                                     parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
+
+                                    if(parentTreeItem.widget is WidgetGroup)
+                                        (parentTreeItem.widget as WidgetGroup).removeKid(selectedTreeItem.widget);
+                                    else if(parentTreeItem.widget is WidgetList)
+                                        (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
+                                    else if(parentTreeItem.widget is WidgetMarquee)
+                                        (parentTreeItem.widget as WidgetMarquee).removeElement(selectedTreeItem.widget);
+
                                     if (nextEl.widget is WidgetGroup)
                                     {
-                                        (parentTreeItem.widget as WidgetGroup).removeKid(selectedTreeItem.widget);
                                         var group = nextEl.widget as WidgetGroup;
                                         kidsToWidgetOfScene(ref nextEl, group.kids);
                                     }
                                     else if (nextEl.widget is WidgetList)
                                     {
-                                        (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
                                         var list = nextEl.widget as WidgetList;
                                         kidsToWidgetOfScene(ref nextEl, list.content);
                                     }
+                                    else if(nextEl.widget is WidgetMarquee)
+                                    {
+                                        var marq = nextEl.widget as WidgetMarquee;
+                                        kidsToWidgetOfScene(ref nextEl, marq.elements);
+                                    }
+
                                 }catch(Exception ex)
                                 {
                                     MessBox.showError(ex.ToString());
@@ -1364,6 +1459,11 @@ namespace WPC_Editor
                             (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
                             parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
                         }
+                        else if(parentTreeItem.widget is WidgetMarquee)
+                        {
+                            (parentTreeItem.widget as WidgetMarquee).removeElement(selectedTreeItem.widget);
+                            parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
+                        }
                         par.widgetsOfScene.Add(selectedTreeItem);
                         if (par != null && par.widget is WidgetGroup)
                         {
@@ -1377,6 +1477,13 @@ namespace WPC_Editor
                             var list = par.widget as WidgetList;
                             list.addContent(selectedTreeItem.widget);
                             kidsToWidgetOfScene(ref par, list.content);
+                            refreshTreeview();
+                        }
+                        else if (par != null && par.widget is WidgetMarquee)
+                        {
+                            var marq = par.widget as WidgetMarquee;
+                            marq.addElement(selectedTreeItem.widget);
+                            kidsToWidgetOfScene(ref par, marq.elements);
                             refreshTreeview();
                         }
                     }

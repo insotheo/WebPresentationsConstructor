@@ -15,6 +15,7 @@ namespace WPC_Editor.Widgets
         public WidgetHtmlSource html;
         public WidgetNextLine nl ;
         public WidgetInput input;
+        public WidgetMarquee marquee;
 
         public List<WidgetSaveData> savedKids;
 
@@ -51,6 +52,10 @@ namespace WPC_Editor.Widgets
                         list = widget as WidgetList;
                         savedKids = saveKids(list.content);
                         break;
+                    case "Прокрутка":
+                        marquee = widget as WidgetMarquee;
+                        savedKids = saveKids(marquee.elements);
+                        break;
                     case "HTML Source":
                         html = widget as WidgetHtmlSource;
                         break;
@@ -78,9 +83,14 @@ namespace WPC_Editor.Widgets
                 case "Ввод":
                     return input;
                 case "Группа":
+                    group.kids = getKids();
                     return group;
                 case "Список":
+                    list.content = getKids();
                     return list;
+                case "Прокрутка":
+                    marquee.elements = getKids();
+                    return marquee;
                 case "HTML Source":
                     return html;
                 case "Перенос":
@@ -107,7 +117,8 @@ namespace WPC_Editor.Widgets
                 List<Widget> kids = new List<Widget>();
                 foreach(var kid in savedKids)
                 {
-                    kids.Add(kid.getByName());
+                    var el = kid.getByName();
+                    kids.Add(el);
                 }
                 return kids;
             }

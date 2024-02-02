@@ -26,6 +26,10 @@ namespace WPC_Editor.Widgets
             {
                 widgetsOfScene = setKids((widget as WidgetList).content);
             }
+            if(widget is WidgetMarquee)
+            {
+                widgetsOfScene = setKids((widget as WidgetMarquee).elements);
+            }
         }
 
         private List<WidgetsTreeItem> setKids(List<Widget> kids)

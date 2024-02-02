@@ -47,6 +47,20 @@ namespace WPC_Editor
             return text;
         }
 
+        private string getMarqueeContent(ref WidgetMarquee marquee)
+        {
+            string txt = String.Empty;
+            if(marquee.elements != null)
+            {
+                List<Widget> content = marquee.elements;
+                foreach(Widget el in content)
+                {
+                    txt += "\n" + make(el);
+                }
+            }
+            return txt;
+        }
+
         private string getMarginString(string margin)
         {
             margin = margin.Trim();
@@ -227,6 +241,19 @@ namespace WPC_Editor
                             }
                         }
                     }
+                }
+                else if(widget is WidgetMarquee)
+                {
+                    var marq = widget as WidgetMarquee;
+                    string s = String.Empty;
+                    string content = getMarqueeContent(ref marq);
+                    if (!marq.useStyle)
+                    {
+                        s = $"behavior=\"{WidgetMarquee.behaviorOptions[Array.IndexOf(WidgetMarquee.behaviorOptions_rus, marq.behavior)]}\" bgcolor=\"{marq.backgroundColor}\" direction=\"{WidgetMarquee.direction[Array.IndexOf(WidgetMarquee.direction_rus, marq.dir)]}\" loop=\"{marq.loop}\" scrollamount=\"{marq.scrollAmount}\"";
+                    }
+                    line = $"<{marq.HTML_TAG} {s}>" +
+                        $"{content}" +
+                        $"\n</{marq.HTML_TAG}>";
                 }
             }
             return line;

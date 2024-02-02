@@ -107,6 +107,7 @@
     <Compile Include="Widgets\WidgetInput.cs" />
     <Compile Include="Widgets\WidgetLink.cs" />
     <Compile Include="Widgets\WidgetList.cs" />
+    <Compile Include="Widgets\WidgetMarquee.cs" />
     <Compile Include="Widgets\WidgetNextLine.cs" />
     <Compile Include="Widgets\WidgetSaveData.cs" />
     <Compile Include="Widgets\WidgetsTreeItem.cs" />

@@ -99,6 +99,12 @@ namespace WPC_Editor.DataWorkerClasses
                         listWid.content = data.getKids();
                         wid = listWid;
                     }
+                    else if(wid is WidgetMarquee)
+                    {
+                        var marqWid = wid as WidgetMarquee;
+                        marqWid.elements = data.getKids();
+                        wid = marqWid;
+                    }
                     loadedWidgets.Add(new WidgetsTreeItem(wid));
                 }
                 loadedTree[0].widgetsOfScene = loadedWidgets;

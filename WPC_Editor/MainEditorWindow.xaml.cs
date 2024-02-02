@@ -1284,8 +1284,7 @@ namespace WPC_Editor
             var selectedTreeItem = sceneTree.SelectedItem as WidgetsTreeItem;
             if (selectedTreeItem != null)
             {
-                WidgetsTreeItem copyParent;
-                var parentTreeItem = copyParent = FindParentItem(selectedTreeItem, tree[0]);
+                var parentTreeItem = FindParentItem(selectedTreeItem, tree[0]);
                 if (parentTreeItem != null)
                 {
                     int index = Array.IndexOf(parentTreeItem.widgetsOfScene.ToArray(), selectedTreeItem) + 1;
@@ -1315,11 +1314,13 @@ namespace WPC_Editor
                                     parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
                                     if (nextEl.widget is WidgetGroup)
                                     {
+                                        (parentTreeItem.widget as WidgetGroup).removeKid(selectedTreeItem.widget);
                                         var group = nextEl.widget as WidgetGroup;
                                         kidsToWidgetOfScene(ref nextEl, group.kids);
                                     }
                                     else if (nextEl.widget is WidgetList)
                                     {
+                                        (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
                                         var list = nextEl.widget as WidgetList;
                                         kidsToWidgetOfScene(ref nextEl, list.content);
                                     }

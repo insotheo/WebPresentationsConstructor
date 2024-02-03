@@ -49,6 +49,16 @@ namespace WPC_Editor
                     extensionOfFile = "СТР.";
                     break;
 
+                case "PY":
+                    extensionColor = Brushes.Yellow;
+                    extensionOfFile = "🐍";
+                    break;
+
+                case "JAVA":
+                    extensionColor = Brushes.Orange;
+                    extensionOfFile = "☕";
+                    break;
+
                 default:
                     extensionColor = Brushes.White;
                     break;

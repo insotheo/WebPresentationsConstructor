@@ -30,6 +30,7 @@ namespace WPC_Editor
         private HoldOnWindow holdOnWindow;
         private Uri homePage;
         private DataWorker dataWorker;
+        private ColorpickerWindow palletWindow;
 
         public MainEditorWindow()
         {
@@ -172,6 +173,44 @@ namespace WPC_Editor
             return null;
         }
 
+        private void removeElement(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
+                if (selectedItem != null)
+                {
+                    var parentItem = FindParentItem(selectedItem, tree[0]);
+                    if (parentItem.widget is WidgetGroup && parentItem != null)
+                    {
+                        var group = parentItem.widget as WidgetGroup;
+                        group.removeKid(selectedItem.widget);
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    else if (parentItem.widget is WidgetList && parentItem != null)
+                    {
+                        var list = parentItem.widget as WidgetList;
+                        list.removeContent(selectedItem.widget);
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    else if (parentItem.widget is WidgetMarquee && parentItem != null)
+                    {
+                        var marq = parentItem.widget as WidgetMarquee;
+                        marq.removeElement(selectedItem.widget);
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    else if (parentItem != null)
+                    {
+                        parentItem.widgetsOfScene.Remove(selectedItem);
+                    }
+                    refreshTreeview();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessBox.showError(ex.Message);
+            }
+        }
 
         #region top buttons
 
@@ -283,6 +322,12 @@ namespace WPC_Editor
             {
                 MessBox.showError(ex.Message);
             }
+        }
+
+        private void openPalletWindowBtn_Click(object sender, RoutedEventArgs e)
+        {
+            palletWindow = new ColorpickerWindow();
+            palletWindow.Show();
         }
 
         #endregion
@@ -1152,41 +1197,7 @@ namespace WPC_Editor
 
         private void removeElementBtn_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
-                if (selectedItem != null)
-                {
-                    var parentItem = FindParentItem(selectedItem, tree[0]);
-                    if (parentItem.widget is WidgetGroup && parentItem != null)
-                    {
-                        var group = parentItem.widget as WidgetGroup;
-                        group.removeKid(selectedItem.widget);
-                        parentItem.widgetsOfScene.Remove(selectedItem);
-                    }
-                    else if (parentItem.widget is WidgetList && parentItem != null)
-                    {
-                        var list = parentItem.widget as WidgetList;
-                        list.removeContent(selectedItem.widget);
-                        parentItem.widgetsOfScene.Remove(selectedItem);
-                    }
-                    else if(parentItem.widget is WidgetMarquee && parentItem != null)
-                    {
-                        var marq = parentItem.widget as WidgetMarquee;
-                        marq.removeElement(selectedItem.widget);
-                        parentItem.widgetsOfScene.Remove(selectedItem);
-                    }
-                    else if (parentItem != null)
-                    {
-                        parentItem.widgetsOfScene.Remove(selectedItem);
-                    }
-                    refreshTreeview();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessBox.showError(ex.Message);
-            }
+            removeElement(sender, e);
         }
         #endregion
 
@@ -1265,9 +1276,9 @@ namespace WPC_Editor
 
         #endregion
 
-
         #region under tree buttons
-        private void treeElementUpBtn_Click(object sender, RoutedEventArgs e)
+        //common funcs
+        private void upElementInTree(object sender, RoutedEventArgs e)
         {
             var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
             if (selectedItem != null)
@@ -1311,7 +1322,7 @@ namespace WPC_Editor
             }
         }
 
-        private void treeElementDownBtn_Click(object sender, RoutedEventArgs e)
+        private void downElementInTree(object sender, RoutedEventArgs e)
         {
             var selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
             if (selectedItem != null)
@@ -1356,7 +1367,7 @@ namespace WPC_Editor
             }
         }
 
-        private void makeKidToElementBtn_Click(object sender, RoutedEventArgs e)
+        private void makeKidForElementInTree(object sender, RoutedEventArgs e)
         {
             var selectedTreeItem = sceneTree.SelectedItem as WidgetsTreeItem;
             if (selectedTreeItem != null)
@@ -1383,7 +1394,7 @@ namespace WPC_Editor
                                 list.addContent(selectedTreeItem.widget);
                                 operationDone = list.doesContentExist(selectedTreeItem.widget);
                             }
-                            else if(nextEl.widget is WidgetMarquee)
+                            else if (nextEl.widget is WidgetMarquee)
                             {
                                 var marq = nextEl.widget as WidgetMarquee;
                                 marq.addElement(selectedTreeItem.widget);
@@ -1396,11 +1407,11 @@ namespace WPC_Editor
                                 {
                                     parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
 
-                                    if(parentTreeItem.widget is WidgetGroup)
+                                    if (parentTreeItem.widget is WidgetGroup)
                                         (parentTreeItem.widget as WidgetGroup).removeKid(selectedTreeItem.widget);
-                                    else if(parentTreeItem.widget is WidgetList)
+                                    else if (parentTreeItem.widget is WidgetList)
                                         (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
-                                    else if(parentTreeItem.widget is WidgetMarquee)
+                                    else if (parentTreeItem.widget is WidgetMarquee)
                                         (parentTreeItem.widget as WidgetMarquee).removeElement(selectedTreeItem.widget);
 
                                     if (nextEl.widget is WidgetGroup)
@@ -1413,13 +1424,14 @@ namespace WPC_Editor
                                         var list = nextEl.widget as WidgetList;
                                         kidsToWidgetOfScene(ref nextEl, list.content);
                                     }
-                                    else if(nextEl.widget is WidgetMarquee)
+                                    else if (nextEl.widget is WidgetMarquee)
                                     {
                                         var marq = nextEl.widget as WidgetMarquee;
                                         kidsToWidgetOfScene(ref nextEl, marq.elements);
                                     }
 
-                                }catch(Exception ex)
+                                }
+                                catch (Exception ex)
                                 {
                                     MessBox.showError(ex.ToString());
                                 }
@@ -1431,7 +1443,7 @@ namespace WPC_Editor
             }
         }
 
-        private void leaveParentElementBtn_Click(object sender, RoutedEventArgs e)
+        private void makeKidLeaveParentElementInTree(object sender, RoutedEventArgs e)
         {
             var selectedTreeItem = sceneTree.SelectedItem as WidgetsTreeItem;
             var parentTreeItem = FindParentItem(selectedTreeItem, tree[0]);
@@ -1459,7 +1471,7 @@ namespace WPC_Editor
                             (parentTreeItem.widget as WidgetList).removeContent(selectedTreeItem.widget);
                             parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
                         }
-                        else if(parentTreeItem.widget is WidgetMarquee)
+                        else if (parentTreeItem.widget is WidgetMarquee)
                         {
                             (parentTreeItem.widget as WidgetMarquee).removeElement(selectedTreeItem.widget);
                             parentTreeItem.widgetsOfScene.Remove(selectedTreeItem);
@@ -1491,6 +1503,27 @@ namespace WPC_Editor
                     refreshTreeview();
                 }
             }
+        }
+
+        //buttons under
+        private void treeElementUpBtn_Click(object sender, RoutedEventArgs e)
+        {
+            upElementInTree(sender, e);
+        }
+
+        private void treeElementDownBtn_Click(object sender, RoutedEventArgs e)
+        {
+            downElementInTree(sender, e);
+        }
+
+        private void makeKidToElementBtn_Click(object sender, RoutedEventArgs e)
+        {
+            makeKidForElementInTree(sender, e);
+        }
+
+        private void leaveParentElementBtn_Click(object sender, RoutedEventArgs e)
+        {
+            makeKidLeaveParentElementInTree(sender, e);
         }
 
         #endregion

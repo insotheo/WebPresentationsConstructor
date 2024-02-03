@@ -90,6 +90,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BuilderClass.cs" />
+    <Compile Include="ColorpickerWindow.xaml.cs">
+      <DependentUpon>ColorpickerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataWorkerClasses\DataLoader.cs" />
     <Compile Include="DataWorkerClasses\DataSaver.cs" />
     <Compile Include="DataWorkerClasses\DataWorker.cs" />
@@ -154,6 +157,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ColorpickerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConfigEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

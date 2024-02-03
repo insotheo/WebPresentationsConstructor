@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPC_Editor"
         mc:Ignorable="d"
-        Title="WebPresentationsConstructor -> pallet" Height="400" Width="300"
+        Title="WebPresentationsConstructor -> pallet" Height="400" Width="350"
         WindowStyle="ToolWindow" Background="{StaticResource windowBackColor}"
-        MinHeight="200" MinWidth="150" Topmost="True" ShowInTaskbar="False">
+        MinHeight="200" MinWidth="200" Topmost="True" ShowInTaskbar="False">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -26,6 +26,7 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Foreground="Black" VerticalAlignment="Center" FontSize="24" FontWeight="SemiBold" Text="HEX:"/>
             <TextBox x:Name="hexTB" Width="150" HorizontalContentAlignment="Center" Text="#ffffff" TextChanged="hexTB_TextChanged"/>
+            <Button Content="Копировать HEX" Click="copyHEXtoClipboardBTN_Click"/>
         </StackPanel>
     </Grid>
 </Window>

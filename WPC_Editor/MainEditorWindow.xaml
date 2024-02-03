@@ -73,7 +73,7 @@
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
                 <TreeView x:Name="sceneTree" VirtualizingPanel.IsVirtualizing="True"
-                      VirtualizingPanel.VirtualizationMode="Recycling" SelectedItemChanged="sceneTree_SelectedItemChanged">
+                        VirtualizingPanel.VirtualizationMode="Recycling" SelectedItemChanged="sceneTree_SelectedItemChanged" MouseRightButtonDown="sceneTree_MouseRightButtonDown">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding widgetsOfScene}">
                             <TextBlock Text="{Binding listText}"/>

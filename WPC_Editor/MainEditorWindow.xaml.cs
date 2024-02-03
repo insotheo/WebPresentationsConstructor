@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using WPC_Editor.Widgets;
 using WPC_Editor.DataWorkerClasses;
+using WPC_Editor.Widgets;
 
 namespace WPC_Editor
 {
@@ -31,6 +31,7 @@ namespace WPC_Editor
         private Uri homePage;
         private DataWorker dataWorker;
         private ColorpickerWindow palletWindow;
+        private ContextMenu treeViewContextMenu;
 
         public MainEditorWindow()
         {
@@ -83,12 +84,12 @@ namespace WPC_Editor
                     groupElementFlexDirectionCB.Items.Add(option);
                 }
 
-                foreach(string option in WidgetGroup.position_rus)
+                foreach (string option in WidgetGroup.position_rus)
                 {
                     groupPositionCB.Items.Add(option);
                 }
 
-                foreach(string option in WidgetGroup.positionVector_rus)
+                foreach (string option in WidgetGroup.positionVector_rus)
                 {
                     groupPositionVectorCB.Items.Add(option);
                 }
@@ -105,15 +106,17 @@ namespace WPC_Editor
                 }
 
                 //Marquee
-                foreach(string option in WidgetMarquee.behaviorOptions_rus)
+                foreach (string option in WidgetMarquee.behaviorOptions_rus)
                 {
                     marqueeBehaviorCB.Items.Add(option);
                 }
 
-                foreach(string option in WidgetMarquee.direction_rus)
+                foreach (string option in WidgetMarquee.direction_rus)
                 {
                     marqueeDirectionCB.Items.Add(option);
                 }
+
+                initTreeViewContextMenu();
 
                 GC.Collect();
             }
@@ -212,6 +215,46 @@ namespace WPC_Editor
             }
         }
 
+        private void initTreeViewContextMenu()
+        {
+            treeViewContextMenu = new ContextMenu();
+
+            MenuItem contextMenuUpElBtn = new MenuItem()
+            {
+                Header = "[↑] Поднять"
+            };
+            contextMenuUpElBtn.Click += treeElementUpBtn_Click;
+            treeViewContextMenu.Items.Add(contextMenuUpElBtn);
+
+            MenuItem contextMenuDownElBtn = new MenuItem()
+            {
+                Header = "[↓] Опустить"
+            };
+            contextMenuDownElBtn.Click += treeElementDownBtn_Click;
+            treeViewContextMenu.Items.Add(contextMenuDownElBtn);
+
+            MenuItem contextMenuMakeKidToElBtn = new MenuItem()
+            {
+                Header = "[↳] Сделать дочерним для элемента ниже"
+            };
+            contextMenuMakeKidToElBtn.Click += makeKidToElementBtn_Click;
+            treeViewContextMenu.Items.Add(contextMenuMakeKidToElBtn);
+
+            MenuItem contextMenuRemoveKidFromParentBtn = new MenuItem()
+            {
+                Header = "[↤] Сделать дочерним для родителя текущего родителя"
+            };
+            contextMenuRemoveKidFromParentBtn.Click += leaveParentElementBtn_Click;
+            treeViewContextMenu.Items.Add(contextMenuRemoveKidFromParentBtn);
+
+            MenuItem contextMenuRemoveElBtn = new MenuItem()
+            {
+                Header = "[X] Удалить"
+            };
+            contextMenuRemoveElBtn.Click += removeElementBtn_Click;
+            treeViewContextMenu.Items.Add(contextMenuRemoveElBtn);
+        }
+
         #region top buttons
 
         private async void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
@@ -219,7 +262,7 @@ namespace WPC_Editor
             fileViewer = new FileViewerWindow(assetsFolder, ref config);
             fileViewer.ShowDialog();
             config = fileViewer.configWorker;
-            if(fileViewer.action == FileViewerWindow.AfterFileViewerActions.load)
+            if (fileViewer.action == FileViewerWindow.AfterFileViewerActions.load)
             {
                 fileViewer.action = FileViewerWindow.AfterFileViewerActions.none;
                 string path = fileViewer.pageForLoad;
@@ -232,7 +275,7 @@ namespace WPC_Editor
                     tree.Clear();
                     await Task.Run(() => tree = dataWorker.load(path));
                     Task.Delay(10).Wait();
-                    if(dataWorker.currentPage == String.Empty)
+                    if (dataWorker.currentPage == String.Empty)
                     {
                         this.Title = this.Title.Replace("()", $"({path})");
                     }
@@ -246,7 +289,7 @@ namespace WPC_Editor
                     refreshTreeview();
                     GC.Collect();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessBox.showError(ex.ToString());
                     holdOnWindow.Close();
@@ -318,7 +361,7 @@ namespace WPC_Editor
                 dataWorker.save(tree);
                 MessBox.showInfo($"Сохранено в файл \"{dataWorker.currentPage}\"!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessBox.showError(ex.Message);
             }
@@ -724,7 +767,7 @@ namespace WPC_Editor
                             else
                             {
                                 htmlContentTabber.SelectedIndex = 1;
-                                if(htmlSrc != null)
+                                if (htmlSrc != null)
                                 {
                                     int index = Array.IndexOf(names.ToArray(), htmlSrc.content);
                                     if (htmlSrc.content != null && index == -1)
@@ -754,7 +797,7 @@ namespace WPC_Editor
                                 }
                                 propertiesTabber.SelectedIndex = 6;
                                 propertiesTabber.Visibility = Visibility.Visible;
-                                if(body.type == WidgetBody.CommonType.color)
+                                if (body.type == WidgetBody.CommonType.color)
                                 {
                                     bodyFillTypeTabber.SelectedIndex = 0;
                                     pageBackgroudColorTB.Text = body.color;
@@ -762,7 +805,7 @@ namespace WPC_Editor
                                 else
                                 {
                                     bodyFillTypeTabber.SelectedIndex = 1;
-                                    if(body.photoType == WidgetBody.PhotoType.link)
+                                    if (body.photoType == WidgetBody.PhotoType.link)
                                     {
                                         bodyImageTypeTabber.SelectedIndex = 0;
                                         backPhotoLinkTB.Text = body.imageHref;
@@ -1074,7 +1117,7 @@ namespace WPC_Editor
 
                     case "HTML Source":
                         var htmlSrc = el.widget as WidgetHtmlSource;
-                        if(htmlContentTabber.SelectedIndex == 0)
+                        if (htmlContentTabber.SelectedIndex == 0)
                         {
                             htmlSrc.content = htmlSourceTextBox.Text;
                             htmlSrc.type = WidgetHtmlSource.ContentTypeOfHtmlSource.text;
@@ -1118,7 +1161,7 @@ namespace WPC_Editor
                     case "Перенос":
                         var nlWidget = el.widget as WidgetNextLine;
                         int repeatTime = int.Parse(nextLineRepeatTB.Text);
-                        if(repeatTime < 0)
+                        if (repeatTime < 0)
                         {
                             repeatTime = 1;
                         }
@@ -1166,7 +1209,7 @@ namespace WPC_Editor
 
                     case "Прокрутка":
                         var marq = el.widget as WidgetMarquee;
-                        if(isElUseCSS.IsChecked == false)
+                        if (isElUseCSS.IsChecked == false)
                         {
                             marq.useStyle = false;
                             marq.behavior = marqueeBehaviorCB.SelectedItem != null ? WidgetMarquee.behaviorOptions_rus[marqueeBehaviorCB.SelectedIndex] : WidgetMarquee.behaviorOptions_rus[0];
@@ -1525,7 +1568,14 @@ namespace WPC_Editor
         {
             makeKidLeaveParentElementInTree(sender, e);
         }
-
         #endregion
+
+        private void sceneTree_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if(e.MouseDevice.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                sceneTree.ContextMenu = treeViewContextMenu;
+            }
+        }
     }
 }

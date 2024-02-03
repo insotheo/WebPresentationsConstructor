@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MessageBoxesWindows;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -25,8 +26,16 @@ namespace WPC_Editor
             rTB.Text = R.ToString();
             gTB.Text = G.ToString();
             bTB.Text = B.ToString();
+            hexTB.TextChanged += HexTB_TextChanged;
             hexTB.Text = HEX;
             setColor();
+        }
+
+        private void HexTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            hexTB.ToolTip = $"R: {((Color)((SolidColorBrush)previewBox.Fill).Color).R.ToString()}\n" +
+                $"G: {((Color)((SolidColorBrush)previewBox.Fill).Color).G.ToString()}\n" +
+                $"B: {((Color)((SolidColorBrush)previewBox.Fill).Color).B.ToString()}";
         }
 
         private string RGBtoHEX()
@@ -37,6 +46,19 @@ namespace WPC_Editor
         private void setColor()
         {
             previewBox.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(HEX)));
+        }
+
+        private void copyHEXtoClipboardBTN_Click(object sender, RoutedEventArgs e)
+        {
+            HEX = hexTB.Text.ToUpper().Trim();
+            if (HEX != null)
+            {
+                if (HEX != String.Empty)
+                {
+                    Clipboard.SetText(HEX);
+                    MessBox.showInfo("Скопировано в буфер обмена");
+                }
+            }
         }
 
         #region text changed events

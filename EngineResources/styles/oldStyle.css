@@ -1,0 +1,64 @@
+body {
+    background-color: #2b2920;
+}
+
+p, a, ul, ol, input {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Merriweather', serif;
+    color: #ccc6a9;
+    background-color: transparent;
+    margin: 0;
+    border-radius: 0;
+}
+
+button {
+    font-size: 20px;
+    font-family: 'Merriweather', serif;
+    font-weight: 400;
+    color: #ffffff;
+    background-color: #3d3526;
+    border-color: #1a1a1a;
+    margin: 0;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    transform: rotate(0deg);
+    filter: grayscale(50%);
+    margin: 0;
+}
+
+video {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+div {
+    background-color: transparent;
+    border-radius: 0;
+    margin: 0;
+    position: relative;
+    top: 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+#Shape {
+    height: 40px;
+    width: 60px;
+    background-color: #5e4c41;
+    border-radius: 0;
+    transform: skew(-20deg);
+    display: block;
+}
+
+marquee {
+    margin: 0;
+}

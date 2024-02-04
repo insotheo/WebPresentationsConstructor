@@ -49,7 +49,7 @@ namespace WPC_Editor.Widgets
 
         public void addContent(Widget widget)
         {
-            if (widget is WidgetText || widget is WidgetImage || widget is WidgetVideo || widget is WidgetList || widget is WidgetButton)
+            if (widget is WidgetText || widget is WidgetImage || widget is WidgetVideo || widget is WidgetList || widget is WidgetButton || widget is WidgetSquareShape)
                 content.Add(widget);
             else
             {

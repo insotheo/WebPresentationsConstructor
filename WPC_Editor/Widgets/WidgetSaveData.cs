@@ -16,6 +16,7 @@ namespace WPC_Editor.Widgets
         public WidgetNextLine nl ;
         public WidgetInput input;
         public WidgetMarquee marquee;
+        public WidgetSquareShape squareShape;
 
         public List<WidgetSaveData> savedKids;
 
@@ -62,6 +63,9 @@ namespace WPC_Editor.Widgets
                     case "Перенос":
                         nl = widget as WidgetNextLine;
                         break;
+                    case "Форма":
+                        squareShape = widget as WidgetSquareShape;
+                        break;
                 }
             }
         }
@@ -95,6 +99,8 @@ namespace WPC_Editor.Widgets
                     return html;
                 case "Перенос":
                     return nl;
+                case "Форма":
+                    return squareShape;
                 default:
                     return new Widget();
             }

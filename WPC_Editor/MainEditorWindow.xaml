@@ -53,6 +53,7 @@
                         <Button Content="Список" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_LIST_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Ввод" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_INPUT_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="HTML" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_HTML_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
+                        <Button Content="Форма" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_SHAPE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                         <Button Content="Прокрутка" Click="createNewElementOnPageBtn_Click" Tag="{StaticResource HTML_MARQUEE_BTN}"  Style="{StaticResource topMenuBtnStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
@@ -448,9 +449,28 @@
                                 <TextBox x:Name="marqueeLoop"/>
                                 <TextBlock Text="Шаг px"/>
                                 <TextBox x:Name="marqueeScrollAmount"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="marqueeMargin"/>
                                 <TextBlock Text="Цвета фона"/>
                                 <TextBox x:Name="marqueeBackColotTB" TextChanged="marqueeBackColotTB_TextChanged"/>
                                 <Rectangle Width="15" Height="15" x:Name="marqueeBackColorPreview"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Shape content">
+                            <StackPanel>
+                                <TextBlock Text="Ширина px"/>
+                                <TextBox x:Name="shapeWidth"/>
+                                <TextBlock Text="Высота px"/>
+                                <TextBox x:Name="shapeHeight"/>
+                                <TextBlock Text="Угол °"/>
+                                <TextBox x:Name="shapeSkew"/>
+                                <TextBlock Text="Радиус %"/>
+                                <TextBox x:Name="shapeRadius"/>
+                                <TextBlock Text="Отступы px [T R B L]"/>
+                                <TextBox x:Name="shapeMargin"/>
+                                <TextBlock Text="Цвет"/>
+                                <TextBox x:Name="shapeColor" TextChanged="shapeColor_TextChanged"/>
+                                <Rectangle x:Name="shapeColorPrev" Width="15" Height="15"/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

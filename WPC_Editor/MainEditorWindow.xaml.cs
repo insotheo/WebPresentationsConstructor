@@ -422,6 +422,9 @@ namespace WPC_Editor
                     case "Прокрутка":
                         newWidgetItem = new WidgetsTreeItem(new WidgetMarquee());
                         break;
+                    case "Форма":
+                        newWidgetItem = new WidgetsTreeItem(new WidgetSquareShape());
+                        break;
                 }
 
                 if (newWidgetItem != null)
@@ -854,6 +857,25 @@ namespace WPC_Editor
                                 marqueeDirectionCB.SelectedIndex = Array.IndexOf(WidgetMarquee.direction_rus, marq.dir);
                                 marqueeLoop.Text = marq.loop;
                                 marqueeScrollAmount.Text = marq.scrollAmount;
+                                marqueeMargin.Text = marq.margin;
+                            }
+                            break;
+
+                        case "Форма":
+                            var shape = el.widget as WidgetSquareShape;
+                            removeElementBtn.IsEnabled = true;
+                            contentTabber.SelectedIndex = 0;
+                            contentTabber.Visibility = Visibility.Collapsed;
+                            if (!shape.useStyle)
+                            {
+                                propertiesTabber.SelectedIndex = 8;
+                                propertiesTabber.Visibility = Visibility.Visible;
+                                shapeColor.Text = shape.color;
+                                shapeHeight.Text = shape.height;
+                                shapeWidth.Text = shape.width;
+                                shapeRadius.Text = shape.radius;
+                                shapeSkew.Text = shape.skew;
+                                shapeMargin.Text = shape.margin;
                             }
                             break;
 
@@ -1216,6 +1238,7 @@ namespace WPC_Editor
                             marq.dir = marqueeDirectionCB.SelectedItem != null ? WidgetMarquee.direction_rus[marqueeDirectionCB.SelectedIndex] : WidgetMarquee.direction_rus[0];
                             marq.backgroundColor = marqueeBackColotTB.Text == String.Empty ? "Transparent" : marqueeBackColotTB.Text;
                             marq.loop = marqueeLoop.Text == String.Empty ? "-1" : marqueeLoop.Text;
+                            marq.margin = marqueeMargin.Text == String.Empty ? "0 0 0 0" : marqueeMargin.Text;
                             marq.scrollAmount = marqueeScrollAmount.Text == String.Empty ? "6" : marqueeScrollAmount.Text;
                         }
                         else
@@ -1225,6 +1248,31 @@ namespace WPC_Editor
                         marqueeBackColotTB.Text = String.Empty;
                         marqueeLoop.Text = String.Empty;
                         marqueeScrollAmount.Text = String.Empty;
+                        marqueeMargin.Text = String.Empty;
+                        break;
+
+                    case "Форма":
+                        var shape = el.widget as WidgetSquareShape;
+                        if(isElUseCSS.IsChecked == false)
+                        {
+                            shape.useStyle = false;
+                            shape.height = shapeHeight.Text == String.Empty ? "40" : shapeHeight.Text;
+                            shape.width = shapeWidth.Text == String.Empty ? "60" : shapeWidth.Text;
+                            shape.radius = shapeRadius.Text == String.Empty ? "0" : shapeRadius.Text;
+                            shape.skew = shapeSkew.Text == String.Empty ? "-20" : shapeSkew.Text;
+                            shape.margin = shapeMargin.Text == String.Empty ? "0 0 0 0" : shapeMargin.Text;
+                            shape.color = shapeColor.Text == String.Empty ? "#2d2d2d" : shapeColor.Text;
+                        }
+                        else
+                        {
+                            shape.useStyle = true;
+                        }
+                        shapeColor.Text = String.Empty;
+                        shapeHeight.Text = String.Empty;
+                        shapeWidth.Text = String.Empty;
+                        shapeSkew.Text = String.Empty;
+                        shapeMargin.Text = String.Empty;
+                        shapeRadius.Text = String.Empty;
                         break;
 
                     default: break;
@@ -1313,6 +1361,15 @@ namespace WPC_Editor
             try
             {
                 marqueeBackColorPreview.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(marqueeBackColotTB.Text)));
+            }
+            catch { }
+        }
+
+        private void shapeColor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                shapeColorPrev.Fill = new SolidColorBrush((Color)(ColorConverter.ConvertFromString(shapeColor.Text)));
             }
             catch { }
         }

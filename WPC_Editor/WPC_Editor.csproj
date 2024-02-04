@@ -113,6 +113,7 @@
     <Compile Include="Widgets\WidgetMarquee.cs" />
     <Compile Include="Widgets\WidgetNextLine.cs" />
     <Compile Include="Widgets\WidgetSaveData.cs" />
+    <Compile Include="Widgets\WidgetSquareShape.cs" />
     <Compile Include="Widgets\WidgetsTreeItem.cs" />
     <Compile Include="Widgets\WidgetText.cs" />
     <Compile Include="Widgets\WidgetVideo.cs" />

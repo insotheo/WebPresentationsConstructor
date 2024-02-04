@@ -220,7 +220,7 @@ namespace WPC_Editor
                     {
                         s = $"style=\"font-size: {list.fontSize.ToString()}px; font-family: {list.fontFamily}; font-weight: {list.fontWeight}; color: {list.fontColor.ToLower()}; background-color: {list.backgroundColor}; border-radius: {list.borderRadius}%; margin: {getMarginString(list.margin)};\"";
                     }
-                    line = $"<{list.getHTML_TAG()} {s}>\n" +
+                    line = $"<{list.getHTML_TAG()} id=\"{list.name}\" {s}>\n" +
                         $"{content}" +
                         $"</{list.getHTML_TAG()}>";
                 }
@@ -249,11 +249,21 @@ namespace WPC_Editor
                     string content = getMarqueeContent(ref marq);
                     if (!marq.useStyle)
                     {
-                        s = $"behavior=\"{WidgetMarquee.behaviorOptions[Array.IndexOf(WidgetMarquee.behaviorOptions_rus, marq.behavior)]}\" bgcolor=\"{marq.backgroundColor}\" direction=\"{WidgetMarquee.direction[Array.IndexOf(WidgetMarquee.direction_rus, marq.dir)]}\" loop=\"{marq.loop}\" scrollamount=\"{marq.scrollAmount}\"";
+                        s = $"behavior=\"{WidgetMarquee.behaviorOptions[Array.IndexOf(WidgetMarquee.behaviorOptions_rus, marq.behavior)]}\" bgcolor=\"{marq.backgroundColor}\" direction=\"{WidgetMarquee.direction[Array.IndexOf(WidgetMarquee.direction_rus, marq.dir)]}\" loop=\"{marq.loop}\" scrollamount=\"{marq.scrollAmount}\" style=\"margin: {getMarginString(marq.margin)};\"";
                     }
-                    line = $"<{marq.HTML_TAG} {s}>" +
+                    line = $"<{marq.HTML_TAG} id=\"{marq.name}\" {s}>" +
                         $"{content}" +
                         $"\n</{marq.HTML_TAG}>";
+                }
+                else if(widget is WidgetSquareShape)
+                {
+                    var shape = widget as WidgetSquareShape;
+                    string s = String.Empty;
+                    if (!shape.useStyle)
+                    {
+                        s = $"style=\"height: {shape.height}px; width: {shape.width}px; background-color: {shape.color}; border-radius: {shape.radius}%; transform: skew({shape.skew}deg); margin: {getMarginString(shape.margin)};\"";
+                    }
+                    line = $"<{shape.HTML_TAG} id=\"{shape.name}\" class=\"{shape.classHTML}\" {s}></{shape.HTML_TAG}>";
                 }
             }
             return line;

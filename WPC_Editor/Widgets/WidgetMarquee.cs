@@ -18,6 +18,7 @@ namespace WPC_Editor.Widgets
         public string loop;
         public string scrollAmount;
         public string backgroundColor;
+        public string margin;
 
         public WidgetMarquee()
         {
@@ -31,11 +32,12 @@ namespace WPC_Editor.Widgets
             loop = "-1";
             backgroundColor = "Transparent";
             scrollAmount = "6";
+            margin = "0 0 0 0";
         }
 
         public void addElement(Widget widget)
         {
-            if (widget is WidgetText || widget is WidgetImage)
+            if (widget is WidgetText || widget is WidgetImage || widget is WidgetSquareShape)
                 elements.Add(widget);
             else
             {

@@ -30,7 +30,7 @@ namespace WPC_Editor
         public static List<string> getAllStyles(string assetsFolderPath)
         {
             List<string> stylesNames = new List<string>();
-            foreach (string file in Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "scripts")))
+            foreach (string file in Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "styles")))
             {
                 if (Path.GetExtension(file) == ".css")
                 {

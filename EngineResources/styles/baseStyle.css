@@ -1,0 +1,64 @@
+body{
+    background-color: #ffffff;
+}
+
+p, a, ul, ol, input{
+    font-size: 18px;
+    font-weight: 400;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+    background-color: transparent;
+    margin: 0px 0px 0px 0px;
+    border-radius: 0%;
+}
+
+button{
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    color: #ffffff;
+    background-color: #373737;
+    border-color: #000000;
+    margin: 0px 0px 0px 0px;
+    border-radius: 0%;
+    cursor: pointer;
+}
+
+img{
+    height: 100%;
+    width: 100%;
+    border-radius: 0%;
+    rotate: 0deg;
+    filter: blur(0px);
+    margin: 0px 0px 0px 0px;
+}
+
+video{
+    height: 100%;
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+}
+
+div{
+    background-color: transparent;
+    border-radius: 0%;
+    margin: 0px 0px 0px 0px;
+    position: relative;
+    top: 0px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+#Shape{
+    height: 40px;
+    width: 60px;
+    background-color: #2d2d2d;
+    border-radius: 0%;
+    transform: skew(-20deg);
+    display: block;
+}
+
+marquee{
+    margin: 0px 0px 0px 0px;
+}

@@ -255,6 +255,67 @@ namespace WPC_Editor
             treeViewContextMenu.Items.Add(contextMenuRemoveElBtn);
         }
 
+        private void keepCreating(WidgetsTreeItem selectedItem, WidgetsTreeItem newWidgetItem)
+        {
+            if (selectedItem == null)
+                selectedItem = tree[0];
+
+            if (selectedItem.widget is WidgetGroup)
+            {
+                var group = selectedItem.widget as WidgetGroup;
+                group.addKid(newWidgetItem.widget);
+                kidsToWidgetOfScene(ref selectedItem, group.kids);
+                refreshTreeview();
+            }
+            else if (selectedItem.widget is WidgetList)
+            {
+                var list = selectedItem.widget as WidgetList;
+                list.addContent(newWidgetItem.widget);
+                kidsToWidgetOfScene(ref selectedItem, list.content);
+                refreshTreeview();
+            }
+            else if (selectedItem != null && selectedItem.widget is WidgetMarquee)
+            {
+                var marq = selectedItem.widget as WidgetMarquee;
+                marq.addElement(newWidgetItem.widget);
+                kidsToWidgetOfScene(ref selectedItem, marq.elements);
+                refreshTreeview();
+            }
+            else
+            {
+                var parentItem = FindParentItem(selectedItem, tree[0]);
+                if (parentItem != null && parentItem.widget is WidgetGroup)
+                {
+                    var group = parentItem.widget as WidgetGroup;
+                    group.addKid(newWidgetItem.widget);
+                    kidsToWidgetOfScene(ref parentItem, group.kids);
+                    refreshTreeview();
+                }
+                else if (parentItem != null && parentItem.widget is WidgetList)
+                {
+                    var list = parentItem.widget as WidgetList;
+                    list.addContent(newWidgetItem.widget);
+                    kidsToWidgetOfScene(ref parentItem, list.content);
+                    refreshTreeview();
+                }
+                else if (parentItem != null && parentItem.widget is WidgetMarquee)
+                {
+                    var marq = parentItem.widget as WidgetMarquee;
+                    marq.addElement(newWidgetItem.widget);
+                    kidsToWidgetOfScene(ref parentItem, marq.elements);
+                    refreshTreeview();
+                }
+                else
+                {
+                    if (selectedItem.widget.tag == "body")
+                    {
+                        tree[0].widgetsOfScene.Add(newWidgetItem);
+                        refreshTreeview();
+                    }
+                }
+            }
+        }
+
         #region top buttons
 
         private async void showProjectFilesBtn_Click(object sender, RoutedEventArgs e)
@@ -430,63 +491,7 @@ namespace WPC_Editor
                 if (newWidgetItem != null)
                 {
                     selectedItem = sceneTree.SelectedItem as WidgetsTreeItem;
-                    if (selectedItem == null)
-                        selectedItem = tree[0];
-
-                    if (selectedItem.widget is WidgetGroup)
-                    {
-                        var group = selectedItem.widget as WidgetGroup;
-                        group.addKid(newWidgetItem.widget);
-                        kidsToWidgetOfScene(ref selectedItem, group.kids);
-                        refreshTreeview();
-                    }
-                    else if (selectedItem.widget is WidgetList)
-                    {
-                        var list = selectedItem.widget as WidgetList;
-                        list.addContent(newWidgetItem.widget);
-                        kidsToWidgetOfScene(ref selectedItem, list.content);
-                        refreshTreeview();
-                    }
-                    else if (selectedItem != null && selectedItem.widget is WidgetMarquee)
-                    {
-                        var marq = selectedItem.widget as WidgetMarquee;
-                        marq.addElement(newWidgetItem.widget);
-                        kidsToWidgetOfScene(ref selectedItem, marq.elements);
-                        refreshTreeview();
-                    }
-                    else
-                    {
-                        var parentItem = FindParentItem(selectedItem, tree[0]);
-                        if (parentItem != null && parentItem.widget is WidgetGroup)
-                        {
-                            var group = parentItem.widget as WidgetGroup;
-                            group.addKid(newWidgetItem.widget);
-                            kidsToWidgetOfScene(ref parentItem, group.kids);
-                            refreshTreeview();
-                        }
-                        else if (parentItem != null && parentItem.widget is WidgetList)
-                        {
-                            var list = parentItem.widget as WidgetList;
-                            list.addContent(newWidgetItem.widget);
-                            kidsToWidgetOfScene(ref parentItem, list.content);
-                            refreshTreeview();
-                        }
-                        else if (parentItem != null && parentItem.widget is WidgetMarquee)
-                        {
-                            var marq = parentItem.widget as WidgetMarquee;
-                            marq.addElement(newWidgetItem.widget);
-                            kidsToWidgetOfScene(ref parentItem, marq.elements);
-                            refreshTreeview();
-                        }
-                        else
-                        {
-                            if (selectedItem.widget.tag == "body")
-                            {
-                                tree[0].widgetsOfScene.Add(newWidgetItem);
-                                refreshTreeview();
-                            }
-                        }
-                    }
+                    keepCreating(selectedItem, newWidgetItem);
                 }
             }
             catch (Exception ex)

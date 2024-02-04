@@ -10,6 +10,5 @@ namespace WPC_Editor.Widgets
         public bool useStyle = true;
 
         protected Random rndInd = new Random();
-
     }
 }

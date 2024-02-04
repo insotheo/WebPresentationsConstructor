@@ -41,6 +41,5 @@ namespace WPC_Editor.Widgets
             }
             return newKids;
         }
-
     }
 }

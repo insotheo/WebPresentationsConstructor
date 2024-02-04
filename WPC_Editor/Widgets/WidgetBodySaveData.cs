@@ -12,5 +12,7 @@ namespace WPC_Editor.Widgets
             this.body = body;
             this.widgets = widgets;
         }
+
+        
     }
 }

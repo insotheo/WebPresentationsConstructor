@@ -32,7 +32,7 @@
                         <Button Content="Файлы" Tag="{StaticResource showFilesBtnVector}" Click="showProjectFilesBtn_Click"/>
                         <Button Content="Config" Tag="{StaticResource openConfigBtnVector}" Click="editConfigBtn_Click"/>
                         <Button Content="Браузер" Tag="{StaticResource openInOutWindowBtnVector}" Click="showInWebBrowserBtn_Click"/>
-                        <Button Content="Собрать" Tag="{StaticResource packageBtnVector}"/>
+                        <Button Content="Собрать" Tag="{StaticResource packageBtnVector}" Click="openPackageWindowBtn_Click"/>
                         <Button Content="Палитра" Tag="{StaticResource palletBtnVector}" Click="openPalletWindowBtn_Click"/>
                     </StackPanel>
                 </ScrollViewer>

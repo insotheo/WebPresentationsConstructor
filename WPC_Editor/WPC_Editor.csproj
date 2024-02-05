@@ -64,6 +64,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,6 +77,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPC_BUILD_CLASS">
+      <HintPath>..\bin\DLLsBuild\WPC_BUILD_CLASS.dll</HintPath>
+    </Reference>
     <Reference Include="WPC_Encrypting">
       <HintPath>..\bin\DLLsBuild\WPC_Encrypting.dll</HintPath>
     </Reference>
@@ -100,6 +104,9 @@
       <DependentUpon>HoldOnWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="JavaScriptWorker.cs" />
+    <Compile Include="PackagingWindow.xaml.cs">
+      <DependentUpon>PackagingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetBody.cs" />
     <Compile Include="Widgets\WidgetBodySaveData.cs" />
@@ -175,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PackagingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

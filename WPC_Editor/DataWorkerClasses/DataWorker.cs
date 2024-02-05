@@ -15,6 +15,7 @@ namespace WPC_Editor.DataWorkerClasses
         private DataLoader loader;
 
         public string currentPage;
+        public bool isSaved = false;
 
         private readonly string assetsFolder;
 
@@ -69,6 +70,7 @@ namespace WPC_Editor.DataWorkerClasses
                 else { return; }
             }
             saver.save(tree[0].widget as WidgetBody, tree[0].widgetsOfScene, Path.Combine(assetsFolder, currentPage));
+            isSaved = true;
         }
 
         public List<WidgetsTreeItem> load(string pageName)

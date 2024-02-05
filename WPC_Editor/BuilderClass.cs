@@ -7,7 +7,7 @@ using WPC_Editor.Widgets;
 
 namespace WPC_Editor
 {
-    class BuilderClass
+    public class BuilderClass
     {
         private string cacheFolder;
         private string assetsFolder;

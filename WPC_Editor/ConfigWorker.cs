@@ -15,6 +15,8 @@ namespace WPC_Editor
         public string charset;
         public List<string> additionalFilesForBuilding;
 
+        public string projectName;
+
         private string creatorsUsername;
         private string creatorsMachineName;
         private string creatorsOS;
@@ -22,11 +24,11 @@ namespace WPC_Editor
 
         private string path;
 
-        public ConfigWorker(string configFilePath)
+        public ConfigWorker(string configFilePath, string projectName)
         {
             path = configFilePath;
             string[] configData = File.ReadAllLines(configFilePath);
-            for(int i = 0; i < configData.Length; i++)
+            for (int i = 0; i < configData.Length; i++)
             {
                 configData[i] = configData[i].Trim().Split(':')[1];
             }
@@ -57,11 +59,13 @@ namespace WPC_Editor
             charset = configData[9].Trim();
             if (configData[10].Trim().Length > 0)
             {
-                foreach(string file in configData[10].Trim().Split(';'))
+                foreach (string file in configData[10].Trim().Split(';'))
                 {
                     additionalFilesForBuilding.Add(file.Trim());
                 }
             }
+
+            this.projectName = projectName;
         }
 
         public bool isTheSamePC()

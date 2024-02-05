@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,7 +47,7 @@ namespace WPC_Editor
 
                 tree = new List<WidgetsTreeItem>();
                 builder = new BuilderClass(cacheFolder, assetsFolder);
-                config = new ConfigWorker(Path.Combine(projectFolder, "settings.config"));
+                config = new ConfigWorker(Path.Combine(projectFolder, "settings.config"), projectFolder.Split(Path.PathSeparator).Last());
                 if (!config.isTheSamePC())
                 {
                     var ans = MessBox.showQuestionWithTwoOptions("Информация о создателе не схожа с информацией о Вас. Желаете ли Вы открыть данный проект?");
@@ -420,10 +421,15 @@ namespace WPC_Editor
             try
             {
                 dataWorker.save(tree);
-                MessBox.showInfo($"Сохранено в файл \"{dataWorker.currentPage}\"!");
+                if (dataWorker.isSaved)
+                {
+                    MessBox.showInfo($"Сохранено в файл \"{dataWorker.currentPage}\"!");
+                    dataWorker.isSaved = false;
+                }
             }
             catch (Exception ex)
             {
+                dataWorker.isSaved = false;
                 MessBox.showError(ex.Message);
             }
         }
@@ -432,6 +438,18 @@ namespace WPC_Editor
         {
             palletWindow = new ColorpickerWindow();
             palletWindow.Show();
+        }
+
+        private void openPackageWindowBtn_Click(object sender, RoutedEventArgs e)
+        {
+            PackagingWindow packagingWindow = new PackagingWindow(ref builder, ref config, assetsFolder);
+            if(MessBox.showQuestionWithTwoOptions("Желаете сохранить редактируемую страницу?") == MessageBoxResult.Yes)
+            {
+                saveBtn_Click(sender, e);
+            }
+            webCanvas.Dispose();
+            this.Close();
+            packagingWindow.ShowDialog();
         }
 
         #endregion

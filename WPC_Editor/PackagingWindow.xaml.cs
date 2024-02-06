@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace WPC_Editor
 {
@@ -100,6 +101,14 @@ namespace WPC_Editor
                 if(Directory.GetFiles(pathToSaveTB.Text).Length + Directory.GetDirectories(pathToSaveTB.Text).Length > 0){
                     throw new Exception("Выбранная папка должна быть пустой");
                 }
+                if(Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "projects", config.projectName, ".build")))
+                {
+                    Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "projects", config.projectName, ".build"), true);
+                }
+                if(File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "build_data.json")))
+                {
+                    File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "build_data.json"));
+                }
                 BUILD_DATA_CLASS data = new BUILD_DATA_CLASS((bool)allowMobilesCB.IsChecked,
                     (bool)removeCommentsCB.IsChecked,
                      (bool)zipCB.IsChecked,
@@ -111,10 +120,20 @@ namespace WPC_Editor
                 string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
                 jsonFile.Close();
                 File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "build_data.json"), jsonData);
+                HoldOnWindow holdOn = new HoldOnWindow("Preparing...");
+                holdOn.Show();
+                this.WindowState = WindowState.Minimized;
+                this.IsEnabled = false;
+                Task.Run(() => builder.build(data.sort, config, data.allowMobileDevices)).Wait();
+                Task.Delay(10).Wait();
+                holdOn.Close();
+                this.WindowState = WindowState.Normal;
+                this.IsEnabled = true;
             }
             catch(Exception ex)
             {
-                MessBox.showError(ex.Message);
+                MessBox.showError(ex.ToString());
+                this.IsEnabled = true;
             }
         }
 

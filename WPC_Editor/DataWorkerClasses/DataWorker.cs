@@ -121,5 +121,55 @@ namespace WPC_Editor.DataWorkerClasses
                 return newTree;
             }
         }
+
+        public static List<WidgetsTreeItem> staticLoad(string assetsFold, string pageName)
+        {
+            DataLoader _loader = new DataLoader();
+            string path = Path.Combine(assetsFold, pageName);
+            if (!File.Exists(path))
+            {
+                throw new Exception("Файл не существует!");
+            }
+            WidgetBodySaveData wpsd = _loader.load(path);
+            if (wpsd != null)
+            {
+                List<WidgetsTreeItem> loadedTree = new List<WidgetsTreeItem>();
+                loadedTree.Add(new WidgetsTreeItem(wpsd.body));
+                List<WidgetsTreeItem> loadedWidgets = new List<WidgetsTreeItem>();
+                foreach (WidgetSaveData data in wpsd.widgets)
+                {
+                    var wid = data.getByName();
+                    if (wid is WidgetGroup)
+                    {
+                        var groupWid = wid as WidgetGroup;
+                        groupWid.kids = data.getKids();
+                        wid = groupWid;
+                    }
+                    else if (wid is WidgetList)
+                    {
+                        var listWid = wid as WidgetList;
+                        listWid.content = data.getKids();
+                        wid = listWid;
+                    }
+                    else if (wid is WidgetMarquee)
+                    {
+                        var marqWid = wid as WidgetMarquee;
+                        marqWid.elements = data.getKids();
+                        wid = marqWid;
+                    }
+                    loadedWidgets.Add(new WidgetsTreeItem(wid));
+                }
+                loadedTree[0].widgetsOfScene = loadedWidgets;
+                return loadedTree;
+            }
+            else
+            {
+                List<WidgetsTreeItem> newTree = new List<WidgetsTreeItem>
+                {
+                    new WidgetsTreeItem(new WidgetBody())
+                };
+                return newTree;
+            }
+        }
     }
 }

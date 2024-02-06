@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using WPC_Editor.Widgets;
-
+using WPC_Editor.DataWorkerClasses;
+using System.Threading.Tasks;
 
 namespace WPC_Editor
 {
@@ -11,6 +11,8 @@ namespace WPC_Editor
     {
         private string cacheFolder;
         private string assetsFolder;
+
+        private bool sortFiles = false;
 
         public BuilderClass(string folder, string assetsFolder)
         {
@@ -142,6 +144,10 @@ namespace WPC_Editor
                     }
                     if (img.contentType == 'f')
                     {
+                        if (sortFiles)
+                        {
+                            img.href = @"Resources\" + img.href;
+                        }
                         if (File.Exists(Path.Combine(assetsFolder, img.href)))
                         {
                             File.Copy(Path.Combine(assetsFolder, img.href), Path.Combine(cacheFolder, img.href), true);
@@ -170,9 +176,13 @@ namespace WPC_Editor
                     }
                     if (vid.src != String.Empty)
                     {
+                        if (sortFiles)
+                        {
+                            vid.src = @"Resources\" + vid.src;
+                        }
                         if (File.Exists(Path.Combine(assetsFolder, vid.src)))
                         {
-                            File.Copy(Path.Combine(assetsFolder, vid.src), Path.Combine(cacheFolder, vid.src));
+                            File.Copy(Path.Combine(assetsFolder, vid.src), Path.Combine(cacheFolder, vid.src), true);
                         }
                     }
                     line = $"<{vid.HTML_TAG} id=\"{vid.name}\" src=\"{vid.src}\" {c} {ap} {l} {s}></{vid.HTML_TAG}>";
@@ -301,24 +311,37 @@ namespace WPC_Editor
             }
         }
 
-        public void fastBuild(List<WidgetsTreeItem> list, ref ConfigWorker config, WidgetBody body)
+        public void fastBuild(List<WidgetsTreeItem> list, ref ConfigWorker config, WidgetBody body, bool allowMobile = true, string fileTitle = "INDEX.HTML", bool recreateDir = true, bool setIcon = false)
         {
-            Directory.Delete(cacheFolder, true);
-            Directory.CreateDirectory(cacheFolder);
-            FileStream indexHTML = File.Create(Path.Combine(cacheFolder, "INDEX.html"));
+            if (recreateDir)
+            {
+                Directory.Delete(cacheFolder, true);
+                Directory.CreateDirectory(cacheFolder);
+            }
+            FileStream indexHTML = File.Create(Path.Combine(cacheFolder, fileTitle));
             indexHTML.Close();
 
+            string blockMobiles = !allowMobile ? "<style>\r\n        .modal {\r\n            display: none;\r\n            position: fixed;\r\n            top: 50%;\r\n            left: 50%;\r\n            transform: translate(-50%, -50%);\r\n            padding: 20px;\r\n            background-color: white;\r\n            border: 2px solid red;\r\n            z-index: 9999;\r\n        }\r\n    </style>\r\n    <script>\r\n        window.addEventListener('DOMContentLoaded', function() {\r\n            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {\r\n                var modal = document.createElement('div');\r\n                modal.className = 'modal';\r\n                modal.innerText = 'Данную страницу нельзя просмотреть на мобильном устройстве';\r\n                document.body.appendChild(modal);\r\n                modal.style.display = 'block';\r\n            }\r\n        });\r\n    </script>" : String.Empty;
+            string webIcon = String.Empty;
+            if (setIcon)
+            {
+                string subString = sortFiles ? @"Resources\" : String.Empty;
+                File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "build_icon.svg"), Path.Combine(cacheFolder, "build_icon.svg"), true);
+                webIcon = $"<link rel=\"icon\" type=\"image/svg\" href=\"{subString}build_icon.svg\">";
+            }
             string finalText = $"<!DOCTYPE html>\n<!-- Made with WebPresentationsConstructor {DateTime.Now.Year} -->\n<!-- https://github.com/insotheo/WebPresentationsConstructor -->" +
                 $"\n<html lang=\"{config.language}\">" +
                 "\n<head>" +
                 $"\n<title>{config.title}</title>" +
-                $"\n<meta charset=\"{config.charset.ToLower()}\">";
+                $"\n<meta charset=\"{config.charset.ToLower()}\">" +
+                $"\n{webIcon}" +
+                $"\n{blockMobiles}";
 
             if(body.type == WidgetBody.CommonType.photo && body.photoType == WidgetBody.PhotoType.image)
             {
                 if (File.Exists(Path.Combine(assetsFolder, body.imageHref)))
                 {
-                    File.Copy(Path.Combine(assetsFolder, body.imageHref), Path.Combine(cacheFolder, body.imageHref));
+                    File.Copy(Path.Combine(assetsFolder, body.imageHref), Path.Combine(cacheFolder, body.imageHref), true);
                 }
             }
 
@@ -350,17 +373,18 @@ namespace WPC_Editor
                 {
                     if (File.Exists(Path.Combine(assetsFolder, style)))
                     {
-                        File.Copy(Path.Combine(assetsFolder, style), Path.Combine(cacheFolder, style));
+                        File.Copy(Path.Combine(assetsFolder, style), Path.Combine(cacheFolder, style), true);
                     }
                     else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "styles", style)))
                     {
-                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "styles", style), Path.Combine(cacheFolder, style));
+                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "styles", style), Path.Combine(cacheFolder, style), true);
                     }
                     else
                     {
                         throw new Exception("Ошибка сборки! Файл не найден!");
                     }
-                    finalText += $"\n<link rel=\"stylesheet\" href=\"{style}\">";
+                    string sortString = sortFiles ? @"Styles\" : String.Empty;
+                    finalText += $"\n<link rel=\"stylesheet\" href=\"{sortString}{style}\">";
                 }
             }
             if (config.usingScripts.Count > 0)
@@ -369,17 +393,18 @@ namespace WPC_Editor
                 {
                     if (File.Exists(Path.Combine(assetsFolder, script)))
                     {
-                        File.Copy(Path.Combine(assetsFolder, script), Path.Combine(cacheFolder, script));
+                        File.Copy(Path.Combine(assetsFolder, script), Path.Combine(cacheFolder, script), true);
                     }
                     else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "scripts", script)))
                     {
-                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "scripts", script), Path.Combine(cacheFolder, script));
+                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), "scripts", script), Path.Combine(cacheFolder, script), true);
                     }
                     else
                     {
                         throw new Exception("Ошибка сборки! Файл не найден!");
                     }
-                    finalText += $"\n<script src=\"{script}\"></script>";
+                    string sortString = sortFiles ? @"Scripts\" : String.Empty;
+                    finalText += $"\n<script src=\"{sortString}{script}\"></script>";
                 }
             }
 
@@ -415,7 +440,33 @@ namespace WPC_Editor
                 }
             }
 
-            File.WriteAllText(Path.Combine(cacheFolder, "INDEX.html"), finalText);
+            File.WriteAllText(Path.Combine(cacheFolder, fileTitle), finalText);
+        }
+
+        public void build(bool sortFiles, ConfigWorker config, bool allowMobile)
+        {
+            cacheFolder = cacheFolder.Replace("cache", ".build");
+            this.sortFiles = sortFiles;
+            List<List<WidgetsTreeItem>> pagesData = new List<List<WidgetsTreeItem>>();
+            List<string> names = new List<string>();
+            foreach(string page in FilesWorker.getAllFilesByExt(assetsFolder, ".wpcsave"))
+            {
+                pagesData.Add(DataWorker.staticLoad(assetsFolder, page));
+                names.Add(page.Replace(".wpcsave", ".html"));
+            }
+            for(int i = 0; i < pagesData.Count; i++)
+            {
+                fastBuild(pagesData[i][0].widgetsOfScene,
+                    ref config,
+                    pagesData[i][0].widget as WidgetBody,
+                    allowMobile,
+                    names[i],
+                    false,
+                    true);
+                Task.Delay(10).Wait();
+            }
+            cacheFolder = cacheFolder.Replace(".build", "cache");
+            this.sortFiles = false;
         }
     }
 }

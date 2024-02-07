@@ -49,7 +49,6 @@
                     </TreeView.ItemTemplate>
                 </TreeView>
                 <TextBlock Text="Параметры"/>
-                <CheckBox IsChecked="True" Content="Разрешить просмотр на мобильных устройствах" x:Name="allowMobilesCB"/>
                 <CheckBox IsChecked="True" Content="Удалить комментарии из JS файлов" x:Name="removeCommentsCB"/>
                 <CheckBox IsChecked="True" Content="Заархивировать в Zip архив" x:Name="zipCB"/>
                 <CheckBox IsChecked="False" Content="Выравнивать HTML код" x:Name="tabHtmlCB"/>

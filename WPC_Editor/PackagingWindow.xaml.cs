@@ -7,6 +7,7 @@ using System;
 using Newtonsoft.Json;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WPC_Editor
 {
@@ -109,12 +110,12 @@ namespace WPC_Editor
                 {
                     File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "build_data.json"));
                 }
-                BUILD_DATA_CLASS data = new BUILD_DATA_CLASS((bool)allowMobilesCB.IsChecked,
-                    (bool)removeCommentsCB.IsChecked,
+                BUILD_DATA_CLASS data = new BUILD_DATA_CLASS((bool)removeCommentsCB.IsChecked,
                      (bool)zipCB.IsChecked,
                      (bool)tabHtmlCB.IsChecked,
                      (bool)sortCB.IsChecked,
-                     pathToSaveTB.Text);
+                     pathToSaveTB.Text,
+                     config.projectName);
                 FileStream jsonFile = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "build_data.json"));
                 Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "projects", config.projectName, ".build"));
                 string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -124,15 +125,27 @@ namespace WPC_Editor
                 holdOn.Show();
                 this.WindowState = WindowState.Minimized;
                 this.IsEnabled = false;
-                Task.Run(() => builder.build(data.sort, config, data.allowMobileDevices)).Wait();
+                Task.Run(() => builder.build(data.sort, config)).Wait();
                 Task.Delay(10).Wait();
+                //other
+                holdOn.titleTB.Text = "Packaging...";
+                string path = pathToSaveTB.Text.Trim();
+                if (data.sort)
+                {
+                    Directory.CreateDirectory(Path.Combine(path ,"Resources"));
+                    Directory.CreateDirectory(Path.Combine(path ,"Styles"));
+                    Directory.CreateDirectory(Path.Combine(path ,"Scripts"));
+                }
                 holdOn.Close();
+                Process.Start(Path.Combine(Directory.GetCurrentDirectory(), "WPC_Packager.exe")).WaitForExit();
+                //finish
                 this.WindowState = WindowState.Normal;
                 this.IsEnabled = true;
+                MessBox.showInfo("Готово!");
             }
             catch(Exception ex)
             {
-                MessBox.showError(ex.ToString());
+                MessBox.showError(ex.Message);
                 this.IsEnabled = true;
             }
         }

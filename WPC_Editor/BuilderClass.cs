@@ -443,7 +443,7 @@ namespace WPC_Editor
             File.WriteAllText(Path.Combine(cacheFolder, fileTitle), finalText);
         }
 
-        public void build(bool sortFiles, ConfigWorker config, bool allowMobile)
+        public void build(bool sortFiles, ConfigWorker config)
         {
             cacheFolder = cacheFolder.Replace("cache", ".build");
             this.sortFiles = sortFiles;
@@ -459,7 +459,7 @@ namespace WPC_Editor
                 fastBuild(pagesData[i][0].widgetsOfScene,
                     ref config,
                     pagesData[i][0].widget as WidgetBody,
-                    allowMobile,
+                    false,
                     names[i],
                     false,
                     true);

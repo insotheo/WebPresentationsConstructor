@@ -311,7 +311,7 @@ namespace WPC_Editor
             }
         }
 
-        public void fastBuild(List<WidgetsTreeItem> list, ref ConfigWorker config, WidgetBody body, bool allowMobile = true, string fileTitle = "INDEX.HTML", bool recreateDir = true, bool setIcon = false)
+        public void fastBuild(List<WidgetsTreeItem> list, ref ConfigWorker config, WidgetBody body, bool allowMobile = false, string fileTitle = "INDEX.HTML", bool recreateDir = true, bool setIcon = false)
         {
             if (recreateDir)
             {
@@ -320,8 +320,6 @@ namespace WPC_Editor
             }
             FileStream indexHTML = File.Create(Path.Combine(cacheFolder, fileTitle));
             indexHTML.Close();
-
-            string blockMobiles = !allowMobile ? "<style>\r\n        .modal {\r\n            display: none;\r\n            position: fixed;\r\n            top: 50%;\r\n            left: 50%;\r\n            transform: translate(-50%, -50%);\r\n            padding: 20px;\r\n            background-color: white;\r\n            border: 2px solid red;\r\n            z-index: 9999;\r\n        }\r\n    </style>\r\n    <script>\r\n        window.addEventListener('DOMContentLoaded', function() {\r\n            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {\r\n                var modal = document.createElement('div');\r\n                modal.className = 'modal';\r\n                modal.innerText = 'Данную страницу нельзя просмотреть на мобильном устройстве';\r\n                document.body.appendChild(modal);\r\n                modal.style.display = 'block';\r\n            }\r\n        });\r\n    </script>" : String.Empty;
             string webIcon = String.Empty;
             if (setIcon)
             {
@@ -334,8 +332,7 @@ namespace WPC_Editor
                 "\n<head>" +
                 $"\n<title>{config.title}</title>" +
                 $"\n<meta charset=\"{config.charset.ToLower()}\">" +
-                $"\n{webIcon}" +
-                $"\n{blockMobiles}";
+                $"\n{webIcon}";
 
             if(body.type == WidgetBody.CommonType.photo && body.photoType == WidgetBody.PhotoType.image)
             {

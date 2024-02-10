@@ -37,9 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\DemoProject.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\DemoProject.zip" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -71,87 +69,33 @@
     <Content Include="styles\oldStyle.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="WebPresentationsConstructorDoc\index.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part1\createdProjectMainMenu.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part1\creationImage.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part1\projectsManagerWindowClear.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part1\projectsManagerWindowMarked.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\configWindow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\editorWindowFirstImg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\filesWindowP2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\fileWindowWithJsFile.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\finalConfigView.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\pallet.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part2\topImgInEditor.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\contextMenuItem.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\groupExample.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\listOfElements.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\removingKidExample.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\textAddedWithPatterns.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\textInspector.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part3\treeWithText.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\buildWindowFinal.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\filesTree.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\firstPackagerWindow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\folder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\sortOff.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Resources\Part4\sortOn.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="WebPresentationsConstructorDoc\Scripts\HideAndShowDocPart.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="WebPresentationsConstructorDoc\index.css" />
+    <None Include="WebPresentationsConstructorDoc\index.html" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part1\createdProjectMainMenu.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part1\creationImage.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part1\projectsManagerWindowClear.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part1\projectsManagerWindowMarked.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\configWindow.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\editorWindowFirstImg.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\filesWindowP2.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\fileWindowWithJsFile.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\finalConfigView.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\pallet.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part2\topImgInEditor.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\contextMenuItem.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\groupExample.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\listOfElements.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\removingKidExample.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\textAddedWithPatterns.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\textInspector.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part3\treeWithText.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\buildWindowFinal.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\filesTree.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\firstPackagerWindow.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\folder.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\sortOff.png" />
+    <None Include="WebPresentationsConstructorDoc\Resources\Part4\sortOn.png" />
+    <None Include="WebPresentationsConstructorDoc\Scripts\HideAndShowDocPart.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,55 @@
+body{
+    background-color: #757575;
+    margin-left: 40px;
+}
+
+h1, h2{
+    color: white;
+    font-weight: 800;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+    font-size: 40px;
+}
+
+h2{
+    font-size: 24px;
+}
+
+p,a{
+    color: white;
+    font-size: 18px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+li{
+    color: white;
+    font-size: 18px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.helpBanner{
+    background-color: #193a43;
+    max-width: 570px;
+}
+
+.headerTitle{
+    background-color: #32654c;
+}
+
+img{
+    border-radius: 1%;
+    height: 50%;
+    width: 50%;
+}
+
+button{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: black;
+    background-color: lightgray;
+    cursor: pointer;
+    border-radius: 5px;
+
+}

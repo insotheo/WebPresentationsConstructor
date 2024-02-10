@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPC_Editor"
         mc:Ignorable="d"
-        Title="WebPresentationsBuilder -> Package"
+        Title="WebPresentationsConstructor -> Package"
         Height="450" Width="800" ResizeMode="CanMinimize"
         Background="{StaticResource windowBackColor}"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="220"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Margin="0 5 0 0">
             <Path Data="{StaticResource packageBtnVector}"
                   Fill="White" HorizontalAlignment="Center"
                   Width="100" Height="100" Stretch="Uniform"/>
-            <TextBlock Text="WebPresentationsBuilder" HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="WebPresentationsConstructor" HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
             <TextBlock Text="Package" HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
         </StackPanel>
         <ScrollViewer Grid.Column="1" Margin="5 0 0 0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">

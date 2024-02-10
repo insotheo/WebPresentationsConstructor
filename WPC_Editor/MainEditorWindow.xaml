@@ -129,7 +129,7 @@
                         <TextBox x:Name="ElTagTb" IsReadOnly="True"/>
                         <CheckBox x:Name="isElUseCSS" Foreground="White" Content="Использовать стиль из файла"/>
                     </StackPanel>
-                    <TabControl Grid.Row="1" x:Name="contentTabber">
+                    <TabControl Grid.Row="1" x:Name="contentTabber" Visibility="Collapsed">
                         <TabItem/>
                         <TabItem Header="Text content">
                             <StackPanel>
@@ -276,7 +276,7 @@
                             </StackPanel>
                         </TabItem>
                     </TabControl>
-                    <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Visible">
+                    <TabControl Grid.Row="2" x:Name="propertiesTabber" Visibility="Collapsed">
                         <TabItem/>
                         <TabItem Header="Text content">
                             <StackPanel>
